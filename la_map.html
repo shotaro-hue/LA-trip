@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LA旅行マップ 2026年8月</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a1a2e;
+      color: #eee;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    #header {
+      background: #16213e;
+      padding: 10px 16px 0;
+      border-bottom: 1px solid #0f3460;
+      flex-shrink: 0;
+    }
+
+    #header h1 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #93c5fd;
+      letter-spacing: 0.5px;
+      padding-bottom: 8px;
+    }
+
+    #tabs {
+      display: flex;
+      overflow-x: auto;
+      white-space: nowrap;
+      gap: 4px;
+      scrollbar-width: none;
+    }
+    #tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 12px;
+      transition: color 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    .tab-btn:hover { color: #e2e8f0; }
+    .tab-btn.active {
+      color: #fff;
+      border-bottom-color: currentColor;
+    }
+
+    #map {
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Leaflet dark tile override */
+    .leaflet-tile { filter: brightness(0.85) saturate(0.7); }
+
+    /* Popup styling */
+    .leaflet-popup-content-wrapper {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    }
+    .leaflet-popup-tip { background: #1e293b; }
+    .leaflet-popup-content {
+      margin: 10px 14px;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .leaflet-popup-content b {
+      font-size: 14px;
+      color: #fff;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .leaflet-popup-close-button { color: #94a3b8 !important; }
+
+    /* Legend */
+    #legend {
+      position: fixed;
+      bottom: 24px;
+      left: 12px;
+      background: rgba(22, 33, 62, 0.92);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+    #legend h3 {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 7px;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+    .legend-item:last-child { margin-bottom: 0; }
+    .legend-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+
+    /* Pin icon */
+    .pin-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      cursor: pointer;
+    }
+    .pin-icon.candidate {
+      border-style: dashed;
+      border-color: #a78bfa;
+      background: rgba(167,139,250,0.25) !important;
+    }
+  </style>
+</head>
+<body>
+
+<div id="header">
+  <h1>✈️ LA旅行マップ 2026年8月20〜25日</h1>
+  <div id="tabs">
+    <button class="tab-btn active" data-day="all" style="border-bottom-color:#93c5fd;">全日程</button>
+    <button class="tab-btn" data-day="8/20" style="--c:#60a5fa">8/20</button>
+    <button class="tab-btn" data-day="8/21" style="--c:#34d399">8/21</button>
+    <button class="tab-btn" data-day="8/22" style="--c:#fbbf24">8/22</button>
+    <button class="tab-btn" data-day="8/23" style="--c:#f87171">8/23</button>
+    <button class="tab-btn" data-day="8/24" style="--c:#c084fc">8/24</button>
+    <button class="tab-btn" data-day="8/25" style="--c:#fb923c">8/25</button>
+  </div>
+</div>
+
+<div id="map"></div>
+
+<div id="legend">
+  <h3>治安エリア</h3>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:rgba(74,222,128,0.5);border:1px solid #4ade80;"></div>
+    <span>治安良好</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:rgba(251,191,36,0.5);border:1px solid #fbbf24;"></div>
+    <span>夜間注意</span>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:rgba(248,113,113,0.5);border:1px solid #f87171;"></div>
+    <span>立入禁止レベル</span>
+  </div>
+</div>
+
+<script>
+// ── Map init ──────────────────────────────────────────────────────────────
+const map = L.map('map', {
+  center: [34.02, -118.30],
+  zoom: 11,
+  zoomControl: true,
+});
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 19,
+}).addTo(map);
+
+// ── Safety areas ──────────────────────────────────────────────────────────
+const safetyAreas = [
+  // Green - good
+  {
+    name: 'Santa Monica・ビーチ沿岸',
+    coords: [[34.05,-118.56],[34.05,-118.44],[33.96,-118.44],[33.96,-118.56]],
+    color: '#4ade80'
+  },
+  {
+    name: 'Beverly Hills・Brentwood',
+    coords: [[34.10,-118.44],[34.10,-118.37],[34.04,-118.37],[34.04,-118.44]],
+    color: '#4ade80'
+  },
+  {
+    name: 'Griffith・Los Feliz',
+    coords: [[34.15,-118.33],[34.15,-118.27],[34.10,-118.27],[34.10,-118.33]],
+    color: '#4ade80'
+  },
+  {
+    name: 'Anaheim・Disney周辺',
+    coords: [[33.84,-117.96],[33.84,-117.87],[33.78,-117.87],[33.78,-117.96]],
+    color: '#4ade80'
+  },
+  // Yellow - caution at night
+  {
+    name: 'Hollywood（夜間注意）',
+    coords: [[34.12,-118.35],[34.12,-118.27],[34.08,-118.27],[34.08,-118.35]],
+    color: '#fbbf24'
+  },
+  {
+    name: 'Downtown LA（夜間注意）',
+    coords: [[34.07,-118.28],[34.07,-118.22],[34.03,-118.22],[34.03,-118.28]],
+    color: '#fbbf24'
+  },
+  {
+    name: 'Venice Beach（夜間注意）',
+    coords: [[34.02,-118.51],[34.02,-118.45],[33.97,-118.45],[33.97,-118.51]],
+    color: '#fbbf24'
+  },
+  // Red - danger
+  {
+    name: 'Skid Row周辺（立入禁止レベル）',
+    coords: [[34.053,-118.254],[34.053,-118.234],[34.039,-118.234],[34.039,-118.254]],
+    color: '#f87171'
+  },
+];
+
+const safetyLayerGroup = L.layerGroup().addTo(map);
+
+safetyAreas.forEach(area => {
+  L.polygon(area.coords, {
+    color: area.color,
+    fillColor: area.color,
+    fillOpacity: 0.25,
+    weight: 1.5,
+    opacity: 0.7,
+  })
+    .bindTooltip(area.name, { sticky: true, className: 'safety-tooltip' })
+    .addTo(safetyLayerGroup);
+});
+
+// ── Day data ──────────────────────────────────────────────────────────────
+const dayData = {
+  '8/20': {
+    color: '#60a5fa',
+    spots: [
+      { latlng: [33.9425,-118.4081], emoji: '✈️', name: 'LAX国際空港',        note: '12:50着 SQ12成田→LAX' },
+      { latlng: [34.0526,-118.2506], emoji: '🏨', name: 'Omni Los Angeles',    note: '15:00〜 8/20-23 3泊 ¥134,640' },
+      { latlng: [34.0509,-118.2491], emoji: '🍴', name: 'Grand Central Market', note: '16:30〜 初日夕食。タコス・ラーメン何でも揃う' },
+    ],
+    route: [
+      [33.9425,-118.4081],
+      [34.0526,-118.2506],
+      [34.0509,-118.2491],
+    ],
+  },
+  '8/21': {
+    color: '#34d399',
+    spots: [
+      { latlng: [34.0576,-118.2379], emoji: '🌮', name: 'Olvera Street',          note: '9:00〜 LAで最も古い歴史的通り。徒歩15分' },
+      { latlng: [34.0516,-118.2506], emoji: '🚡', name: 'Angels Flight',           note: '10:00〜 $1.50の世界最短ケーブルカー' },
+      { latlng: [34.0509,-118.2491], emoji: '🍴', name: 'Grand Central Market',    note: '10:30〜 ブランチ。名物タコス・クラフトビール' },
+      { latlng: [34.1016,-118.3296], emoji: '⭐', name: 'Hollywood Walk of Fame',  note: '13:00〜 無料。スター探し散策' },
+      { latlng: [34.1184,-118.3004], emoji: '🔭', name: 'Griffith Observatory',    note: '15:00〜 無料。夕景〜夜景が絶景。ハリウッドサイン一望' },
+    ],
+    route: [
+      [34.0526,-118.2506],
+      [34.0576,-118.2379],
+      [34.0516,-118.2506],
+      [34.0509,-118.2491],
+      [34.1016,-118.3296],
+      [34.1184,-118.3004],
+      [34.0526,-118.2506],
+    ],
+  },
+  '8/22': {
+    color: '#fbbf24',
+    spots: [
+      { latlng: [34.0083,-118.4988], emoji: '🌊', name: 'Santa Monica Pier', note: '10:00〜 ビーチ散歩・観覧車' },
+      { latlng: [33.9909,-118.4774], emoji: '🏄', name: 'Venice Beach',       note: '11:30〜 マッスルビーチ・スケートパーク。徒歩30分' },
+      { latlng: [34.0739,-118.2400], emoji: '⚾', name: 'Dodger Stadium',     note: '17:15〜 Pirates vs Dodgers 18:10 Section 127LG Row K' },
+    ],
+    route: [
+      [34.0526,-118.2506],
+      [34.0083,-118.4988],
+      [33.9909,-118.4774],
+      [34.0526,-118.2506],
+      [34.0739,-118.2400],
+    ],
+  },
+  '8/23': {
+    color: '#f87171',
+    spots: [
+      { latlng: [34.0526,-118.2506], emoji: '🚪', name: 'Omni チェックアウト',          note: '9:30 アナハイムへUberで約1時間' },
+      { latlng: [33.8117,-117.9123], emoji: '🏩', name: 'Hilton Garden Inn Anaheim', note: '11:00〜 8/23-25 2泊 ¥73,820' },
+      { latlng: [33.8121,-117.9190], emoji: '🏰', name: 'Disneyland Park',           note: '12:00〜 Lightning Lane事前購入必須！' },
+    ],
+    route: [
+      [34.0526,-118.2506],
+      [33.8117,-117.9123],
+      [33.8121,-117.9190],
+    ],
+  },
+  '8/24': {
+    color: '#c084fc',
+    spots: [
+      { latlng: [33.8062,-117.9199], emoji: '🎢', name: 'California Adventure', note: '8:00〜 開園同時入場！Radiator Springs Racers最優先' },
+    ],
+    route: [
+      [33.8117,-117.9123],
+      [33.8062,-117.9199],
+      [33.8117,-117.9123],
+    ],
+  },
+  '8/25': {
+    color: '#fb923c',
+    spots: [
+      { latlng: [33.8098,-117.9238], emoji: '🛍', name: 'Downtown Disney', note: '9:30〜 入場無料。お土産タイム' },
+      { latlng: [33.9425,-118.4081], emoji: '✈️', name: 'LAX国際空港',      note: '14:20発 SQ11→翌8/26 17:50成田着' },
+    ],
+    route: [
+      [33.8117,-117.9123],
+      [33.8098,-117.9238],
+      [33.9425,-118.4081],
+    ],
+  },
+};
+
+// ── Candidate spots ────────────────────────────────────────────────────────
+const candidates = [
+  { latlng: [34.0678,-118.4016], emoji: '💎', name: 'Rodeo Drive', note: '追加候補：グリフィス帰りUber15分。映画の世界観' },
+];
+
+// ── Create layer groups for each day ──────────────────────────────────────
+const dayLayerGroups = {};
+
+function makeDivIcon(emoji, color, isCandidate = false) {
+  const borderStyle = isCandidate
+    ? `border: 2px dashed #a78bfa;`
+    : `border: 2px solid rgba(255,255,255,0.9);`;
+  const bg = isCandidate ? 'rgba(167,139,250,0.2)' : color;
+  return L.divIcon({
+    className: '',
+    html: `<div style="
+      width:30px;height:30px;border-radius:50%;
+      background:${bg};
+      ${borderStyle}
+      display:flex;align-items:center;justify-content:center;
+      font-size:15px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.55);
+      cursor:pointer;
+    ">${emoji}</div>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -18],
+  });
+}
+
+Object.entries(dayData).forEach(([day, data]) => {
+  const group = L.layerGroup();
+
+  // Spots
+  data.spots.forEach(spot => {
+    const marker = L.marker(spot.latlng, { icon: makeDivIcon(spot.emoji, data.color) });
+    marker.bindPopup(
+      `<b>${spot.emoji} ${spot.name}</b>${spot.note}`,
+      { maxWidth: 260 }
+    );
+    group.addLayer(marker);
+  });
+
+  // Route polyline
+  if (data.route.length >= 2) {
+    const line = L.polyline(data.route, {
+      color: data.color,
+      dashArray: '8, 6',
+      weight: 3,
+      opacity: 0.85,
+    });
+    group.addLayer(line);
+  }
+
+  dayLayerGroups[day] = group;
+});
+
+// Candidate layer
+const candidateLayerGroup = L.layerGroup();
+candidates.forEach(c => {
+  const marker = L.marker(c.latlng, { icon: makeDivIcon(c.emoji, '#a78bfa', true) });
+  marker.bindPopup(`<b>${c.emoji} ${c.name}</b>${c.note}`, { maxWidth: 260 });
+  candidateLayerGroup.addLayer(marker);
+});
+
+// ── Tab logic ─────────────────────────────────────────────────────────────
+const DAY_COLORS = {
+  '8/20': '#60a5fa',
+  '8/21': '#34d399',
+  '8/22': '#fbbf24',
+  '8/23': '#f87171',
+  '8/24': '#c084fc',
+  '8/25': '#fb923c',
+};
+
+function showDay(day) {
+  // Remove all day layers
+  Object.values(dayLayerGroups).forEach(g => map.removeLayer(g));
+  map.removeLayer(candidateLayerGroup);
+
+  if (day === 'all') {
+    Object.values(dayLayerGroups).forEach(g => g.addTo(map));
+    candidateLayerGroup.addTo(map);
+  } else {
+    if (dayLayerGroups[day]) dayLayerGroups[day].addTo(map);
+    candidateLayerGroup.addTo(map);
+  }
+}
+
+// Initial: show all
+showDay('all');
+
+// Tab buttons
+const tabBtns = document.querySelectorAll('.tab-btn');
+tabBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabBtns.forEach(b => {
+      b.classList.remove('active');
+      b.style.borderBottomColor = 'transparent';
+    });
+    btn.classList.add('active');
+    const day = btn.dataset.day;
+    const color = day === 'all' ? '#93c5fd' : DAY_COLORS[day];
+    btn.style.borderBottomColor = color;
+    btn.style.color = color;
+    showDay(day);
+  });
+});
+
+// ── Tooltip style injection ───────────────────────────────────────────────
+const style = document.createElement('style');
+style.textContent = `
+  .safety-tooltip {
+    background: rgba(22,33,62,0.9);
+    border: 1px solid #334155;
+    color: #e2e8f0;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .safety-tooltip::before { display: none; }
+`;
+document.head.appendChild(style);
+</script>
+</body>
+</html>
