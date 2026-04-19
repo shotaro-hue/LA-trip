@@ -566,6 +566,7 @@ items:[
 const TABS = [
 { label:“📅 日程”,  id:“schedule” },
 { label:“🗺 地図”,  id:“map” },
+{ label:“🏰 Disney”, id:“disney” },
 { label:“🍴 グルメ”, id:“gourmet” },
 { label:“🛍 グッズ”, id:“goods” },
 { label:“💴 費用”,  id:“cost” },
@@ -655,6 +656,142 @@ return (
     {tab === "map" && (
       <div style={{ height:"100%", display:"flex", flexDirection:"column" }}>
         <MapView />
+      </div>
+    )}
+
+    {/* ── ディズニータブ ── */}
+    {tab === "disney" && (
+      <div>
+        {/* ヘッダー */}
+        <div style={{ background:"linear-gradient(135deg,#1c1030,#0d1117)", borderRadius:10, padding:"10px 14px", marginBottom:12, border:"1px solid #c084fc44" }}>
+          <div style={{ fontSize:12, color:"#c084fc", fontWeight:"bold" }}>🏰 Disney アトラクション ガイド</div>
+          <div style={{ fontSize:11, color:"#8b949e", marginTop:3 }}>8/23 Disneyland Park｜8/24 California Adventure</div>
+        </div>
+
+        {/* Lightning Lane説明バナー */}
+        <div style={{ background:"#161b22", borderRadius:10, padding:"10px 14px", marginBottom:12, border:"1px solid #fbbf2444" }}>
+          <div style={{ fontSize:12, fontWeight:"bold", color:"#fbbf24", marginBottom:6 }}>⚡ Lightning Lane の種類</div>
+          <div style={{ display:"flex", gap:6, flexWrap:"wrap" }}>
+            {[
+              { label:"Single Pass", color:"#ef4444", desc:"別途購入が必要な超人気アトラクション専用" },
+              { label:"Multi Pass ✅", color:"#34d399", desc:"購入済みのMulti Passで乗れる" },
+              { label:"対象外", color:"#475569", desc:"通常の待機列のみ" },
+            ].map((b,i) => (
+              <div key={i} style={{ background:`${b.color}18`, border:`1px solid ${b.color}44`, borderRadius:6, padding:"4px 8px", fontSize:10, color:b.color, fontWeight:"bold" }}>{b.label}</div>
+            ))}
+          </div>
+        </div>
+
+        {/* 8/23 Disneyland Park */}
+        {[
+          {
+            park:"🏰 8/23 Disneyland Park", parkColor:"#f87171",
+            note:"開園23:00まで。入園後すぐにLightning LaneをアプリでBookすること！",
+            tip:"最初のLL予約は Indiana Jones Adventure か Space Mountain がおすすめ",
+            attractions:[
+              { name:"Indiana Jones Adventure",          ll:"multi",  priority:"🔥 最優先", note:"序盤に予約。窓が早く埋まる" },
+              { name:"Space Mountain",                   ll:"multi",  priority:"🔥 最優先", note:"早めに予約。深夜が最高" },
+              { name:"Tiana's Bayou Adventure",          ll:"multi",  priority:"⭐ 優先",   note:"新アトラクション。濡れるので注意" },
+              { name:"Star Wars: Rise of the Resistance",ll:"single", priority:"⭐ 優先",   note:"Single Pass別途購入（$15〜35）" },
+              { name:"Matterhorn Bobsleds",              ll:"multi",  priority:"◎ 余裕あれば", note:"" },
+              { name:"Big Thunder Mountain Railroad",    ll:"multi",  priority:"◎ 余裕あれば", note:"" },
+              { name:"Mickey & Minnie's Runaway Railway",ll:"multi",  priority:"◎ 余裕あれば", note:"" },
+              { name:"Millennium Falcon: Smugglers Run", ll:"multi",  priority:"◎ 余裕あれば", note:"" },
+              { name:"Haunted Mansion",                  ll:"multi",  priority:"△ 低優先",  note:"待機列が動くことが多い" },
+              { name:"Buzz Lightyear Astro Blasters",   ll:"multi",  priority:"△ 低優先",  note:"" },
+              { name:"Roger Rabbit's Car Toon Spin",    ll:"multi",  priority:"△ 低優先",  note:"" },
+              { name:"Star Tours",                      ll:"multi",  priority:"△ 低優先",  note:"" },
+              { name:"It's a Small World",              ll:"multi",  priority:"△ 低優先",  note:"" },
+              { name:"Autopia",                         ll:"multi",  priority:"△ 低優先",  note:"" },
+              { name:"Pirates of the Caribbean",        ll:"none",   priority:"",          note:"待機列のみ" },
+              { name:"Peter Pan's Flight",              ll:"none",   priority:"",          note:"待機列のみ" },
+              { name:"Finding Nemo Submarine Voyage",   ll:"none",   priority:"",          note:"待機列のみ" },
+            ],
+          },
+          {
+            park:"🎢 8/24 California Adventure", parkColor:"#c084fc",
+            note:"開園8:00（予定）。開園と同時入場が鉄則！Radiator Springs Racersを最優先で！",
+            tip:"入園直後：Radiator Springs Racers の Single Pass を即購入→ WEB SLINGERS の Multi Pass を予約",
+            attractions:[
+              { name:"Radiator Springs Racers",                  ll:"single", priority:"🔥 最優先", note:"Single Pass別途購入（$15〜35）。入園直後に即購入！" },
+              { name:"Guardians of the Galaxy – Mission: BREAKOUT!", ll:"multi", priority:"🔥 最優先", note:"早めに予約。窓が埋まりやすい" },
+              { name:"WEB SLINGERS: A Spider-Man Adventure",     ll:"multi",  priority:"⭐ 優先",   note:"入園後すぐに予約" },
+              { name:"Toy Story Midway Mania!",                  ll:"multi",  priority:"⭐ 優先",   note:"午後に窓が遅くなりがち" },
+              { name:"Incredicoaster",                           ll:"multi",  priority:"◎ 余裕あれば", note:"夕暮れ時に乗ると最高" },
+              { name:"Soarin' Around the World",                 ll:"multi",  priority:"◎ 余裕あれば", note:"" },
+              { name:"Grizzly River Run",                        ll:"multi",  priority:"◎ 余裕あれば", note:"濡れるので早めに乗る" },
+              { name:"Goofy's Sky School",                       ll:"multi",  priority:"△ 低優先",  note:"" },
+              { name:"The Little Mermaid – Ariel's Undersea Adventure", ll:"multi", priority:"△ 低優先", note:"" },
+              { name:"Monsters, Inc. Mike & Sulley to the Rescue!", ll:"multi", priority:"△ 低優先", note:"" },
+              { name:"Mater's Junkyard Jamboree",                ll:"none",   priority:"",          note:"待機列のみ" },
+              { name:"Luigi's Rollickin' Roadsters",             ll:"none",   priority:"",          note:"待機列のみ" },
+            ],
+          }
+        ].map((park, pi) => (
+          <div key={pi} style={{ marginBottom:20 }}>
+            {/* パークヘッダー */}
+            <div style={{ background:`${park.parkColor}18`, border:`1px solid ${park.parkColor}44`, borderRadius:10, padding:"10px 14px", marginBottom:8 }}>
+              <div style={{ fontSize:13, fontWeight:"bold", color:park.parkColor, marginBottom:4 }}>{park.park}</div>
+              <div style={{ fontSize:11, color:"#8b949e", marginBottom:6, lineHeight:1.5 }}>{park.note}</div>
+              <div style={{ fontSize:11, color:"#fbbf24", background:"rgba(251,191,36,0.1)", borderRadius:6, padding:"5px 8px" }}>
+                💡 {park.tip}
+              </div>
+            </div>
+
+            {/* アトラクション一覧 */}
+            {park.attractions.map((a, ai) => {
+              const llConfig = {
+                single: { label:"Single Pass", color:"#ef4444", bg:"rgba(239,68,68,0.12)" },
+                multi:  { label:"Multi Pass ✅", color:"#34d399", bg:"rgba(52,211,153,0.1)" },
+                none:   { label:"対象外", color:"#475569", bg:"rgba(71,85,105,0.1)" },
+              }[a.ll];
+              return (
+                <div key={ai} style={{
+                  background:"#161b22", borderRadius:8, padding:"9px 12px", marginBottom:6,
+                  border:`1px solid ${a.ll==="single"?"#ef444433":a.ll==="multi"?"#34d39922":"#21262d"}`,
+                  display:"flex", alignItems:"center", gap:10
+                }}>
+                  {/* LL badge */}
+                  <div style={{ background:llConfig.bg, border:`1px solid ${llConfig.color}44`, borderRadius:5, padding:"2px 7px", fontSize:10, color:llConfig.color, fontWeight:"bold", flexShrink:0, minWidth:80, textAlign:"center" }}>
+                    {llConfig.label}
+                  </div>
+                  {/* Name + note */}
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontSize:12, fontWeight:"bold", color:"#e6edf3" }}>{a.name}</div>
+                    {(a.priority || a.note) && (
+                      <div style={{ fontSize:10, color:"#8b949e", marginTop:2 }}>
+                        {a.priority && <span style={{ color: a.priority.startsWith("🔥")?"#ef4444":a.priority.startsWith("⭐")?"#fbbf24":"#8b949e" }}>{a.priority}</span>}
+                        {a.priority && a.note && " · "}
+                        {a.note}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+
+        {/* 公式確認ボタン */}
+        <div style={{ background:"#161b22", borderRadius:10, padding:"12px 14px", border:"1px solid #30363d", marginTop:4 }}>
+          <div style={{ fontSize:12, fontWeight:"bold", color:"#8b949e", marginBottom:10 }}>🔗 公式サイトで最新情報を確認</div>
+          {[
+            { label:"⚡ Lightning Lane 公式ページ", url:"https://disneyland.disney.go.com/lightning-lane-passes/", color:"#fbbf24" },
+            { label:"🏰 Disneyland Park アトラクション一覧", url:"https://disneyland.disney.go.com/destinations/disneyland/attractions/", color:"#f87171" },
+            { label:"🎢 California Adventure アトラクション一覧", url:"https://disneyland.disney.go.com/destinations/disney-california-adventure/attractions/", color:"#c084fc" },
+            { label:"📱 Disneylandアプリ（iOS）", url:"https://apps.apple.com/jp/app/disneyland/id1022164656", color:"#60a5fa" },
+          ].map((link, i) => (
+            <a key={i} href={link.url} target="_blank" rel="noopener noreferrer" style={{
+              display:"flex", alignItems:"center", justifyContent:"space-between",
+              padding:"9px 12px", marginBottom:6, borderRadius:8,
+              background:`${link.color}12`, border:`1px solid ${link.color}44`,
+              textDecoration:"none"
+            }}>
+              <span style={{ fontSize:12, color:link.color, fontWeight:"bold" }}>{link.label}</span>
+              <span style={{ fontSize:12, color:link.color }}>→</span>
+            </a>
+          ))}
+        </div>
       </div>
     )}
 
