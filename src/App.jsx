@@ -701,23 +701,23 @@ return (
                 note:"開園23:00まで。入園後すぐにLightning LaneをアプリでBookすること！",
                 tip:"最初のLL予約は Indiana Jones Adventure か Space Mountain がおすすめ",
                 attractions:[
-                  { name:"Indiana Jones Adventure",          ll:"multi",  priority:"🔥 最優先", note:"序盤に予約。窓が早く埋まる" },
-                  { name:"Space Mountain",                   ll:"multi",  priority:"🔥 最優先", note:"早めに予約。深夜が最高" },
-                  { name:"Tiana's Bayou Adventure",          ll:"multi",  priority:"⭐ 優先",   note:"新アトラクション。濡れるので注意" },
-                  { name:"Star Wars: Rise of the Resistance",ll:"single", priority:"⭐ 優先",   note:"Single Pass別途購入（$15〜35）" },
-                  { name:"Matterhorn Bobsleds",              ll:"multi",  priority:"◎ 余裕あれば", note:"" },
-                  { name:"Big Thunder Mountain Railroad",    ll:"multi",  priority:"◎ 余裕あれば", note:"" },
-                  { name:"Mickey & Minnie's Runaway Railway",ll:"multi",  priority:"◎ 余裕あれば", note:"" },
-                  { name:"Millennium Falcon: Smugglers Run", ll:"multi",  priority:"◎ 余裕あれば", note:"" },
-                  { name:"Haunted Mansion",                  ll:"multi",  priority:"△ 低優先",  note:"待機列が動くことが多い" },
-                  { name:"Buzz Lightyear Astro Blasters",   ll:"multi",  priority:"△ 低優先",  note:"" },
-                  { name:"Roger Rabbit's Car Toon Spin",    ll:"multi",  priority:"△ 低優先",  note:"" },
-                  { name:"Star Tours",                      ll:"multi",  priority:"△ 低優先",  note:"" },
-                  { name:"It's a Small World",              ll:"multi",  priority:"△ 低優先",  note:"" },
-                  { name:"Autopia",                         ll:"multi",  priority:"△ 低優先",  note:"" },
-                  { name:"Pirates of the Caribbean",        ll:"none",   priority:"",          note:"待機列のみ" },
-                  { name:"Peter Pan's Flight",              ll:"none",   priority:"",          note:"待機列のみ" },
-                  { name:"Finding Nemo Submarine Voyage",   ll:"none",   priority:"",          note:"待機列のみ" },
+                  { name:"Indiana Jones Adventure",          ll:"multi",  priority:"🔥 最優先", note:"序盤に予約。窓が早く埋まる",           rating:5 },
+                  { name:"Space Mountain",                   ll:"multi",  priority:"🔥 最優先", note:"早めに予約。深夜が最高",               rating:5 },
+                  { name:"Star Wars: Rise of the Resistance",ll:"single", priority:"⭐ 優先",   note:"Single Pass別途購入（$15〜35）",       rating:5 },
+                  { name:"Pirates of the Caribbean",        ll:"none",   priority:"",          note:"待機列のみ。ディズニー伝統の名作",       rating:5 },
+                  { name:"Haunted Mansion",                  ll:"multi",  priority:"△ 低優先",  note:"待機列が動くことが多い。雰囲気抜群",    rating:4 },
+                  { name:"Tiana's Bayou Adventure",          ll:"multi",  priority:"⭐ 優先",   note:"新アトラクション。濡れるので注意",       rating:4 },
+                  { name:"Matterhorn Bobsleds",              ll:"multi",  priority:"◎ 余裕あれば", note:"ディズニー最古のローラーコースター",  rating:4 },
+                  { name:"Big Thunder Mountain Railroad",    ll:"multi",  priority:"◎ 余裕あれば", note:"ファミリー向け定番。スリルと楽しさのバランス◎", rating:4 },
+                  { name:"Mickey & Minnie's Runaway Railway",ll:"multi",  priority:"◎ 余裕あれば", note:"トラックレス最新技術。映像と動きが連動", rating:4 },
+                  { name:"Millennium Falcon: Smugglers Run", ll:"multi",  priority:"◎ 余裕あれば", note:"操縦体験型。SW好きなら必乗",           rating:4 },
+                  { name:"Peter Pan's Flight",              ll:"none",   priority:"",          note:"待機列のみ。幻想的だが列が長い",         rating:4 },
+                  { name:"Buzz Lightyear Astro Blasters",   ll:"multi",  priority:"△ 低優先",  note:"シューティング系。スコアを競えて楽しい", rating:3 },
+                  { name:"Roger Rabbit's Car Toon Spin",    ll:"multi",  priority:"△ 低優先",  note:"",                                     rating:3 },
+                  { name:"Star Tours",                      ll:"multi",  priority:"△ 低優先",  note:"SWファンにはおすすめ。毎回ルート変化",  rating:3 },
+                  { name:"It's a Small World",              ll:"multi",  priority:"△ 低優先",  note:"ディズニー定番。ゆったり観光に",        rating:3 },
+                  { name:"Finding Nemo Submarine Voyage",   ll:"none",   priority:"",          note:"待機列のみ。子供向け",                  rating:3 },
+                  { name:"Autopia",                         ll:"multi",  priority:"△ 低優先",  note:"ミニカー体験。スリルはなし",            rating:2 },
                 ],
               },
               {
@@ -725,18 +725,18 @@ return (
                 note:"開園8:00（予定）。開園と同時入場が鉄則！Radiator Springs Racersを最優先で！",
                 tip:"入園直後：Radiator Springs Racers の Single Pass を即購入→ WEB SLINGERS の Multi Pass を予約",
                 attractions:[
-                  { name:"Radiator Springs Racers",                  ll:"single", priority:"🔥 最優先", note:"Single Pass別途購入（$15〜35）。入園直後に即購入！" },
-                  { name:"Guardians of the Galaxy – Mission: BREAKOUT!", ll:"multi", priority:"🔥 最優先", note:"早めに予約。窓が埋まりやすい" },
-                  { name:"WEB SLINGERS: A Spider-Man Adventure",     ll:"multi",  priority:"⭐ 優先",   note:"入園後すぐに予約" },
-                  { name:"Toy Story Midway Mania!",                  ll:"multi",  priority:"⭐ 優先",   note:"午後に窓が遅くなりがち" },
-                  { name:"Incredicoaster",                           ll:"multi",  priority:"◎ 余裕あれば", note:"夕暮れ時に乗ると最高" },
-                  { name:"Soarin' Around the World",                 ll:"multi",  priority:"◎ 余裕あれば", note:"" },
-                  { name:"Grizzly River Run",                        ll:"multi",  priority:"◎ 余裕あれば", note:"濡れるので早めに乗る" },
-                  { name:"Goofy's Sky School",                       ll:"multi",  priority:"△ 低優先",  note:"" },
-                  { name:"The Little Mermaid – Ariel's Undersea Adventure", ll:"multi", priority:"△ 低優先", note:"" },
-                  { name:"Monsters, Inc. Mike & Sulley to the Rescue!", ll:"multi", priority:"△ 低優先", note:"" },
-                  { name:"Mater's Junkyard Jamboree",                ll:"none",   priority:"",          note:"待機列のみ" },
-                  { name:"Luigi's Rollickin' Roadsters",             ll:"none",   priority:"",          note:"待機列のみ" },
+                  { name:"Radiator Springs Racers",                  ll:"single", priority:"🔥 最優先", note:"Single Pass別途購入（$15〜35）。入園直後に即購入！", rating:5 },
+                  { name:"Guardians of the Galaxy – Mission: BREAKOUT!", ll:"multi", priority:"🔥 最優先", note:"早めに予約。窓が埋まりやすい",              rating:5 },
+                  { name:"Soarin' Around the World",                 ll:"multi",  priority:"◎ 余裕あれば", note:"映像・風・香りが融合した没入体験。絶景",   rating:5 },
+                  { name:"WEB SLINGERS: A Spider-Man Adventure",     ll:"multi",  priority:"⭐ 優先",   note:"入園後すぐに予約。インタラクティブ体験◎",   rating:4 },
+                  { name:"Toy Story Midway Mania!",                  ll:"multi",  priority:"⭐ 優先",   note:"午後に窓が遅くなりがち。スコア対決が白熱",  rating:4 },
+                  { name:"Incredicoaster",                           ll:"multi",  priority:"◎ 余裕あれば", note:"夕暮れ時に乗ると最高。DCA唯一のコースター", rating:4 },
+                  { name:"Grizzly River Run",                        ll:"multi",  priority:"◎ 余裕あれば", note:"濡れるので早めに乗る。夏は最高に気持ちいい", rating:3 },
+                  { name:"Mater's Junkyard Jamboree",                ll:"none",   priority:"",          note:"待機列のみ。子供に大人気",                  rating:3 },
+                  { name:"Goofy's Sky School",                       ll:"multi",  priority:"△ 低優先",  note:"コースター初心者・子供向け",                rating:3 },
+                  { name:"The Little Mermaid – Ariel's Undersea Adventure", ll:"multi", priority:"△ 低優先", note:"ゆったり系。ファミリー向け",         rating:3 },
+                  { name:"Monsters, Inc. Mike & Sulley to the Rescue!", ll:"multi", priority:"△ 低優先", note:"子供向けの優しいライド",                  rating:3 },
+                  { name:"Luigi's Rollickin' Roadsters",             ll:"none",   priority:"",          note:"待機列のみ。キャラ好きなら",               rating:3 },
                 ],
               }
             ].map((park, pi) => (
@@ -754,6 +754,16 @@ return (
                     multi:  { label:"Multi Pass ✅", color:"#34d399", bg:"rgba(52,211,153,0.1)" },
                     none:   { label:"通常待機のみ", color:"#6b7280", bg:"rgba(107,114,128,0.1)" },
                   };
+                  const renderStars = (rating) => {
+                    if (!rating) return null;
+                    return (
+                      <span style={{ fontSize:11, letterSpacing:1 }}>
+                        {[1,2,3,4,5].map(i => (
+                          <span key={i} style={{ color: i <= rating ? "#fbbf24" : "#374151" }}>★</span>
+                        ))}
+                      </span>
+                    );
+                  };
                   const renderAttraction = (a, key) => {
                     const llConfig = llMap[a.ll];
                     return (
@@ -766,7 +776,10 @@ return (
                           {llConfig.label}
                         </div>
                         <div style={{ flex:1, minWidth:0 }}>
-                          <div style={{ fontSize:12, fontWeight:"bold", color: a.ll==="none" ? "#8b949e" : "#e6edf3" }}>{a.name}</div>
+                          <div style={{ display:"flex", alignItems:"center", gap:6, flexWrap:"wrap" }}>
+                            <span style={{ fontSize:12, fontWeight:"bold", color: a.ll==="none" ? "#8b949e" : "#e6edf3" }}>{a.name}</span>
+                            {renderStars(a.rating)}
+                          </div>
                           {(a.priority || a.note) && (
                             <div style={{ fontSize:10, color:"#8b949e", marginTop:2 }}>
                               {a.priority && <span style={{ color: a.priority.startsWith("🔥")?"#ef4444":a.priority.startsWith("⭐")?"#fbbf24":"#8b949e" }}>{a.priority}</span>}
