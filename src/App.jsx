@@ -582,7 +582,7 @@ return (
   {/* Header */}
   <div style={{ background:"linear-gradient(135deg,#1c2e4a 0%,#0d1117 100%)", padding:"14px 16px 10px", borderBottom:"1px solid #21262d", flexShrink:0 }}>
     <div style={{ fontSize:18, fontWeight:"bold", background:"linear-gradient(90deg,#60a5fa,#c084fc,#fb923c)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
-      🌴 LA旅行しおり 2025
+      🌴 LA旅行しおり 2026
     </div>
     <div style={{ fontSize:11, color:"#8b949e", marginTop:2 }}>8/20（水）〜 8/25（火）｜2名｜SQ プレエコ</div>
   </div>
