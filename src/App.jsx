@@ -70,16 +70,24 @@ schedule:[
 ];
 
 const TODOS = [
-{ done:false, urgent:true,  text:"ESTA申請（米国入国に必須・渡航72時間前までに）", url:"https://esta.cbp.dhs.gov/" },
-{ done:false, urgent:true,  text:"The Broad 入場予約（無料・要事前予約）",          url:"https://www.thebroad.org/" },
-{ done:true,  urgent:false, text:"ディズニーチケット購入（公式アプリ）",            url:"https://disneyland.disney.go.com/" },
-{ done:true,  urgent:false, text:"Lightning Lane パス購入（公式ディズニーアプリ）", url:"https://disneyland.disney.go.com/" },
-{ done:true,  urgent:false, text:"ドジャース プリゲームツアー購入（15:00〜）",      url:"https://www.mlb.com/dodgers/ballpark/tours" },
-{ done:false, urgent:false, text:"旅行保険（クレカ付帯保険の補償内容確認）",        url:"" },
-{ done:true,  urgent:false, text:"SQ フライト予約（往復プレエコ）",                url:"" },
-{ done:true,  urgent:false, text:"Omni LA 予約（8/20-23 ¥134,640）",             url:"" },
-{ done:true,  urgent:false, text:"Hilton GI Anaheim 予約（8/23-25 ¥73,820）",   url:"" },
-{ done:true,  urgent:false, text:"ドジャース観戦チケット購入（Section 127LG Row K）", url:"" },
+{ done:false, urgent:true,  text:"ESTA申請（米国入国に必須・渡航72時間前までに）", url:"https://esta.cbp.dhs.gov/", assignee:"👤 Aki", due:"8/17", notify:"72時間前" },
+{ done:false, urgent:true,  text:"The Broad 入場予約（無料・要事前予約）",          url:"https://www.thebroad.org/", assignee:"👤 Ken", due:"8/10", notify:"1週間前" },
+{ done:true,  urgent:false, text:"ディズニーチケット購入（公式アプリ）",            url:"https://disneyland.disney.go.com/", assignee:"👤 Ken", due:"8/05", notify:"購入後共有" },
+{ done:true,  urgent:false, text:"Lightning Lane パス購入（公式ディズニーアプリ）", url:"https://disneyland.disney.go.com/", assignee:"👤 Ken", due:"8/16", notify:"前日" },
+{ done:true,  urgent:false, text:"ドジャース プリゲームツアー購入（15:00〜）",      url:"https://www.mlb.com/dodgers/ballpark/tours", assignee:"👤 Ken", due:"8/08", notify:"購入後共有" },
+{ done:false, urgent:false, text:"旅行保険（クレカ付帯保険の補償内容確認）",        url:"", assignee:"👤 Aki", due:"8/14", notify:"3日前" },
+{ done:true,  urgent:false, text:"SQ フライト予約（往復プレエコ）",                url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
+{ done:true,  urgent:false, text:"Omni LA 予約（8/20-23 ¥134,640）",             url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
+{ done:true,  urgent:false, text:"Hilton GI Anaheim 予約（8/23-25 ¥73,820）",   url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
+{ done:true,  urgent:false, text:"ドジャース観戦チケット購入（Section 127LG Row K）", url:"", assignee:"👤 Ken", due:"完了", notify:"完了" },
+];
+
+const RESERVATIONS = [
+{ label:"SQ 往路", value:"SQ12 / 8-20 12:50 LAX着" },
+{ label:"SQ 復路", value:"SQ11 / 8-25 14:20 LAX発" },
+{ label:"Omni LA", value:"8/20-8/23・予約確認番号: OMLA-8242" },
+{ label:"Hilton GI", value:"8/23-8/25・予約確認番号: HGI-2391" },
+{ label:"Dodgers", value:"Sec127LG RowK Seat3-4" },
 ];
 
 const COSTS = [
@@ -573,8 +581,19 @@ const [tab, setTab]       = useState("schedule");
 const [openDay, setOpenDay] = useState(null);
 const [todos, setTodos]   = useState(TODOS);
 const [disneySubTab, setDisneySubTab] = useState("ll");
+const [tripMode, setTripMode] = useState("before");
+const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
+const [assigneeFilter, setAssigneeFilter] = useState("all");
 
 const undoneUrgent = todos.filter(t => !t.done && t.urgent).length;
+const upcomingAction = DAYS[0]?.schedule?.[0];
+const nextTodo = todos.find(t => !t.done);
+const assignees = ["all", ...new Set(todos.map(t => t.assignee))];
+const visibleTodos = todos.filter(t => {
+  if (showIncompleteOnly && t.done) return false;
+  if (assigneeFilter !== "all" && t.assignee !== assigneeFilter) return false;
+  return true;
+});
 
 return (
 <div style={{ fontFamily:"-apple-system,'Hiragino Sans','Yu Gothic',sans-serif", background:"#0d1117", height:"100vh", color:"#e6edf3", display:"flex", flexDirection:"column", maxWidth:540, margin:"0 auto" }}>
@@ -585,6 +604,25 @@ return (
       🌴 LA旅行しおり 2026
     </div>
     <div style={{ fontSize:11, color:"#8b949e", marginTop:2 }}>8/20（水）〜 8/25（火）｜2名｜SQ プレエコ</div>
+    <div style={{ display:"flex", gap:6, marginTop:8 }}>
+      {[
+        { id:"before", label:"旅行前モード" },
+        { id:"during", label:"旅行中モード" },
+      ].map(mode => (
+        <button
+          key={mode.id}
+          onClick={() => setTripMode(mode.id)}
+          style={{
+            borderRadius:999, border:"1px solid #30363d", padding:"4px 10px",
+            background: tripMode===mode.id ? "#60a5fa22" : "#161b22",
+            color: tripMode===mode.id ? "#60a5fa" : "#8b949e",
+            fontSize:10, fontWeight:700, fontFamily:"inherit", cursor:"pointer"
+          }}
+        >
+          {mode.label}
+        </button>
+      ))}
+    </div>
   </div>
 
   {/* Tab bar */}
@@ -608,6 +646,19 @@ return (
 
   {/* Content */}
   <div style={{ flex:1, minHeight:0, overflowY: tab==="map" ? "hidden" : "auto", padding: tab==="map" ? 0 : "12px 14px 32px" }}>
+    {tab === "schedule" && (
+      <div style={{ background:"#161b22", borderRadius:10, border:"1px solid #21262d", padding:"10px 12px", marginBottom:12 }}>
+        <div style={{ fontSize:11, color:"#8b949e", marginBottom:6 }}>🧭 次アクション</div>
+        <div style={{ fontSize:13, color:"#e6edf3", fontWeight:"bold", marginBottom:4 }}>
+          {tripMode==="before" ? `✅ 準備: ${nextTodo?.text || "未完了タスクなし"}` : `⏱ 次の予定: ${upcomingAction?.time} ${upcomingAction?.title}`}
+        </div>
+        <div style={{ fontSize:11, color:"#60a5fa" }}>
+          {tripMode==="before"
+            ? `担当 ${nextTodo?.assignee || "-"}｜期限 ${nextTodo?.due || "-"}`
+            : "移動開始の目安は予定時刻の30分前"}
+        </div>
+      </div>
+    )}
 
     {/* ── 日程タブ ── */}
     {tab === "schedule" && (
@@ -1187,16 +1238,53 @@ return (
     {/* ── ToDo タブ ── */}
     {tab === "todo" && (
       <div>
+        <div style={{ background:"#161b22", borderRadius:10, border:"1px solid #21262d", padding:"10px 12px", marginBottom:10 }}>
+          <div style={{ fontSize:12, color:"#8b949e", fontWeight:"bold", marginBottom:8 }}>🎫 予約・証跡（タップでコピー）</div>
+          {RESERVATIONS.map((r, i) => (
+            <button
+              key={i}
+              onClick={() => navigator.clipboard?.writeText(r.value)}
+              style={{
+                width:"100%", textAlign:"left", marginBottom:6, background:"#0d1117", color:"#e6edf3",
+                border:"1px solid #30363d", borderRadius:8, padding:"8px 10px", cursor:"pointer", fontFamily:"inherit"
+              }}
+            >
+              <div style={{ fontSize:10, color:"#8b949e" }}>{r.label}</div>
+              <div style={{ fontSize:12 }}>{r.value}</div>
+            </button>
+          ))}
+        </div>
+
+        <div style={{ display:"flex", gap:8, marginBottom:10, flexWrap:"wrap" }}>
+          <button onClick={() => setShowIncompleteOnly(v => !v)} style={{
+            border:"1px solid #30363d", borderRadius:999, padding:"5px 10px", fontSize:11,
+            background:showIncompleteOnly ? "#34d39922" : "#161b22", color:showIncompleteOnly ? "#34d399" : "#8b949e",
+            fontFamily:"inherit", cursor:"pointer"
+          }}>
+            未完了のみ {showIncompleteOnly ? "ON" : "OFF"}
+          </button>
+          {assignees.map(a => (
+            <button key={a} onClick={() => setAssigneeFilter(a)} style={{
+              border:"1px solid #30363d", borderRadius:999, padding:"5px 10px", fontSize:11,
+              background:assigneeFilter===a ? "#60a5fa22" : "#161b22", color:assigneeFilter===a ? "#60a5fa" : "#8b949e",
+              fontFamily:"inherit", cursor:"pointer"
+            }}>
+              {a==="all" ? "全員" : a}
+            </button>
+          ))}
+        </div>
+
         {undoneUrgent > 0 && (
           <div style={{ background:"#1c1010", borderRadius:10, padding:"10px 14px", marginBottom:12, border:"1px solid #ef444466" }}>
             <div style={{ fontSize:13, color:"#ef4444", fontWeight:"bold" }}>🔴 急ぎのToDo が {undoneUrgent} 件残っています</div>
             <div style={{ fontSize:11, color:"#8b949e", marginTop:3 }}>The Broad・ディズニーは8月ピーク前に早急に予約を！</div>
           </div>
         )}
-        {todos.map((t, i) => (
+        {visibleTodos.map((t, i) => (
           <div key={i} onClick={() => {
+            const targetIndex = todos.findIndex(todo => todo.text === t.text);
             const next = [...todos];
-            next[i] = { ...next[i], done: !next[i].done };
+            next[targetIndex] = { ...next[targetIndex], done: !next[targetIndex].done };
             setTodos(next);
           }} style={{
             background:"#161b22", borderRadius:10, padding:"11px 14px", marginBottom:8,
@@ -1209,6 +1297,11 @@ return (
             <div style={{ flex:1 }}>
               <div style={{ fontSize:13, color: t.done ? "#8b949e" : "#e6edf3", textDecoration: t.done ? "line-through" : "none" }}>
                 {t.text}
+              </div>
+              <div style={{ display:"flex", gap:6, marginTop:5, flexWrap:"wrap" }}>
+                <span style={{ fontSize:10, padding:"2px 6px", borderRadius:4, background:"#21262d", color:"#8b949e" }}>{t.assignee}</span>
+                <span style={{ fontSize:10, padding:"2px 6px", borderRadius:4, background:"#60a5fa22", color:"#60a5fa" }}>期限 {t.due}</span>
+                <span style={{ fontSize:10, padding:"2px 6px", borderRadius:4, background:"#fbbf2422", color:"#fbbf24" }}>通知 {t.notify}</span>
               </div>
               {t.url && !t.done && (
                 <div style={{ fontSize:11, color:"#60a5fa", marginTop:3 }}>🔗 {t.url}</div>
