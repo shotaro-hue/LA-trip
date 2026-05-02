@@ -1,6 +1,34 @@
 import { useState, useEffect, useRef } from "react";
 
 // ─────────────────────────────────────────────────────────
+// DESIGN TOKENS
+//   呼吸する余白: 8 / 14 / 18 の 3 段スペーシング
+//   階層を整える: 3 層のサイズスケール（score / sub / meta）
+// ─────────────────────────────────────────────────────────
+const SP = { xs: 8, sm: 14, md: 18 };
+const FS = {
+  score:    28, // L1: 一瞬で目に入る数字（順位や勝率のような主役）
+  scoreSm:  22, // L1（やや控えめ）
+  title:    15, // L2: 見出し・状況
+  body:     13, // L2: 本文
+  meta:     11, // L3: 補足・メタ情報
+  micro:    10, // L3（最小）
+};
+const C = {
+  bg:      "#0d1117",
+  surface: "#161b22",
+  border:  "#21262d",
+  borderHi:"#30363d",
+  text:    "#e6edf3",
+  muted:   "#8b949e",
+  accent:  "#60a5fa",
+  ok:      "#34d399",
+  warn:    "#fbbf24",
+  danger:  "#ef4444",
+  purple:  "#c084fc",
+};
+
+// ─────────────────────────────────────────────────────────
 // DATA
 // ─────────────────────────────────────────────────────────
 const DAYS = [
@@ -586,6 +614,10 @@ const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
 const [assigneeFilter, setAssigneeFilter] = useState("all");
 
 const undoneUrgent = todos.filter(t => !t.done && t.urgent).length;
+const undoneTotal  = todos.filter(t => !t.done).length;
+const doneCount    = todos.filter(t => t.done).length;
+const completionPct = Math.round((doneCount / todos.length) * 100);
+const urgentTodos   = todos.filter(t => !t.done && t.urgent);
 const upcomingAction = DAYS[0]?.schedule?.[0];
 const nextTodo = todos.find(t => !t.done);
 const assignees = ["all", ...new Set(todos.map(t => t.assignee))];
@@ -595,98 +627,222 @@ const visibleTodos = todos.filter(t => {
   return true;
 });
 
+// 出発日 8/20 までのカウントダウン（年は環境依存のため当日 0 を保証）
+const departure = new Date("2026-08-20T00:00:00+09:00");
+const today = new Date();
+const daysToGo = Math.max(0, Math.ceil((departure - today) / 86400000));
+const tripPhase = daysToGo > 0 ? "出発前" : (daysToGo === 0 ? "出発当日" : "旅行中");
+
 return (
 <div style={{ fontFamily:"-apple-system,'Hiragino Sans','Yu Gothic',sans-serif", background:"#0d1117", height:"100vh", color:"#e6edf3", display:"flex", flexDirection:"column", maxWidth:540, margin:"0 auto" }}>
 
-  {/* Header */}
-  <div style={{ background:"linear-gradient(135deg,#1c2e4a 0%,#0d1117 100%)", padding:"14px 16px 10px", borderBottom:"1px solid #21262d", flexShrink:0 }}>
-    <div style={{ fontSize:18, fontWeight:"bold", background:"linear-gradient(90deg,#60a5fa,#c084fc,#fb923c)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
-      🌴 LA旅行しおり 2026
-    </div>
-    <div style={{ fontSize:11, color:"#8b949e", marginTop:2 }}>8/20（水）〜 8/25（火）｜2名｜SQ プレエコ</div>
-    <div style={{ display:"flex", gap:6, marginTop:8 }}>
-      {[
-        { id:"before", label:"旅行前モード" },
-        { id:"during", label:"旅行中モード" },
-      ].map(mode => (
-        <button
-          key={mode.id}
-          onClick={() => setTripMode(mode.id)}
-          style={{
-            borderRadius:999, border:"1px solid #30363d", padding:"4px 10px",
-            background: tripMode===mode.id ? "#60a5fa22" : "#161b22",
-            color: tripMode===mode.id ? "#60a5fa" : "#8b949e",
-            fontSize:10, fontWeight:700, fontFamily:"inherit", cursor:"pointer"
-          }}
-        >
-          {mode.label}
-        </button>
-      ))}
+  {/* Header — 3層階層: タイトル(L3) / カウントダウン(L1=score) / メタ(L3) */}
+  <div style={{ background:"linear-gradient(135deg,#1c2e4a 0%,#0d1117 100%)", padding:`${SP.sm}px ${SP.md}px ${SP.sm}px`, borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
+    <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", gap:SP.sm }}>
+      <div style={{ minWidth:0 }}>
+        <div style={{ fontSize:FS.meta, color:C.muted, letterSpacing:1, fontWeight:700 }}>🌴 LA TRIP 2026</div>
+        <div style={{ display:"flex", alignItems:"baseline", gap:SP.xs, marginTop:2 }}>
+          <span style={{ fontSize:FS.score, fontWeight:800, lineHeight:1, background:"linear-gradient(90deg,#60a5fa,#c084fc,#fb923c)", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+            {daysToGo}
+          </span>
+          <span style={{ fontSize:FS.body, color:C.muted, fontWeight:700 }}>日</span>
+          <span style={{ fontSize:FS.meta, color:C.muted, marginLeft:SP.xs }}>{tripPhase}</span>
+        </div>
+        <div style={{ fontSize:FS.meta, color:C.muted, marginTop:2 }}>8/20（水）〜 8/25（火）｜2名｜SQ プレエコ</div>
+      </div>
+      <div style={{ display:"flex", flexDirection:"column", gap:6, alignItems:"flex-end", flexShrink:0 }}>
+        {[
+          { id:"before", label:"旅行前" },
+          { id:"during", label:"旅行中" },
+        ].map(mode => (
+          <button
+            key={mode.id}
+            onClick={() => setTripMode(mode.id)}
+            style={{
+              borderRadius:999, border:`1px solid ${C.borderHi}`, padding:"4px 10px",
+              background: tripMode===mode.id ? "#60a5fa22" : C.surface,
+              color: tripMode===mode.id ? C.accent : C.muted,
+              fontSize:FS.micro, fontWeight:700, fontFamily:"inherit", cursor:"pointer",
+              minWidth:64, WebkitTapHighlightColor:"transparent",
+            }}
+          >
+            {mode.label}
+          </button>
+        ))}
+      </div>
     </div>
   </div>
 
   {/* Tab bar */}
-  <div style={{ display:"flex", background:"#161b22", borderBottom:"1px solid #21262d", flexShrink:0 }}>
+  <div style={{ display:"flex", background:C.surface, borderBottom:`1px solid ${C.border}`, flexShrink:0 }}>
     {TABS.map(t => (
       <button key={t.id} onClick={() => setTab(t.id)} style={{
-        flex:1, padding:"10px 2px", fontSize:11, border:"none", cursor:"pointer",
+        flex:1, padding:`${SP.sm-4}px 2px`, fontSize:FS.meta, border:"none", cursor:"pointer",
         background: tab===t.id ? "#21262d" : "transparent",
-        color: tab===t.id ? "#60a5fa" : "#8b949e",
-        borderBottom: tab===t.id ? "2px solid #60a5fa" : "2px solid transparent",
-        fontFamily:"inherit", fontWeight: tab===t.id ? "bold" : "normal",
+        color: tab===t.id ? C.accent : C.muted,
+        borderBottom: tab===t.id ? `2px solid ${C.accent}` : "2px solid transparent",
+        fontFamily:"inherit", fontWeight: tab===t.id ? 700 : 400,
         position:"relative", WebkitTapHighlightColor:"transparent",
       }}>
         {t.label}
         {t.id==="todo" && undoneUrgent > 0 && (
-          <span style={{ position:"absolute", top:6, right:6, background:"#ef4444", borderRadius:"50%", width:8, height:8, display:"inline-block" }}/>
+          <span style={{ position:"absolute", top:6, right:6, background:C.danger, borderRadius:"50%", width:8, height:8, display:"inline-block" }}/>
         )}
       </button>
     ))}
   </div>
 
   {/* Content */}
-  <div style={{ flex:1, minHeight:0, overflowY: tab==="map" ? "hidden" : "auto", padding: tab==="map" ? 0 : "12px 14px 32px" }}>
+  <div style={{ flex:1, minHeight:0, overflowY: tab==="map" ? "hidden" : "auto", padding: tab==="map" ? 0 : `${SP.sm}px ${SP.sm}px ${SP.md*2}px` }}>
+    {/* ─── ホーム（日程タブ）：スコア → 状況 → 対戦 → 操作 を縦に並べる ─── */}
     {tab === "schedule" && (
-      <div style={{ background:"#161b22", borderRadius:10, border:"1px solid #21262d", padding:"10px 12px", marginBottom:12 }}>
-        <div style={{ fontSize:11, color:"#8b949e", marginBottom:6 }}>🧭 次アクション</div>
-        <div style={{ fontSize:13, color:"#e6edf3", fontWeight:"bold", marginBottom:4 }}>
-          {tripMode==="before" ? `✅ 準備: ${nextTodo?.text || "未完了タスクなし"}` : `⏱ 次の予定: ${upcomingAction?.time} ${upcomingAction?.title}`}
+      <>
+        {/* L1: スコア — 完了率と急ぎ件数を 3 層スケールで一瞬把握 */}
+        <div style={{ background:C.surface, borderRadius:12, border:`1px solid ${C.border}`, padding:`${SP.sm}px ${SP.md}px`, marginBottom:SP.sm, display:"flex", gap:SP.md, alignItems:"stretch" }}>
+          <div style={{ flex:1, minWidth:0 }}>
+            <div style={{ fontSize:FS.meta, color:C.muted, fontWeight:700, letterSpacing:0.5 }}>準備の進捗</div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:SP.xs, marginTop:4 }}>
+              <span style={{ fontSize:FS.score, fontWeight:800, color: completionPct===100 ? C.ok : C.accent, lineHeight:1 }}>{completionPct}</span>
+              <span style={{ fontSize:FS.body, color:C.muted, fontWeight:700 }}>%</span>
+              <span style={{ fontSize:FS.meta, color:C.muted, marginLeft:SP.xs }}>{doneCount}/{todos.length} 完了</span>
+            </div>
+            {/* 進捗バー */}
+            <div style={{ height:4, background:"#21262d", borderRadius:999, marginTop:SP.xs, overflow:"hidden" }}>
+              <div style={{ height:"100%", width:`${completionPct}%`, background: completionPct===100 ? C.ok : C.accent, borderRadius:999, transition:"width .3s" }} />
+            </div>
+          </div>
+          <div style={{ width:1, background:C.border }} />
+          <div style={{ flex:1, minWidth:0 }}>
+            <div style={{ fontSize:FS.meta, color:C.muted, fontWeight:700, letterSpacing:0.5 }}>急ぎ対応</div>
+            <div style={{ display:"flex", alignItems:"baseline", gap:SP.xs, marginTop:4 }}>
+              <span style={{ fontSize:FS.score, fontWeight:800, color: undoneUrgent>0 ? C.danger : C.ok, lineHeight:1 }}>{undoneUrgent}</span>
+              <span style={{ fontSize:FS.body, color:C.muted, fontWeight:700 }}>件</span>
+            </div>
+            <div style={{ fontSize:FS.meta, color:C.muted, marginTop:SP.xs }}>未完了 計 {undoneTotal} 件</div>
+          </div>
         </div>
-        <div style={{ fontSize:11, color:"#60a5fa" }}>
-          {tripMode==="before"
-            ? `担当 ${nextTodo?.assignee || "-"}｜期限 ${nextTodo?.due || "-"}`
-            : "移動開始の目安は予定時刻の30分前"}
-        </div>
-      </div>
-    )}
 
-    {/* ── 日程タブ ── */}
-    {tab === "schedule" && (
-      <div>
-        {DAYS.map(day => (
-          <div key={day.id} style={{ marginBottom:10, borderRadius:12, overflow:"hidden", border:`1px solid ${day.theme}44` }}>
-            <div onClick={() => setOpenDay(openDay===day.id ? null : day.id)}
-              style={{ background:`${day.theme}18`, padding:"11px 14px", cursor:"pointer", display:"flex", justifyContent:"space-between", alignItems:"center", WebkitTapHighlightColor:"transparent" }}>
-              <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                <span style={{ fontSize:20 }}>{day.icon}</span>
-                <div>
-                  <span style={{ fontWeight:"bold", color:day.theme, fontSize:14 }}>{day.label}</span>
-                  <span style={{ fontSize:12, color:"#8b949e", marginLeft:8 }}>{day.title}</span>
+        {/* L2: 状況 — 現在のモードと判断材料 */}
+        <div style={{ background:C.surface, borderRadius:12, border:`1px solid ${C.border}`, padding:`${SP.sm}px ${SP.md}px`, marginBottom:SP.sm }}>
+          <div style={{ display:"flex", alignItems:"center", gap:SP.xs, marginBottom:SP.xs }}>
+            <span style={{ fontSize:FS.micro, padding:"2px 8px", borderRadius:999, background: tripMode==="before" ? "#60a5fa22" : "#34d39922", color: tripMode==="before" ? C.accent : C.ok, fontWeight:700, letterSpacing:0.5 }}>
+              {tripMode==="before" ? "🧳 旅行前" : "🛫 旅行中"}
+            </span>
+            <span style={{ fontSize:FS.meta, color:C.muted }}>あと {daysToGo} 日</span>
+          </div>
+          <div style={{ fontSize:FS.body, color:C.text, lineHeight:1.6 }}>
+            {tripMode==="before"
+              ? (undoneUrgent>0 ? `🔴 急ぎ ${undoneUrgent} 件 — 期限切れに注意` : "✅ 急ぎはなし。残りタスクを順次消化")
+              : "⏱ 移動は予定時刻の 30 分前に開始が目安"}
+          </div>
+        </div>
+
+        {/* L3: 対戦 — 次の予定（旅程上の "今日のカード"） */}
+        {(() => {
+          const day = DAYS[0];
+          const next = day?.schedule?.[0];
+          if (!day || !next) return null;
+          return (
+            <div style={{ background:C.surface, borderRadius:12, border:`1px solid ${day.theme}55`, padding:`${SP.sm}px ${SP.md}px`, marginBottom:SP.sm }}>
+              <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:SP.xs }}>
+                <span style={{ fontSize:FS.meta, color:C.muted, fontWeight:700, letterSpacing:0.5 }}>📅 次の予定</span>
+                <span style={{ fontSize:FS.micro, padding:"2px 7px", borderRadius:4, background:`${day.theme}22`, color:day.theme, fontWeight:700 }}>{day.label}</span>
+              </div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:SP.xs, marginBottom:4 }}>
+                <span style={{ fontSize:FS.scoreSm, fontWeight:800, color:day.theme, lineHeight:1 }}>{next.time}</span>
+                <span style={{ fontSize:FS.title, fontWeight:700, color:C.text }}>{next.icon} {next.title}</span>
+              </div>
+              <div style={{ fontSize:FS.meta, color:C.muted, lineHeight:1.6 }}>{next.note}</div>
+            </div>
+          );
+        })()}
+
+        {/* L4: 操作 — 要対応を集約、「判断」と「行動」を縦に分離。親指圏で完結 */}
+        {urgentTodos.length > 0 && (
+          <div style={{ background:"linear-gradient(180deg,#2a1414,#161b22)", borderRadius:12, border:`1px solid ${C.danger}55`, padding:`${SP.sm}px ${SP.md}px`, marginBottom:SP.sm }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:SP.sm }}>
+              <span style={{ fontSize:FS.meta, color:C.danger, fontWeight:700, letterSpacing:0.5 }}>⚠️ 要対応</span>
+              <span style={{ fontSize:FS.micro, padding:"2px 7px", borderRadius:999, background:`${C.danger}22`, color:C.danger, fontWeight:700 }}>{urgentTodos.length} 件</span>
+            </div>
+            {urgentTodos.slice(0,3).map((t, i) => (
+              <div key={i} style={{ marginBottom: i<urgentTodos.slice(0,3).length-1 ? SP.xs : 0, padding:`${SP.xs}px ${SP.sm-2}px`, background:C.bg, borderRadius:10, border:`1px solid ${C.border}` }}>
+                {/* 判断ゾーン（情報） */}
+                <div style={{ fontSize:FS.body, color:C.text, fontWeight:700, lineHeight:1.5 }}>{t.text}</div>
+                <div style={{ display:"flex", gap:6, marginTop:SP.xs-2, flexWrap:"wrap" }}>
+                  <span style={{ fontSize:FS.micro, padding:"1px 6px", borderRadius:4, background:"#21262d", color:C.muted }}>{t.assignee}</span>
+                  <span style={{ fontSize:FS.micro, padding:"1px 6px", borderRadius:4, background:"#60a5fa22", color:C.accent }}>期限 {t.due}</span>
+                </div>
+                {/* 行動ゾーン（タップ領域・親指圏） */}
+                <div style={{ display:"flex", gap:SP.xs, marginTop:SP.xs }}>
+                  {t.url && (
+                    <a href={t.url} target="_blank" rel="noopener noreferrer" style={{
+                      flex:1, textAlign:"center", padding:"10px 12px", borderRadius:8,
+                      background:C.danger, color:"#fff", fontSize:FS.body, fontWeight:700,
+                      textDecoration:"none", minHeight:44, display:"flex", alignItems:"center", justifyContent:"center",
+                      WebkitTapHighlightColor:"transparent",
+                    }}>今すぐ申請する →</a>
+                  )}
+                  <button
+                    onClick={() => {
+                      const idx = todos.findIndex(x => x.text === t.text);
+                      const next = [...todos];
+                      next[idx] = { ...next[idx], done: true };
+                      setTodos(next);
+                    }}
+                    style={{
+                      padding:"10px 14px", borderRadius:8,
+                      background:"transparent", border:`1px solid ${C.borderHi}`, color:C.muted,
+                      fontSize:FS.body, fontWeight:700, fontFamily:"inherit", cursor:"pointer", minHeight:44,
+                      WebkitTapHighlightColor:"transparent",
+                    }}
+                  >完了</button>
                 </div>
               </div>
-              <span style={{ color:day.theme, fontSize:13 }}>{openDay===day.id ? "▲" : "▼"}</span>
+            ))}
+            {urgentTodos.length > 3 && (
+              <button onClick={() => setTab("todo")} style={{
+                width:"100%", marginTop:SP.xs, padding:"8px 0", borderRadius:8,
+                background:"transparent", border:`1px dashed ${C.borderHi}`, color:C.muted,
+                fontSize:FS.meta, fontWeight:700, fontFamily:"inherit", cursor:"pointer",
+              }}>残り {urgentTodos.length - 3} 件を表示 →</button>
+            )}
+          </div>
+        )}
+      </>
+    )}
+
+    {/* ── 日程タブ：日別カード（3層階層 + 8/14/18 余白） ── */}
+    {tab === "schedule" && (
+      <div>
+        <div style={{ fontSize:FS.meta, color:C.muted, fontWeight:700, letterSpacing:0.5, marginBottom:SP.xs, paddingLeft:2 }}>📅 日程一覧</div>
+        {DAYS.map((day, dayIdx) => (
+          <div key={day.id} style={{ marginBottom:SP.xs+2, borderRadius:12, overflow:"hidden", border:`1px solid ${day.theme}44` }}>
+            <div onClick={() => setOpenDay(openDay===day.id ? null : day.id)}
+              style={{ background:`${day.theme}18`, padding:`${SP.sm-2}px ${SP.md-2}px`, cursor:"pointer", display:"flex", justifyContent:"space-between", alignItems:"center", WebkitTapHighlightColor:"transparent", minHeight:48 }}>
+              <div style={{ display:"flex", alignItems:"center", gap:SP.sm-4, minWidth:0 }}>
+                <span style={{ fontSize:22, flexShrink:0 }}>{day.icon}</span>
+                <div style={{ minWidth:0 }}>
+                  {/* L1: 日付 / L2: タイトル / L3: 行程数 */}
+                  <div style={{ fontWeight:800, color:day.theme, fontSize:FS.title, lineHeight:1.2 }}>{day.label}</div>
+                  <div style={{ fontSize:FS.meta, color:C.text, marginTop:2, fontWeight:600 }}>{day.title}</div>
+                  <div style={{ fontSize:FS.micro, color:C.muted, marginTop:2 }}>{day.schedule.length} 行程・Day {dayIdx+1}</div>
+                </div>
+              </div>
+              <span style={{ color:day.theme, fontSize:FS.body, marginLeft:SP.xs, flexShrink:0 }}>{openDay===day.id ? "▲" : "▼"}</span>
             </div>
             {openDay===day.id && (
-              <div style={{ background:"#0d1117", padding:"10px 14px" }}>
+              <div style={{ background:C.bg, padding:`${SP.sm}px ${SP.md-2}px` }}>
                 {day.schedule.map((s, i) => (
-                  <div key={i} style={{ display:"flex", gap:10, marginBottom:12, paddingBottom:12, borderBottom: i<day.schedule.length-1 ? "1px solid #21262d" : "none" }}>
-                    <div style={{ width:42, flexShrink:0, textAlign:"right" }}>
-                      <span style={{ fontSize:10, color:day.theme, fontWeight:"bold" }}>{s.time}</span>
+                  <div key={i} style={{ display:"flex", gap:SP.sm-4, marginBottom:i<day.schedule.length-1 ? SP.sm : 0, paddingBottom: i<day.schedule.length-1 ? SP.sm : 0, borderBottom: i<day.schedule.length-1 ? `1px solid ${C.border}` : "none" }}>
+                    <div style={{ width:46, flexShrink:0, textAlign:"right" }}>
+                      {/* L2: 時刻（見出し級） */}
+                      <span style={{ fontSize:FS.body, color:day.theme, fontWeight:800, lineHeight:1.2 }}>{s.time}</span>
                     </div>
-                    <div style={{ fontSize:18, flexShrink:0, marginTop:1 }}>{s.icon}</div>
-                    <div>
-                      <div style={{ fontSize:13, fontWeight:"bold", color:"#e6edf3" }}>{s.title}</div>
-                      <div style={{ fontSize:11, color:"#8b949e", marginTop:3, lineHeight:1.6, whiteSpace:"pre-line" }}>{s.note}</div>
+                    <div style={{ fontSize:18, flexShrink:0, lineHeight:1.2 }}>{s.icon}</div>
+                    <div style={{ minWidth:0, flex:1 }}>
+                      {/* L2: タイトル / L3: 補足 */}
+                      <div style={{ fontSize:FS.body, fontWeight:700, color:C.text, lineHeight:1.4 }}>{s.title}</div>
+                      <div style={{ fontSize:FS.meta, color:C.muted, marginTop:4, lineHeight:1.7, whiteSpace:"pre-line" }}>{s.note}</div>
                     </div>
                   </div>
                 ))}
@@ -1235,39 +1391,66 @@ return (
     )}
 
 
-    {/* ── ToDo タブ ── */}
+    {/* ── ToDo タブ：完了率をスコア化、判断と行動を縦に分離 ── */}
     {tab === "todo" && (
       <div>
-        <div style={{ background:"#161b22", borderRadius:10, border:"1px solid #21262d", padding:"10px 12px", marginBottom:10 }}>
-          <div style={{ fontSize:12, color:"#8b949e", fontWeight:"bold", marginBottom:8 }}>🎫 予約・証跡（タップでコピー）</div>
+        {/* L1: スコア — 完了率 */}
+        <div style={{ background:C.surface, borderRadius:12, border:`1px solid ${C.border}`, padding:`${SP.sm}px ${SP.md}px`, marginBottom:SP.sm }}>
+          <div style={{ display:"flex", alignItems:"baseline", justifyContent:"space-between", gap:SP.sm }}>
+            <div>
+              <div style={{ fontSize:FS.meta, color:C.muted, fontWeight:700, letterSpacing:0.5 }}>ToDo 完了率</div>
+              <div style={{ display:"flex", alignItems:"baseline", gap:SP.xs, marginTop:4 }}>
+                <span style={{ fontSize:FS.score, fontWeight:800, color: completionPct===100 ? C.ok : C.accent, lineHeight:1 }}>{completionPct}</span>
+                <span style={{ fontSize:FS.body, color:C.muted, fontWeight:700 }}>%</span>
+                <span style={{ fontSize:FS.meta, color:C.muted, marginLeft:SP.xs }}>{doneCount}/{todos.length}</span>
+              </div>
+            </div>
+            {undoneUrgent > 0 && (
+              <div style={{ textAlign:"right" }}>
+                <div style={{ fontSize:FS.meta, color:C.danger, fontWeight:700 }}>急ぎ</div>
+                <div style={{ fontSize:FS.scoreSm, color:C.danger, fontWeight:800, lineHeight:1 }}>{undoneUrgent}<span style={{ fontSize:FS.body, marginLeft:2 }}>件</span></div>
+              </div>
+            )}
+          </div>
+          <div style={{ height:4, background:"#21262d", borderRadius:999, marginTop:SP.xs, overflow:"hidden" }}>
+            <div style={{ height:"100%", width:`${completionPct}%`, background: completionPct===100 ? C.ok : C.accent, borderRadius:999, transition:"width .3s" }} />
+          </div>
+        </div>
+
+        {/* 予約・証跡 */}
+        <div style={{ background:C.surface, borderRadius:12, border:`1px solid ${C.border}`, padding:`${SP.sm}px ${SP.sm-2}px`, marginBottom:SP.sm }}>
+          <div style={{ fontSize:FS.meta, color:C.muted, fontWeight:700, letterSpacing:0.5, marginBottom:SP.xs }}>🎫 予約・証跡（タップでコピー）</div>
           {RESERVATIONS.map((r, i) => (
             <button
               key={i}
               onClick={() => navigator.clipboard?.writeText(r.value)}
               style={{
-                width:"100%", textAlign:"left", marginBottom:6, background:"#0d1117", color:"#e6edf3",
-                border:"1px solid #30363d", borderRadius:8, padding:"8px 10px", cursor:"pointer", fontFamily:"inherit"
+                width:"100%", textAlign:"left", marginBottom: i<RESERVATIONS.length-1 ? 6 : 0,
+                background:C.bg, color:C.text,
+                border:`1px solid ${C.borderHi}`, borderRadius:8, padding:`${SP.xs}px ${SP.sm-4}px`,
+                cursor:"pointer", fontFamily:"inherit", minHeight:44,
               }}
             >
-              <div style={{ fontSize:10, color:"#8b949e" }}>{r.label}</div>
-              <div style={{ fontSize:12 }}>{r.value}</div>
+              <div style={{ fontSize:FS.micro, color:C.muted }}>{r.label}</div>
+              <div style={{ fontSize:FS.body }}>{r.value}</div>
             </button>
           ))}
         </div>
 
-        <div style={{ display:"flex", gap:8, marginBottom:10, flexWrap:"wrap" }}>
+        {/* フィルタ */}
+        <div style={{ display:"flex", gap:SP.xs, marginBottom:SP.xs, flexWrap:"wrap" }}>
           <button onClick={() => setShowIncompleteOnly(v => !v)} style={{
-            border:"1px solid #30363d", borderRadius:999, padding:"5px 10px", fontSize:11,
-            background:showIncompleteOnly ? "#34d39922" : "#161b22", color:showIncompleteOnly ? "#34d399" : "#8b949e",
-            fontFamily:"inherit", cursor:"pointer"
+            border:`1px solid ${C.borderHi}`, borderRadius:999, padding:"6px 12px", fontSize:FS.meta,
+            background:showIncompleteOnly ? "#34d39922" : C.surface, color:showIncompleteOnly ? C.ok : C.muted,
+            fontFamily:"inherit", cursor:"pointer", fontWeight:700,
           }}>
             未完了のみ {showIncompleteOnly ? "ON" : "OFF"}
           </button>
           {assignees.map(a => (
             <button key={a} onClick={() => setAssigneeFilter(a)} style={{
-              border:"1px solid #30363d", borderRadius:999, padding:"5px 10px", fontSize:11,
-              background:assigneeFilter===a ? "#60a5fa22" : "#161b22", color:assigneeFilter===a ? "#60a5fa" : "#8b949e",
-              fontFamily:"inherit", cursor:"pointer"
+              border:`1px solid ${C.borderHi}`, borderRadius:999, padding:"6px 12px", fontSize:FS.meta,
+              background:assigneeFilter===a ? "#60a5fa22" : C.surface, color:assigneeFilter===a ? C.accent : C.muted,
+              fontFamily:"inherit", cursor:"pointer", fontWeight:700,
             }}>
               {a==="all" ? "全員" : a}
             </button>
@@ -1275,41 +1458,77 @@ return (
         </div>
 
         {undoneUrgent > 0 && (
-          <div style={{ background:"#1c1010", borderRadius:10, padding:"10px 14px", marginBottom:12, border:"1px solid #ef444466" }}>
-            <div style={{ fontSize:13, color:"#ef4444", fontWeight:"bold" }}>🔴 急ぎのToDo が {undoneUrgent} 件残っています</div>
-            <div style={{ fontSize:11, color:"#8b949e", marginTop:3 }}>The Broad・ディズニーは8月ピーク前に早急に予約を！</div>
+          <div style={{ background:"#1c1010", borderRadius:12, padding:`${SP.sm-2}px ${SP.md-2}px`, marginBottom:SP.sm, border:`1px solid ${C.danger}66` }}>
+            <div style={{ fontSize:FS.body, color:C.danger, fontWeight:800 }}>🔴 急ぎのToDo が {undoneUrgent} 件残っています</div>
+            <div style={{ fontSize:FS.meta, color:C.muted, marginTop:4, lineHeight:1.6 }}>The Broad・ディズニーは8月ピーク前に早急に予約を</div>
           </div>
         )}
+
         {visibleTodos.map((t, i) => (
-          <div key={i} onClick={() => {
-            const targetIndex = todos.findIndex(todo => todo.text === t.text);
-            const next = [...todos];
-            next[targetIndex] = { ...next[targetIndex], done: !next[targetIndex].done };
-            setTodos(next);
-          }} style={{
-            background:"#161b22", borderRadius:10, padding:"11px 14px", marginBottom:8,
-            border:`1px solid ${t.done ? "#21262d" : t.urgent ? "#ef444455" : "#21262d"}`,
-            cursor:"pointer", display:"flex", gap:10, alignItems:"flex-start",
+          <div key={i} style={{
+            background:C.surface, borderRadius:12, padding:`${SP.sm-2}px ${SP.md-2}px`, marginBottom:SP.xs,
+            border:`1px solid ${t.done ? C.border : t.urgent ? C.danger+"55" : C.border}`,
             opacity: t.done ? 0.45 : 1, transition:"opacity 0.2s",
-            WebkitTapHighlightColor:"transparent",
           }}>
-            <div style={{ fontSize:18, marginTop:1, flexShrink:0 }}>{t.done ? "✅" : t.urgent ? "🔴" : "⬜"}</div>
-            <div style={{ flex:1 }}>
-              <div style={{ fontSize:13, color: t.done ? "#8b949e" : "#e6edf3", textDecoration: t.done ? "line-through" : "none" }}>
-                {t.text}
+            {/* 判断ゾーン：状態ピル + 本文 + メタ */}
+            <div style={{ display:"flex", gap:SP.xs, alignItems:"flex-start" }}>
+              <div style={{ fontSize:18, lineHeight:1.2, flexShrink:0 }}>{t.done ? "✅" : t.urgent ? "🔴" : "⬜"}</div>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontSize:FS.body, color: t.done ? C.muted : C.text, textDecoration: t.done ? "line-through" : "none", lineHeight:1.5, fontWeight:600 }}>
+                  {t.text}
+                </div>
+                <div style={{ display:"flex", gap:6, marginTop:SP.xs-2, flexWrap:"wrap" }}>
+                  <span style={{ fontSize:FS.micro, padding:"2px 7px", borderRadius:4, background:"#21262d", color:C.muted }}>{t.assignee}</span>
+                  <span style={{ fontSize:FS.micro, padding:"2px 7px", borderRadius:4, background:"#60a5fa22", color:C.accent }}>期限 {t.due}</span>
+                  <span style={{ fontSize:FS.micro, padding:"2px 7px", borderRadius:4, background:"#fbbf2422", color:C.warn }}>通知 {t.notify}</span>
+                </div>
               </div>
-              <div style={{ display:"flex", gap:6, marginTop:5, flexWrap:"wrap" }}>
-                <span style={{ fontSize:10, padding:"2px 6px", borderRadius:4, background:"#21262d", color:"#8b949e" }}>{t.assignee}</span>
-                <span style={{ fontSize:10, padding:"2px 6px", borderRadius:4, background:"#60a5fa22", color:"#60a5fa" }}>期限 {t.due}</span>
-                <span style={{ fontSize:10, padding:"2px 6px", borderRadius:4, background:"#fbbf2422", color:"#fbbf24" }}>通知 {t.notify}</span>
-              </div>
-              {t.url && !t.done && (
-                <div style={{ fontSize:11, color:"#60a5fa", marginTop:3 }}>🔗 {t.url}</div>
-              )}
             </div>
+            {/* 行動ゾーン（親指圏） */}
+            {!t.done && (
+              <div style={{ display:"flex", gap:SP.xs, marginTop:SP.sm-2 }}>
+                {t.url && (
+                  <a href={t.url} target="_blank" rel="noopener noreferrer" style={{
+                    flex:1, textAlign:"center", padding:"10px 12px", borderRadius:8,
+                    background: t.urgent ? C.danger : "#1c2e4a",
+                    color:"#fff", fontSize:FS.body, fontWeight:700, textDecoration:"none",
+                    minHeight:44, display:"flex", alignItems:"center", justifyContent:"center",
+                    WebkitTapHighlightColor:"transparent",
+                  }}>開く →</a>
+                )}
+                <button
+                  onClick={() => {
+                    const idx = todos.findIndex(x => x.text === t.text);
+                    const next = [...todos];
+                    next[idx] = { ...next[idx], done: !next[idx].done };
+                    setTodos(next);
+                  }}
+                  style={{
+                    flex: t.url ? "0 0 auto" : 1, padding:"10px 16px", borderRadius:8,
+                    background:"transparent", border:`1px solid ${C.borderHi}`, color:C.muted,
+                    fontSize:FS.body, fontWeight:700, fontFamily:"inherit", cursor:"pointer", minHeight:44,
+                    WebkitTapHighlightColor:"transparent",
+                  }}
+                >完了にする</button>
+              </div>
+            )}
+            {t.done && (
+              <button
+                onClick={() => {
+                  const idx = todos.findIndex(x => x.text === t.text);
+                  const next = [...todos];
+                  next[idx] = { ...next[idx], done: false };
+                  setTodos(next);
+                }}
+                style={{
+                  width:"100%", marginTop:SP.xs, padding:"8px 12px", borderRadius:8,
+                  background:"transparent", border:`1px dashed ${C.borderHi}`, color:C.muted,
+                  fontSize:FS.meta, fontFamily:"inherit", cursor:"pointer",
+                }}
+              >未完了に戻す</button>
+            )}
           </div>
         ))}
-        <div style={{ fontSize:11, color:"#8b949e", textAlign:"center", marginTop:8 }}>タップでチェック切り替え</div>
       </div>
     )}
 
