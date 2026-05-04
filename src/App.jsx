@@ -119,7 +119,7 @@ const TODOS = [
 { done:false, urgent:false, text:"旅行保険（クレカ付帯保険の補償内容確認）",        url:"", assignee:"👤 Aki", due:"8/14", notify:"3日前" },
 { done:true,  urgent:false, text:"SQ フライト予約（往復プレエコ）",                url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
 { done:true,  urgent:false, text:"Omni LA 予約（8/20-23 ¥134,640）",             url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
-{ done:true,  urgent:false, text:"Hilton GI Anaheim 予約（8/23-25 ¥73,820）",   url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
+{ done:true,  urgent:false, text:"Hilton GI Anaheim 予約（8/23-25 ¥67,996）",   url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
 { done:true,  urgent:false, text:"ドジャース観戦チケット購入（Section 127LG Row K）", url:"", assignee:"👤 Ken", due:"完了", notify:"完了" },
 ];
 
@@ -134,10 +134,10 @@ const RESERVATIONS = [
 const COSTS = [
 { cat:"✈️ フライト（支払済）", item:"SQ プレエコ 往復（2名）",                  jpy: 480280 },
 { cat:"🏨 ホテル",             item:"Omni LA（3泊）",                          jpy: 134640 },
-{ cat:"🏨 ホテル",             item:"Hilton GI Anaheim（2泊）",                jpy:  73820 },
+{ cat:"🏨 ホテル",             item:"Hilton GI Anaheim（2泊）",                jpy:  67996 },
 { cat:"⚾ チケット",           item:"ドジャース観戦（2名）",                     usd: 530.20 },
-{ cat:"⚾ ツアー",             item:"プリゲームツアー（2名）",                   usd: 308.04 },
-{ cat:"🏰 Disney",            item:"チケット＋Lightning Lane 2日分（2名）",     jpy: 118000 },
+{ cat:"⚾ ツアー",             item:"プリゲームツアー（2名）",                   jpy: 50172 },
+{ cat:"🏰 Disney",            item:"チケット＋Lightning Lane 2日分（2名）",     jpy: 118435 },
 ];
 
 const SAFETY_SPOTS = [
@@ -176,7 +176,7 @@ const MAP_SPOTS = [
 { d:"0822", n:"Santa Monica Pier",       lat:34.0083, lng:-118.4988, em:"🌊", desc:"10:00〜 ビーチ散歩・観覧車\n12:30撤収→ホテルへ" },
 { d:"0822", n:"Dodger Stadium",          lat:34.0739, lng:-118.2400, em:"⚾", desc:"13:30出発・14:30着\n15:00〜 プリゲームツアー\n18:10 Pirates vs Dodgers\nSection 127LG Row K Seats 3–4" },
 { d:"0823", n:"Omni チェックアウト",      lat:34.0536, lng:-118.2516, em:"🚪", desc:"9:30 チェックアウト → アナハイムへ" },
-{ d:"0823", n:"Hilton Garden Inn Anaheim",lat:33.8117,lng:-117.9123, em:"🏩", desc:"11:00〜 チェックイン\n8/23–25 2泊 ¥73,820" },
+{ d:"0823", n:"Hilton Garden Inn Anaheim",lat:33.8117,lng:-117.9123, em:"🏩", desc:"11:00〜 チェックイン\n8/23–25 2泊 ¥67,996" },
 { d:"0823", n:"Disneyland Park",         lat:33.8121, lng:-117.9190, em:"🏰", desc:"12:00〜 ⚠️ Lightning Lane事前購入必須！" },
 { d:"0824", n:"Hilton（2泊目）",          lat:33.8117, lng:-117.9123, em:"🏩", desc:"本日の宿泊先 Hilton Garden Inn" },
 { d:"0824", n:"California Adventure",    lat:33.8062, lng:-117.9199, em:"🎢", desc:"8:00〜 開園同時入場！\nRadiator Springs Racers最優先" },
