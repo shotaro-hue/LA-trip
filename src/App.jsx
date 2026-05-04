@@ -648,7 +648,7 @@ return (
           <span style={{ fontSize:FS.body, color:C.muted, fontWeight:700 }}>日</span>
           <span style={{ fontSize:FS.meta, color:C.muted, marginLeft:SP.xs }}>{tripPhase}</span>
         </div>
-        <div style={{ fontSize:FS.meta, color:C.muted, marginTop:2 }}>8/20（水）〜 8/25（火）｜2名｜SQ プレエコ</div>
+        <div style={{ fontSize:FS.meta, color:C.muted, marginTop:2 }}>8/20（木）〜 8/25（火）｜2名｜SQ プレエコ</div>
       </div>
       <div style={{ display:"flex", flexDirection:"column", gap:6, alignItems:"flex-end", flexShrink:0 }}>
         {[
