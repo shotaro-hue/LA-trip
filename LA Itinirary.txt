@@ -5,7 +5,7 @@ import { useState, useEffect, useRef } from “react”;
 // ─────────────────────────────────────────────────────────
 const DAYS = [
 {
-id:“0820”, label:“8/20 水”, theme:”#60a5fa”, icon:“✈️”, title:“到着日”,
+id:“0820”, label:“8/20 木”, theme:”#60a5fa”, icon:“✈️”, title:“到着日”,
 schedule:[
 { time:“12:50”, icon:“✈️”, title:“LAX着（SQ12）”,       note:“入国審査＋荷物で約1.5時間。Uberでオムニへ（約40分）” },
 { time:“15:00”, icon:“🏨”, title:“Omni LAチェックイン”,  note:“部屋に荷物を置いてリフレッシュ” },
@@ -14,7 +14,7 @@ schedule:[
 ]
 },
 {
-id:“0821”, label:“8/21 木”, theme:”#34d399”, icon:“🎨”, title:“DTLA〜ハリウッド観光”,
+id:“0821”, label:“8/21 金”, theme:”#34d399”, icon:“🎨”, title:“DTLA〜ハリウッド観光”,
 schedule:[
 { time:“9:00”,  icon:“☕”, title:“朝食”,                         note:“ホテル近隣のカフェ or Grand Central Market” },
 { time:“10:00”, icon:“🎨”, title:“The Broad”,                    note:“⚠️ 事前予約必須（無料）。木曜は20:00まで開館。Jeff KoonsなどポップアートがSNS映え” },
