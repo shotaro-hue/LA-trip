@@ -5,6 +5,10 @@ function sanitizeImageUrl(rawUrl) {
   if (typeof rawUrl !== "string") return "";
   const trimmedUrl = rawUrl.trim();
   if (!trimmedUrl) return "";
+  // 同一オリジンの絶対パス（/images/xxx.svg など）を許可
+  if (trimmedUrl.startsWith("/")) return trimmedUrl;
+  // data:image URI を許可（SVGプレースホルダー等）
+  if (trimmedUrl.startsWith("data:image/")) return trimmedUrl;
   try {
     const parsed = new URL(trimmedUrl);
     return parsed.protocol === "https:" ? parsed.href : "";
@@ -12,6 +16,9 @@ function sanitizeImageUrl(rawUrl) {
     return "";
   }
 }
+
+// Vite の base URL を利用してローカル画像パスを生成
+const IMG_BASE = (import.meta.env.BASE_URL ?? "/") + "images/";
 
 // ─────────────────────────────────────────────────────────
 // DESIGN TOKENS
@@ -233,17 +240,17 @@ function SmartImage({ imageUrl, altText, onZoom }) {
 
   if (!safeImageUrl || loadError) {
     return (
-      <div style={{ minHeight:120, background:"#111827", borderBottom:"1px solid #30363d", color:"#8b949e", fontSize:11, padding:"10px", textAlign:"center" }}>
-        <div style={{ marginBottom:8 }}>画像を表示できませんでした（通信状況をご確認ください）</div>
-        <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap" }}>
+      <div style={{ height:120, background:"linear-gradient(135deg,#111827,#0d1117)", borderBottom:"1px solid #30363d", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", gap:6 }}>
+        <div style={{ fontSize:11, color:"#374151" }}>📷</div>
+        <div style={{ display:"flex", gap:6, flexWrap:"wrap", justifyContent:"center" }}>
           {googleSearchUrl ? (
-            <a href={googleSearchUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize:11, color:"#60a5fa", border:"1px solid #60a5fa66", borderRadius:6, padding:"4px 8px", textDecoration:"none" }}>
-              Google画像で探す
+            <a href={googleSearchUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize:10, color:"#60a5fa", border:"1px solid #60a5fa44", borderRadius:5, padding:"3px 7px", textDecoration:"none" }}>
+              Google画像
             </a>
           ) : null}
           {instagramSearchUrl ? (
-            <a href={instagramSearchUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize:11, color:"#c084fc", border:"1px solid #c084fc66", borderRadius:6, padding:"4px 8px", textDecoration:"none" }}>
-              Instagramで探す
+            <a href={instagramSearchUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize:10, color:"#c084fc", border:"1px solid #c084fc44", borderRadius:5, padding:"3px 7px", textDecoration:"none" }}>
+              Instagram
             </a>
           ) : null}
         </div>
@@ -502,7 +509,7 @@ price:"$10〜15",
 tag:"LAの朝食定番",
 tagColor:"#34d399",
 desc:"2011年創業のエッグサンド専門店。ブリオッシュバンに柔らかスクランブルエッグ＋チーズの「Fairfax」が絶品。行列必至なので開店直後（8時〜）に狙うのがコツ。",
-img:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Grand_Central_Market%2C_Los_Angeles_%282014%29.jpg/320px-Grand_Central_Market%2C_Los_Angeles_%282014%29.jpg",
+img:IMG_BASE+"eggslut.svg",
 days:["8/20","8/21"],
 must:true,
 },
@@ -513,8 +520,19 @@ price:"$18〜25",
 tag:"LA最強パストラミ",
 tagColor:"#fbbf24",
 desc:"1947年創業の老舗デリ。#19のパストラミサンドは「NYのカッツより旨い」と言われるほど。分厚い肉とライ麦パンのコンボ。月〜土のみ営業（要注意）。",
-img:"",
+img:IMG_BASE+"langers-deli.svg",
 days:["8/21"],
+must:false,
+},
+{
+name:"Gjusta Bakery（ジャスタ）",
+location:"Venice・Abbott Kinney",
+price:"$8〜16",
+tag:"Instagram聖地",
+tagColor:"#a3e635",
+desc:"Venetian社のベーカリー兼デリ。早朝から地元民が並ぶ本格的なサワードウパンとスモークサーモンが絶品。Venice観光のついでに朝食・ランチで立ち寄りたい。",
+img:IMG_BASE+"gjusta.svg",
+days:["8/22"],
 must:false,
 },
 ]
@@ -529,7 +547,7 @@ price:"$4〜8/枚",
 tag:"旅程直結",
 tagColor:"#60a5fa",
 desc:"1917年創業の歴史的フードホール。「Tacos Tumbras a Tomas」のバーベキュータコスや「Sarita's Pupuseria」のエルサルバドル料理など40店舗以上が集結。初日夕食・翌日ランチ両方で使える。",
-img:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Grand_Central_Market_-_Los_Angeles.jpg/320px-Grand_Central_Market_-_Los_Angeles.jpg",
+img:IMG_BASE+"taco.svg",
 days:["8/20","8/21"],
 must:true,
 },
@@ -540,7 +558,7 @@ price:"$3〜5/枚",
 tag:"絶品ローカルフード",
 tagColor:"#34d399",
 desc:"ボードウォーク沿いの屋台で食べるフィッシュタコスは格別。バスケットコート近くの屋台が評判◎。$3〜5で本格的なバハスタイルを堪能できる。",
-img:"",
+img:IMG_BASE+"venice-fish-taco.svg",
 days:["8/22"],
 must:false,
 },
@@ -556,9 +574,20 @@ price:"$7〜9",
 tag:"絶対食べるべき",
 tagColor:"#ef4444",
 desc:"1958年から続くスタジアムの象徴。30cmの巨大ホットドッグで年間200万本以上売れる。スチームかグリルか選べる。グリル版がサクサクで旨い。ビールとセットで$20前後。",
-img:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Dodger_Stadium_field_from_the_loge_level.jpg/320px-Dodger_Stadium_field_from_the_loge_level.jpg",
+img:IMG_BASE+"dodger-dog.svg",
 days:["8/22"],
 must:true,
+},
+{
+name:"Shake Shack at Dodger Stadium",
+location:"Dodger Stadium・フィールドレベル",
+price:"$10〜15",
+tag:"スタジアム限定メニューあり",
+tagColor:"#fbbf24",
+desc:"2021年にドジャースタジアムに出店。シングルシェイクバーガーはドジャードッグと並ぶ人気。試合前のお腹を満たすのに最適。ドジャーブルーのミルクシェイクも限定販売。",
+img:IMG_BASE+"dodger-dog.svg",
+days:["8/22"],
+must:false,
 },
 ]
 },
@@ -572,25 +601,68 @@ price:"$5〜10",
 tag:"西海岸限定",
 tagColor:"#fbbf24",
 desc:"西海岸でしか食べられないカリフォルニア発の国民的バーガー。必ず「Animal Style（アニマルスタイル）」を注文。グリルドオニオン＋特製ソースが絶品。帰りにLAX近くの店舗で食べるのが定番。",
-img:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/In-N-Out_Burger_hamburger_and_fries.jpg/320px-In-N-Out_Burger_hamburger_and_fries.jpg",
+img:IMG_BASE+"in-n-out.svg",
 days:["8/25"],
 must:true,
 },
 ]
 },
 {
-category:"🌭 ホットドッグ",
+category:"🌭 ホットドッグ・フレンチディップ",
 items:[
 {
 name:"Pink's Hot Dogs（ピンクス）",
-location:"Hollywood Blvd近く",
+location:"Hollywood Blvd近く・La Brea Ave",
 price:"$8〜12",
 tag:"1939年創業の聖地",
 tagColor:"#c084fc",
 desc:"創業1939年のLA名物ホットドッグ店。セレブも通う老舗で深夜も営業。チリドッグ（$7〜）が看板メニュー。Hollywood観光のついでに立ち寄れる。並ぶ価値あり。",
-img:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Pink%27s_Hot_Dogs%2C_Los_Angeles.jpg/320px-Pink%27s_Hot_Dogs%2C_Los_Angeles.jpg",
+img:IMG_BASE+"pinks.svg",
 days:["8/21"],
 must:false,
+},
+{
+name:"Philippe the Original（フィリップス）",
+location:"DTLA・Union Station徒歩5分",
+price:"$10〜15",
+tag:"1908年 フレンチディップ発祥の地",
+tagColor:"#fca5a5",
+desc:"フレンチディップサンドイッチ発祥の店。ビーフ・ポーク・ラムなどを選べる。カウンターで注文してダイプ（浸し）するスタイル。ユニオンステーション観光のついでにぜひ。",
+img:IMG_BASE+"philippe.svg",
+days:["8/20","8/21"],
+must:false,
+},
+]
+},
+{
+category:"🍗 ソウルフード",
+items:[
+{
+name:"Roscoe's Chicken and Waffles（ロスコーズ）",
+location:"Hollywood（Gower St）",
+price:"$16〜22",
+tag:"LA伝説のソウルフード",
+tagColor:"#fb923c",
+desc:"1975年創業。チキン＆ワッフルというユニークな組み合わせがLAの食文化を象徴。スナップイースト地区発のソウルフードで、スヌープ・ドッグやジャスティン・ビーバーも通う聖地。",
+img:IMG_BASE+"roscoes.svg",
+days:["8/21"],
+must:false,
+},
+]
+},
+{
+category:"🥪 サンドイッチ・デリ",
+items:[
+{
+name:"Bay Cities Italian Deli（ベイシティーズ）",
+location:"Santa Monica・Lincoln Blvd",
+price:"$12〜18",
+tag:"絶品ゴッドマザー",
+tagColor:"#fbbf24",
+desc:"サンタモニカの伝説的デリ。看板メニュー「The Godmother」は超分厚いイタリアンサブサンドで行列必至。土日は1時間待ちも。Santa Monica観光のついでに早めに行くのが吉。",
+img:IMG_BASE+"bay-cities-deli.svg",
+days:["8/22"],
+must:true,
 },
 ]
 },
@@ -604,8 +676,19 @@ price:"$6〜9",
 tag:"ビーバー夫妻も通う",
 tagColor:"#34d399",
 desc:"Glassel Parkで自家焙煎したこだわりコーヒー。エスプレッソトニックやアイス抹茶ラテが話題。Justin Bieberも常連で知られる。Omniから徒歩15分のArts Districtにあり。",
-img:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG",
+img:IMG_BASE+"maru-coffee.svg",
 days:["8/21"],
+must:false,
+},
+{
+name:"Salt & Straw（ソルト＆ストロー）",
+location:"Venice・Abbott Kinney Blvd",
+price:"$7〜12",
+tag:"クラフトアイスクリーム",
+tagColor:"#e879f9",
+desc:"Portland発のクラフトアイスクリームショップ。月替わりのユニークなフレーバーが話題で「蜂蜜・ラベンダー」「シーソルトキャラメル」などが人気。ベニスのAbbot Kinney店が雰囲気◎。",
+img:IMG_BASE+"salt-straw.svg",
+days:["8/22"],
 must:false,
 },
 ]
@@ -617,35 +700,48 @@ const GOODS = [
 category:"⚾ ドジャースグッズ",
 must:true,
 items:[
-{ name:"Dodgersキャップ（New Era 59Fifty）", price:"$38〜45", where:"Dodger Stadium・Downtown Disney", desc:"LAの象徴。本場のオフィシャルキャップはお土産の王道。試合当日スタジアムショップで買うのが一番盛り上がる。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Los_Angeles_Dodgers_Cap_Insignia.svg/320px-Los_Angeles_Dodgers_Cap_Insignia.svg.png" },
-{ name:"大谷翔平 ユニフォーム #17", price:"$120〜180", where:"Dodger Stadium", desc:"本場ドジャースタジアムで購入した大谷ユニは最高の記念品。レプリカ（$50〜）でもテンション上がる。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Shohei_Ohtani_%2851930056529%29_%28cropped%29.jpg/320px-Shohei_Ohtani_%2851930056529%29_%28cropped%29.jpg" },
-{ name:"ドジャードッグ グッズ", price:"$15〜30", where:"Dodger Stadium", desc:"ドジャードッグをモチーフにしたTシャツやぬいぐるみも人気。スタジアムショップで探してみて。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Hot_dog_with_mustard.png/320px-Hot_dog_with_mustard.png" },
+{ name:"Dodgersキャップ（New Era 59Fifty）", price:"$38〜45", where:"Dodger Stadium・Downtown Disney", desc:"LAの象徴。本場のオフィシャルキャップはお土産の王道。試合当日スタジアムショップで買うのが一番盛り上がる。", img:IMG_BASE+"dodgers-cap.svg" },
+{ name:"大谷翔平 ユニフォーム #17", price:"$120〜180", where:"Dodger Stadium", desc:"本場ドジャースタジアムで購入した大谷ユニは最高の記念品。レプリカ（$50〜）でもテンション上がる。サイン入り限定グッズはFanatics公式でも入手可。", img:IMG_BASE+"ohtani.svg" },
+{ name:"大谷翔平 ボブルヘッド", price:"$30〜50", where:"Dodger Stadium（試合日限定配布あり）", desc:"大谷の首振り人形。試合日のプロモーションで無料配布されることも。スタジアムショップでも販売。日本への持ち帰りに大人気。", img:IMG_BASE+"ohtani.svg" },
+{ name:"ドジャードッグ グッズ", price:"$15〜30", where:"Dodger Stadium", desc:"ドジャードッグをモチーフにしたTシャツやぬいぐるみも人気。スタジアムショップで探してみて。", img:IMG_BASE+"dodger-merch.svg" },
 ]
 },
 {
 category:"🏰 ディズニーグッズ",
 must:true,
 items:[
-{ name:"ミッキーイヤーハット", price:"$30〜40", where:"Disneyland Park・Downtown Disney", desc:"ディズニーの定番お土産。名前入りにカスタマイズできる（+$10）。種類が豊富なのでお気に入りを探して。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Mickey_Mouse_head_and_ears.svg/320px-Mickey_Mouse_head_and_ears.svg.png" },
-{ name:"限定スプーフィー", price:"$20〜25", where:"Disneyland Park", desc:"ディズニーランド限定のステッカーパック。荷物が軽くて安いのでお土産に最適。" },
-{ name:"パーク限定フード（ミッキーワッフル等）", price:"$8〜12", where:"Disneyland Park内各所", desc:"ミッキー型のワッフルやプレッツェルはパーク内でしか食べられない体験型グルメ。写真映えも◎。" },
+{ name:"ミッキーイヤーハット", price:"$30〜40", where:"Disneyland Park・Downtown Disney", desc:"ディズニーの定番お土産。名前入りにカスタマイズできる（+$10）。種類が豊富なのでお気に入りを探して。", img:IMG_BASE+"mickey-ears.svg" },
+{ name:"限定スプーフィー（ダッフィー）", price:"$20〜35", where:"Disneyland Park", desc:"カリフォルニアディズニー限定のぬいぐるみ。日本では入手困難なのでお土産に最適。スプーフィーはアナハイム限定デザインあり。", img:IMG_BASE+"disney-pin.svg" },
+{ name:"パーク限定ピンバッジ", price:"$8〜15/個", where:"Disneyland Park内各スタンド", desc:"毎日デザインが変わるデイリーピン。集めている人も多く、現地でキャストとトレードする文化も。帰国後もコレクションとして価値大。", img:IMG_BASE+"disney-pin.svg" },
+{ name:"パーク限定フード（ミッキーワッフル等）", price:"$8〜12", where:"Disneyland Park内各所", desc:"ミッキー型のワッフルやプレッツェルはパーク内でしか食べられない体験型グルメ。写真映えも◎。", img:IMG_BASE+"disney-food.svg" },
 ]
 },
 {
 category:"🌴 LAローカルブランド",
 must:false,
 items:[
-{ name:"Madhappy スウェット", price:"$120〜180", where:"Fairfax Ave・公式サイト", desc:"LAを代表するストリートブランド。ポジティブなメッセージと落ち着いたカラーが人気。Fairfax Aveの店舗で限定カラーも。" },
-{ name:"Free & Easy Tシャツ", price:"$40〜60", where:"Venice周辺", desc:"ベニスのサーファーカルチャーを体現したブランド。「Don't trip」のグラフィックTがアイコニック。" },
+{ name:"Madhappy スウェット", price:"$120〜180", where:"Fairfax Ave・公式サイト", desc:"LAを代表するストリートブランド。ポジティブなメッセージと落ち着いたカラーが人気。Fairfax Aveの店舗で限定カラーも。", img:IMG_BASE+"madhappy.svg" },
+{ name:"Free & Easy Tシャツ", price:"$40〜60", where:"Venice周辺", desc:"ベニスのサーファーカルチャーを体現したブランド。「Don't trip」のグラフィックTがアイコニック。", img:IMG_BASE+"free-easy.svg" },
+{ name:"Kith LA 限定アイテム", price:"$60〜200", where:"Beverly Hills（Rodeo Dr）", desc:"NYのプレミアムストリートブランドのLA旗艦店。アディダス・ニューバランスとのコラボがLA店限定でドロップされることも。入店前にアプリチェック推奨。", img:IMG_BASE+"kith.svg" },
+{ name:"Brain Dead（ブレインデッド）", price:"$40〜120", where:"Fairfax Ave・Silver Lake", desc:"LAアングラシーン発のグラフィックブランド。奇妙なグラフィックとオルタナティブな雰囲気が特徴。Supreme・Palace好きに刺さるLA限定グッズあり。", img:IMG_BASE+"free-easy.svg" },
+]
+},
+{
+category:"🎨 ミュージアムグッズ",
+must:false,
+items:[
+{ name:"LACMA ミュージアムショップ", price:"$10〜80", where:"Miracle Mile・LACMA", desc:"LA郡立美術館のオリジナルグッズ。アート系ポストカード、アーバンライトモチーフのグッズ、アーティストとのコラボ雑貨などセンス◎。旅程外だが寄る価値あり。", img:IMG_BASE+"lacma-shop.svg" },
+{ name:"The Broad ミュージアムグッズ", price:"$15〜50", where:"The Broad・DTLA", desc:"旅程でThe Broadを訪問するならショップも必ずチェック。Jeff Koons・バスキアをモチーフにしたユニークなグッズが揃う。", img:IMG_BASE+"lacma-shop.svg" },
 ]
 },
 {
 category:"🎁 ばらまき土産",
 must:false,
 items:[
-{ name:"In-N-Out Burger ステッカー・Tシャツ", price:"$5〜20", where:"In-N-Out各店", desc:"In-N-Outのオフィシャルグッズはレア度が高くて喜ばれる。Tシャツ・ステッカー・トートなど種類豊富。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/In-N-Out_Burger_hamburger_and_fries.jpg/320px-In-N-Out_Burger_hamburger_and_fries.jpg" },
-{ name:"Griffith Observatory グッズ", price:"$10〜30", where:"Griffith Observatory ギフトショップ", desc:"星座モチーフのマグカップやTシャツ。「行ったよ」感が伝わるLAらしいお土産。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Griffith_Observatory_%28Los_Angeles%29_2012.jpg/320px-Griffith_Observatory_%28Los_Angeles%29_2012.jpg" },
-{ name:"Venice Beach ブレスレット", price:"$2〜5/本", where:"Venice Boardwalk", desc:"ボードウォークの屋台で売っているカラフルなブレスレット。2本$5が相場。女友達へのプチギフトに最適。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Venice_Beach_boardwalk.jpg/320px-Venice_Beach_boardwalk.jpg" },
+{ name:"In-N-Out Burger ステッカー・Tシャツ", price:"$5〜20", where:"In-N-Out各店", desc:"In-N-Outのオフィシャルグッズはレア度が高くて喜ばれる。Tシャツ・ステッカー・トートなど種類豊富。", img:IMG_BASE+"in-n-out-merch.svg" },
+{ name:"Griffith Observatory グッズ", price:"$10〜30", where:"Griffith Observatory ギフトショップ", desc:"星座モチーフのマグカップやTシャツ。「行ったよ」感が伝わるLAらしいお土産。夜景を見た思い出と一緒にどうぞ。", img:IMG_BASE+"griffith-shop.svg" },
+{ name:"Venice Beach ブレスレット", price:"$2〜5/本", where:"Venice Boardwalk", desc:"ボードウォークの屋台で売っているカラフルなブレスレット。2本$5が相場。女友達へのプチギフトに最適。", img:IMG_BASE+"venice-bracelet.svg" },
+{ name:"Farmers Market（3rd & Fairfax）グッズ", price:"$5〜20", where:"Original Farmers Market・Fairfax Ave", desc:"1934年創業の老舗フードマーケット。ホットソース・ジャム・ピーナッツバターなどの食品系お土産がリーズナブルに揃う。ばらまきに最適。", img:IMG_BASE+"lacma-shop.svg" },
 ]
 },
 ];
