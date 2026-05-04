@@ -135,7 +135,7 @@ const COSTS = [
 { cat:"✈️ フライト（支払済）", item:"SQ プレエコ 往復（2名）",                  jpy: 480280 },
 { cat:"🏨 ホテル",             item:"Omni LA（3泊）",                          jpy: 134640 },
 { cat:"🏨 ホテル",             item:"Hilton GI Anaheim（2泊）",                jpy:  67996 },
-{ cat:"⚾ チケット",           item:"ドジャース観戦（2名）",                     usd: 530.20 },
+{ cat:"⚾ チケット",           item:"ドジャース観戦（2名）",                     usd: 530.20, jpy: 81636 },
 { cat:"⚾ ツアー",             item:"プリゲームツアー（2名）",                   jpy: 50172 },
 { cat:"🏰 Disney",            item:"チケット＋Lightning Lane 2日分（2名）",     jpy: 118435 },
 ];
@@ -678,7 +678,12 @@ const [selectedImage, setSelectedImage] = useState({ url:"", alt:"" });
 useEffect(() => {
   fetch('https://open.er-api.com/v6/latest/USD')
     .then(r => r.json())
-    .then(d => { if (d.result === 'success') setUsdJpy(Math.round(d.rates.JPY)); })
+    .then(d => {
+      const liveRate = Number(d?.rates?.JPY);
+      if (d?.result === 'success' && Number.isFinite(liveRate) && liveRate > 0) {
+        setUsdJpy(liveRate);
+      }
+    })
     .catch(() => {});
 }, []);
 
@@ -1391,7 +1396,7 @@ return (
     )}
     {/* ── 費用タブ ── */}
     {tab === "cost" && (() => {
-      const rate = usdJpy || 155;
+      const rate = usdJpy ?? 155;
       const fmt = n => Math.round(n).toLocaleString('ja-JP');
       const totalJpy = COSTS.reduce((s, c) => s + (c.jpy || 0) + (c.usd ? c.usd * rate : 0), 0);
       const totalNoFlight = totalJpy - 480280;
@@ -1407,7 +1412,7 @@ return (
               <div style={{ textAlign:"right", flexShrink:0, marginLeft:10 }}>
                 <div style={{ fontSize:9, color:"#8b949e", letterSpacing:0.5 }}>USD / JPY</div>
                 <div style={{ fontSize:16, fontWeight:800, color: usdJpy ? "#34d399" : "#8b949e", lineHeight:1.2 }}>
-                  ¥{rate}
+                  ¥{rate.toFixed(1)}
                 </div>
                 <div style={{ fontSize:9, color: usdJpy ? "#34d399" : "#fbbf24", fontWeight:700 }}>
                   {usdJpy ? "● ライブ" : "○ 参考値"}
