@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -29,32 +29,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build
         run: npm run build
-
-      - name: Update static assets for branch-deploy fallback
-        run: |
-          ASSET=$(ls dist/assets/*.js | head -1 | xargs basename)
-          cp "dist/assets/$ASSET" "assets/$ASSET"
-          python3 - "$ASSET" <<'EOF'
-import re, sys
-asset = sys.argv[1]
-with open('index.html') as f:
-    html = f.read()
-html = re.sub(
-    r'<script\b[^>]*></script>',
-    '<script type="module" crossorigin src="/LA-trip/assets/' + asset + '"></script>',
-    html
-)
-with open('index.html', 'w') as f:
-    f.write(html)
-EOF
-          git config user.email 'github-actions[bot]@users.noreply.github.com'
-          git config user.name 'github-actions[bot]'
-          git add "assets/$ASSET" index.html
-          git diff --staged --quiet || git commit -m "chore: update built assets [skip ci]" && git push origin main
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
