@@ -219,6 +219,55 @@ const MAP_ROUTES = [
 ]},
 ];
 
+
+
+function SmartImage({ imageUrl, altText, onZoom }) {
+  const safeImageUrl = sanitizeImageUrl(imageUrl);
+  const [loadError, setLoadError] = useState(false);
+
+  // ⚠️ 検索キーワードの無害化【＝危険な文字列混入を防ぐ】
+  const safeKeyword = typeof altText === "string" ? altText.trim().slice(0, 120) : "";
+  const encodedKeyword = encodeURIComponent(safeKeyword);
+  const googleSearchUrl = encodedKeyword ? `https://www.google.com/search?tbm=isch&q=${encodedKeyword}` : "";
+  const instagramSearchUrl = encodedKeyword ? `https://www.instagram.com/explore/tags/${encodedKeyword.replace(/%20/g, "")}/` : "";
+
+  if (!safeImageUrl || loadError) {
+    return (
+      <div style={{ minHeight:120, background:"#111827", borderBottom:"1px solid #30363d", color:"#8b949e", fontSize:11, padding:"10px", textAlign:"center" }}>
+        <div style={{ marginBottom:8 }}>画像を表示できませんでした（通信状況をご確認ください）</div>
+        <div style={{ display:"flex", gap:8, justifyContent:"center", flexWrap:"wrap" }}>
+          {googleSearchUrl ? (
+            <a href={googleSearchUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize:11, color:"#60a5fa", border:"1px solid #60a5fa66", borderRadius:6, padding:"4px 8px", textDecoration:"none" }}>
+              Google画像で探す
+            </a>
+          ) : null}
+          {instagramSearchUrl ? (
+            <a href={instagramSearchUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize:11, color:"#c084fc", border:"1px solid #c084fc66", borderRadius:6, padding:"4px 8px", textDecoration:"none" }}>
+              Instagramで探す
+            </a>
+          ) : null}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={onZoom}
+      style={{ padding:0, border:"none", width:"100%", background:"transparent", cursor:"zoom-in" }}
+      aria-label={`${altText} の画像を拡大表示`}
+    >
+      <img
+        src={safeImageUrl}
+        alt={altText}
+        style={{ width:"100%", height:120, objectFit:"cover", display:"block" }}
+        onError={() => setLoadError(true)}
+      />
+    </button>
+  );
+}
+
 const DANGER_ZONES = [
 { c:[[34.0518,-118.2430],[34.0518,-118.2228],[34.0408,-118.2228],[34.0408,-118.2430]], t:"⛔ Skid Row｜全米最大ホームレス密集地\n暴力犯罪・薬物蔓延。絶対立入禁止" },
 { c:[[34.0640,-118.2820],[34.0640,-118.2700],[34.0520,-118.2700],[34.0520,-118.2820]], t:"⛔ Westlake/MacArthur Park｜薬物売買・強盗多発" },
@@ -1269,16 +1318,7 @@ return (
             </div>
             {cat.items.map((item, ii) => (
               <div key={ii} style={{ background:"#161b22", borderRadius:10, marginBottom:8, border:`1px solid ${item.must ? "#34d39944" : "#21262d"}`, overflow:"hidden" }}>
-                {sanitizeImageUrl(item.img) ? (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedImage({ url:sanitizeImageUrl(item.img), alt:item.name })}
-                    style={{ padding:0, border:"none", width:"100%", background:"transparent", cursor:"zoom-in" }}
-                    aria-label={`${item.name} の画像を拡大表示`}
-                  >
-                    <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.currentTarget.style.display="none"; }} />
-                  </button>
-                ) : null}
+                <SmartImage imageUrl={item.img} altText={item.name} onZoom={() => setSelectedImage({ url:sanitizeImageUrl(item.img), alt:item.name })} />
                 <div style={{ padding:"10px 12px" }}>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:5 }}>
                     <div style={{ flex:1 }}>
@@ -1323,16 +1363,7 @@ return (
             </div>
             {cat.items.map((item, ii) => (
               <div key={ii} style={{ background:"#161b22", borderRadius:10, marginBottom:8, border:`1px solid ${cat.must ? "#c084fc33" : "#21262d"}`, overflow:"hidden" }}>
-                {sanitizeImageUrl(item.img) ? (
-                  <button
-                    type="button"
-                    onClick={() => setSelectedImage({ url:sanitizeImageUrl(item.img), alt:item.name })}
-                    style={{ padding:0, border:"none", width:"100%", background:"transparent", cursor:"zoom-in" }}
-                    aria-label={`${item.name} の画像を拡大表示`}
-                  >
-                    <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.currentTarget.style.display="none"; }} />
-                  </button>
-                ) : null}
+                <SmartImage imageUrl={item.img} altText={item.name} onZoom={() => setSelectedImage({ url:sanitizeImageUrl(item.img), alt:item.name })} />
                 <div style={{ padding:"10px 12px" }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:4 }}>
                   <span style={{ fontSize:13, fontWeight:"bold", color:"#e6edf3", flex:1 }}>{item.name}</span>
