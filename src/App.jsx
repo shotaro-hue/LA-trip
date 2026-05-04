@@ -1,5 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 
+// 画像URLを安全に扱うための最小バリデーション【＝危険なURLスキームを除外】
+function sanitizeImageUrl(rawUrl) {
+  if (typeof rawUrl !== "string") return "";
+  const trimmedUrl = rawUrl.trim();
+  if (!trimmedUrl) return "";
+  try {
+    const parsed = new URL(trimmedUrl);
+    return parsed.protocol === "https:" ? parsed.href : "";
+  } catch {
+    return "";
+  }
+}
+
 // ─────────────────────────────────────────────────────────
 // DESIGN TOKENS
 //   呼吸する余白: 8 / 14 / 18 の 3 段スペーシング
@@ -467,7 +480,7 @@ price:"$4〜8/枚",
 tag:"旅程直結",
 tagColor:"#60a5fa",
 desc:"1917年創業の歴史的フードホール。「Tacos Tumbras a Tomas」のバーベキュータコスや「Sarita's Pupuseria」のエルサルバドル料理など40店舗以上が集結。初日夕食・翌日ランチ両方で使える。",
-img:"",
+img:"https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Grand_Central_Market_-_Los_Angeles.jpg/320px-Grand_Central_Market_-_Los_Angeles.jpg",
 days:["8/20","8/21"],
 must:true,
 },
@@ -494,7 +507,7 @@ price:"$7〜9",
 tag:"絶対食べるべき",
 tagColor:"#ef4444",
 desc:"1958年から続くスタジアムの象徴。30cmの巨大ホットドッグで年間200万本以上売れる。スチームかグリルか選べる。グリル版がサクサクで旨い。ビールとセットで$20前後。",
-img:"",
+img:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Dodger_Stadium_field_from_the_loge_level.jpg/320px-Dodger_Stadium_field_from_the_loge_level.jpg",
 days:["8/22"],
 must:true,
 },
@@ -510,7 +523,7 @@ price:"$5〜10",
 tag:"西海岸限定",
 tagColor:"#fbbf24",
 desc:"西海岸でしか食べられないカリフォルニア発の国民的バーガー。必ず「Animal Style（アニマルスタイル）」を注文。グリルドオニオン＋特製ソースが絶品。帰りにLAX近くの店舗で食べるのが定番。",
-img:"",
+img:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/In-N-Out_Burger_hamburger_and_fries.jpg/320px-In-N-Out_Burger_hamburger_and_fries.jpg",
 days:["8/25"],
 must:true,
 },
@@ -526,7 +539,7 @@ price:"$8〜12",
 tag:"1939年創業の聖地",
 tagColor:"#c084fc",
 desc:"創業1939年のLA名物ホットドッグ店。セレブも通う老舗で深夜も営業。チリドッグ（$7〜）が看板メニュー。Hollywood観光のついでに立ち寄れる。並ぶ価値あり。",
-img:"",
+img:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Pink%27s_Hot_Dogs%2C_Los_Angeles.jpg/320px-Pink%27s_Hot_Dogs%2C_Los_Angeles.jpg",
 days:["8/21"],
 must:false,
 },
@@ -542,7 +555,7 @@ price:"$6〜9",
 tag:"ビーバー夫妻も通う",
 tagColor:"#34d399",
 desc:"Glassel Parkで自家焙煎したこだわりコーヒー。エスプレッソトニックやアイス抹茶ラテが話題。Justin Bieberも常連で知られる。Omniから徒歩15分のArts Districtにあり。",
-img:"",
+img:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/320px-A_small_cup_of_coffee.JPG",
 days:["8/21"],
 must:false,
 },
@@ -555,16 +568,16 @@ const GOODS = [
 category:"⚾ ドジャースグッズ",
 must:true,
 items:[
-{ name:"Dodgersキャップ（New Era 59Fifty）", price:"$38〜45", where:"Dodger Stadium・Downtown Disney", desc:"LAの象徴。本場のオフィシャルキャップはお土産の王道。試合当日スタジアムショップで買うのが一番盛り上がる。" },
-{ name:"大谷翔平 ユニフォーム #17", price:"$120〜180", where:"Dodger Stadium", desc:"本場ドジャースタジアムで購入した大谷ユニは最高の記念品。レプリカ（$50〜）でもテンション上がる。" },
-{ name:"ドジャードッグ グッズ", price:"$15〜30", where:"Dodger Stadium", desc:"ドジャードッグをモチーフにしたTシャツやぬいぐるみも人気。スタジアムショップで探してみて。" },
+{ name:"Dodgersキャップ（New Era 59Fifty）", price:"$38〜45", where:"Dodger Stadium・Downtown Disney", desc:"LAの象徴。本場のオフィシャルキャップはお土産の王道。試合当日スタジアムショップで買うのが一番盛り上がる。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Los_Angeles_Dodgers_Cap_Insignia.svg/320px-Los_Angeles_Dodgers_Cap_Insignia.svg.png" },
+{ name:"大谷翔平 ユニフォーム #17", price:"$120〜180", where:"Dodger Stadium", desc:"本場ドジャースタジアムで購入した大谷ユニは最高の記念品。レプリカ（$50〜）でもテンション上がる。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Shohei_Ohtani_%2851930056529%29_%28cropped%29.jpg/320px-Shohei_Ohtani_%2851930056529%29_%28cropped%29.jpg" },
+{ name:"ドジャードッグ グッズ", price:"$15〜30", where:"Dodger Stadium", desc:"ドジャードッグをモチーフにしたTシャツやぬいぐるみも人気。スタジアムショップで探してみて。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Hot_dog_with_mustard.png/320px-Hot_dog_with_mustard.png" },
 ]
 },
 {
 category:"🏰 ディズニーグッズ",
 must:true,
 items:[
-{ name:"ミッキーイヤーハット", price:"$30〜40", where:"Disneyland Park・Downtown Disney", desc:"ディズニーの定番お土産。名前入りにカスタマイズできる（+$10）。種類が豊富なのでお気に入りを探して。" },
+{ name:"ミッキーイヤーハット", price:"$30〜40", where:"Disneyland Park・Downtown Disney", desc:"ディズニーの定番お土産。名前入りにカスタマイズできる（+$10）。種類が豊富なのでお気に入りを探して。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Mickey_Mouse_head_and_ears.svg/320px-Mickey_Mouse_head_and_ears.svg.png" },
 { name:"限定スプーフィー", price:"$20〜25", where:"Disneyland Park", desc:"ディズニーランド限定のステッカーパック。荷物が軽くて安いのでお土産に最適。" },
 { name:"パーク限定フード（ミッキーワッフル等）", price:"$8〜12", where:"Disneyland Park内各所", desc:"ミッキー型のワッフルやプレッツェルはパーク内でしか食べられない体験型グルメ。写真映えも◎。" },
 ]
@@ -581,9 +594,9 @@ items:[
 category:"🎁 ばらまき土産",
 must:false,
 items:[
-{ name:"In-N-Out Burger ステッカー・Tシャツ", price:"$5〜20", where:"In-N-Out各店", desc:"In-N-Outのオフィシャルグッズはレア度が高くて喜ばれる。Tシャツ・ステッカー・トートなど種類豊富。" },
-{ name:"Griffith Observatory グッズ", price:"$10〜30", where:"Griffith Observatory ギフトショップ", desc:"星座モチーフのマグカップやTシャツ。「行ったよ」感が伝わるLAらしいお土産。" },
-{ name:"Venice Beach ブレスレット", price:"$2〜5/本", where:"Venice Boardwalk", desc:"ボードウォークの屋台で売っているカラフルなブレスレット。2本$5が相場。女友達へのプチギフトに最適。" },
+{ name:"In-N-Out Burger ステッカー・Tシャツ", price:"$5〜20", where:"In-N-Out各店", desc:"In-N-Outのオフィシャルグッズはレア度が高くて喜ばれる。Tシャツ・ステッカー・トートなど種類豊富。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/In-N-Out_Burger_hamburger_and_fries.jpg/320px-In-N-Out_Burger_hamburger_and_fries.jpg" },
+{ name:"Griffith Observatory グッズ", price:"$10〜30", where:"Griffith Observatory ギフトショップ", desc:"星座モチーフのマグカップやTシャツ。「行ったよ」感が伝わるLAらしいお土産。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Griffith_Observatory_%28Los_Angeles%29_2012.jpg/320px-Griffith_Observatory_%28Los_Angeles%29_2012.jpg" },
+{ name:"Venice Beach ブレスレット", price:"$2〜5/本", where:"Venice Boardwalk", desc:"ボードウォークの屋台で売っているカラフルなブレスレット。2本$5が相場。女友達へのプチギフトに最適。", img:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Venice_Beach_boardwalk.jpg/320px-Venice_Beach_boardwalk.jpg" },
 ]
 },
 ];
@@ -1255,8 +1268,8 @@ return (
             </div>
             {cat.items.map((item, ii) => (
               <div key={ii} style={{ background:"#161b22", borderRadius:10, marginBottom:8, border:`1px solid ${item.must ? "#34d39944" : "#21262d"}`, overflow:"hidden" }}>
-                {item.img ? (
-                  <img src={item.img} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.target.style.display="none"; }} />
+                {sanitizeImageUrl(item.img) ? (
+                  <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.target.style.display="none"; }} />
                 ) : null}
                 <div style={{ padding:"10px 12px" }}>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:5 }}>
@@ -1301,13 +1314,18 @@ return (
               {cat.must && <span style={{ fontSize:10, padding:"1px 7px", background:"#ef444422", color:"#ef4444", borderRadius:4, fontWeight:"bold" }}>必買</span>}
             </div>
             {cat.items.map((item, ii) => (
-              <div key={ii} style={{ background:"#161b22", borderRadius:10, padding:"10px 12px", marginBottom:8, border:`1px solid ${cat.must ? "#c084fc33" : "#21262d"}` }}>
+              <div key={ii} style={{ background:"#161b22", borderRadius:10, marginBottom:8, border:`1px solid ${cat.must ? "#c084fc33" : "#21262d"}`, overflow:"hidden" }}>
+                {sanitizeImageUrl(item.img) ? (
+                  <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.target.style.display="none"; }} />
+                ) : null}
+                <div style={{ padding:"10px 12px" }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:4 }}>
                   <span style={{ fontSize:13, fontWeight:"bold", color:"#e6edf3", flex:1 }}>{item.name}</span>
                   <span style={{ fontSize:12, fontWeight:"bold", color:"#c084fc", marginLeft:8, flexShrink:0 }}>{item.price}</span>
                 </div>
                 <div style={{ fontSize:10, color:"#60a5fa", marginBottom:5 }}>🏪 {item.where}</div>
                 <div style={{ fontSize:11, color:"#8b949e", lineHeight:1.6 }}>{item.desc}</div>
+                </div>
               </div>
             ))}
           </div>
