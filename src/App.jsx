@@ -624,6 +624,7 @@ const [tripMode, setTripMode] = useState("before");
 const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
 const [assigneeFilter, setAssigneeFilter] = useState("all");
 const [usdJpy, setUsdJpy] = useState(null);
+const [selectedImage, setSelectedImage] = useState({ url:"", alt:"" });
 
 useEffect(() => {
   fetch('https://open.er-api.com/v6/latest/USD')
@@ -1269,7 +1270,14 @@ return (
             {cat.items.map((item, ii) => (
               <div key={ii} style={{ background:"#161b22", borderRadius:10, marginBottom:8, border:`1px solid ${item.must ? "#34d39944" : "#21262d"}`, overflow:"hidden" }}>
                 {sanitizeImageUrl(item.img) ? (
-                  <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.target.style.display="none"; }} />
+                  <button
+                    type="button"
+                    onClick={() => setSelectedImage({ url:sanitizeImageUrl(item.img), alt:item.name })}
+                    style={{ padding:0, border:"none", width:"100%", background:"transparent", cursor:"zoom-in" }}
+                    aria-label={`${item.name} の画像を拡大表示`}
+                  >
+                    <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.currentTarget.style.display="none"; }} />
+                  </button>
                 ) : null}
                 <div style={{ padding:"10px 12px" }}>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:5 }}>
@@ -1316,7 +1324,14 @@ return (
             {cat.items.map((item, ii) => (
               <div key={ii} style={{ background:"#161b22", borderRadius:10, marginBottom:8, border:`1px solid ${cat.must ? "#c084fc33" : "#21262d"}`, overflow:"hidden" }}>
                 {sanitizeImageUrl(item.img) ? (
-                  <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.target.style.display="none"; }} />
+                  <button
+                    type="button"
+                    onClick={() => setSelectedImage({ url:sanitizeImageUrl(item.img), alt:item.name })}
+                    style={{ padding:0, border:"none", width:"100%", background:"transparent", cursor:"zoom-in" }}
+                    aria-label={`${item.name} の画像を拡大表示`}
+                  >
+                    <img src={sanitizeImageUrl(item.img)} alt={item.name} style={{ width:"100%", height:120, objectFit:"cover", display:"block" }} onError={e => { e.currentTarget.style.display="none"; }} />
+                  </button>
                 ) : null}
                 <div style={{ padding:"10px 12px" }}>
                 <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:4 }}>
@@ -1602,6 +1617,35 @@ return (
     )}
 
   </div>
+
+  {selectedImage.url && (
+    <div
+      onClick={() => setSelectedImage({ url:"", alt:"" })}
+      style={{
+        position:"fixed", inset:0, zIndex:9999, background:"rgba(0,0,0,0.82)",
+        display:"flex", alignItems:"center", justifyContent:"center", padding:16,
+      }}
+      role="button"
+      aria-label="画像プレビューを閉じる"
+    >
+      <div
+        style={{ maxWidth:540, width:"100%", background:"#0d1117", border:"1px solid #30363d", borderRadius:12, overflow:"hidden" }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"10px 12px", borderBottom:"1px solid #21262d" }}>
+          <div style={{ fontSize:12, color:"#e6edf3", fontWeight:"bold" }}>{selectedImage.alt || "画像プレビュー"}</div>
+          <button
+            type="button"
+            onClick={() => setSelectedImage({ url:"", alt:"" })}
+            style={{ background:"transparent", border:"1px solid #30363d", color:"#8b949e", borderRadius:6, padding:"2px 8px", cursor:"pointer", fontFamily:"inherit" }}
+          >
+            閉じる
+          </button>
+        </div>
+        <img src={selectedImage.url} alt={selectedImage.alt || "プレビュー画像"} style={{ width:"100%", maxHeight:"75vh", objectFit:"contain", background:"#111827" }} />
+      </div>
+    </div>
+  )}
 </div>
 
 );
