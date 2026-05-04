@@ -119,14 +119,12 @@ const RESERVATIONS = [
 ];
 
 const COSTS = [
-{ cat:"✈️ フライト（支払済）", item:"SQ プレエコ 往復（2名）",                    amount:"¥480,280" },
-{ cat:"🏨 ホテル",             item:"Omni LA（3泊）",                            amount:"¥134,640" },
-{ cat:"🏨 ホテル",             item:"Hilton GI Anaheim（2泊）",                  amount:"¥73,820" },
-{ cat:"⚾ チケット",           item:"ドジャース観戦（2名）",                       amount:"$530.20 ≒¥81,000" },
-{ cat:"⚾ ツアー",             item:"プリゲームツアー（2名）",                     amount:"$308.04 ≒¥49,000" },
-{ cat:"🏰 Disney",            item:"チケット＋Lightning Lane 2日分（2名）",       amount:"¥118,000" },
-{ cat:"🗺 確定合計（合計）",   item:"フライト込み総額",                             amount:"¥936,740" },
-{ cat:"🗺 確定合計（追加分）", item:"フライト除く（これから払う分）",                amount:"¥456,460" },
+{ cat:"✈️ フライト（支払済）", item:"SQ プレエコ 往復（2名）",                  jpy: 480280 },
+{ cat:"🏨 ホテル",             item:"Omni LA（3泊）",                          jpy: 134640 },
+{ cat:"🏨 ホテル",             item:"Hilton GI Anaheim（2泊）",                jpy:  73820 },
+{ cat:"⚾ チケット",           item:"ドジャース観戦（2名）",                     usd: 530.20 },
+{ cat:"⚾ ツアー",             item:"プリゲームツアー（2名）",                   usd: 308.04 },
+{ cat:"🏰 Disney",            item:"チケット＋Lightning Lane 2日分（2名）",     jpy: 118000 },
 ];
 
 const SAFETY_SPOTS = [
@@ -612,6 +610,14 @@ const [disneySubTab, setDisneySubTab] = useState("ll");
 const [tripMode, setTripMode] = useState("before");
 const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
 const [assigneeFilter, setAssigneeFilter] = useState("all");
+const [usdJpy, setUsdJpy] = useState(null);
+
+useEffect(() => {
+  fetch('https://open.er-api.com/v6/latest/USD')
+    .then(r => r.json())
+    .then(d => { if (d.result === 'success') setUsdJpy(Math.round(d.rates.JPY)); })
+    .catch(() => {});
+}, []);
 
 const undoneUrgent = todos.filter(t => !t.done && t.urgent).length;
 const undoneTotal  = todos.filter(t => !t.done).length;
@@ -1320,48 +1326,93 @@ return (
       </div>
     )}
     {/* ── 費用タブ ── */}
-    {tab === "cost" && (
-      <div>
-        <div style={{ background:"linear-gradient(135deg,#1c2e4a,#0d1117)", borderRadius:10, padding:"10px 14px", marginBottom:12, border:"1px solid #60a5fa44" }}>
-          <div style={{ fontSize:12, color:"#60a5fa", fontWeight:"bold" }}>💴 旅行費用まとめ（2名）</div>
-          <div style={{ fontSize:11, color:"#8b949e", marginTop:3 }}>確定済み費用と目安費用を一覧化</div>
-        </div>
-        {COSTS.map((c, i) => (
-          <div key={i} style={{
-            background: c.cat.includes("合計") ? "#1c2e4a" : "#161b22",
-            borderRadius:10, padding:"11px 14px", marginBottom:8,
-            border: c.cat.includes("合計") ? "1px solid #60a5fa88" : c.cat.includes("支払済") ? "1px solid #30363d" : "1px solid #21262d",
-            opacity: c.cat.includes("支払済") ? 0.6 : 1,
-          }}>
-            <div style={{ fontSize:10, color:"#8b949e", marginBottom:2 }}>{c.cat}</div>
-            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
-              <span style={{ fontSize:13, color:"#e6edf3" }}>{c.item}</span>
-              <span style={{ fontSize:14, fontWeight:"bold", color:
-                c.cat.includes("合計（合計）") ? "#60a5fa" :
-                c.cat.includes("合計（追加分）") ? "#34d399" : "#34d399"
-              }}>{c.amount}</span>
+    {tab === "cost" && (() => {
+      const rate = usdJpy || 155;
+      const fmt = n => Math.round(n).toLocaleString('ja-JP');
+      const totalJpy = COSTS.reduce((s, c) => s + (c.jpy || 0) + (c.usd ? c.usd * rate : 0), 0);
+      const totalNoFlight = totalJpy - 480280;
+      return (
+        <div>
+          {/* ヘッダー＋レートバッジ */}
+          <div style={{ background:"linear-gradient(135deg,#1c2e4a,#0d1117)", borderRadius:10, padding:"10px 14px", marginBottom:8, border:"1px solid #60a5fa44" }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+              <div>
+                <div style={{ fontSize:12, color:"#60a5fa", fontWeight:"bold" }}>💴 旅行費用まとめ（2名）</div>
+                <div style={{ fontSize:11, color:"#8b949e", marginTop:3 }}>確定済み費用と目安費用を一覧化</div>
+              </div>
+              <div style={{ textAlign:"right", flexShrink:0, marginLeft:10 }}>
+                <div style={{ fontSize:9, color:"#8b949e", letterSpacing:0.5 }}>USD / JPY</div>
+                <div style={{ fontSize:16, fontWeight:800, color: usdJpy ? "#34d399" : "#8b949e", lineHeight:1.2 }}>
+                  ¥{rate}
+                </div>
+                <div style={{ fontSize:9, color: usdJpy ? "#34d399" : "#fbbf24", fontWeight:700 }}>
+                  {usdJpy ? "● ライブ" : "○ 参考値"}
+                </div>
+              </div>
             </div>
           </div>
-        ))}
-        <div style={{ background:"#161b22", borderRadius:10, padding:"12px 14px", marginTop:4, border:"1px solid #21262d" }}>
-          <div style={{ fontSize:12, fontWeight:"bold", color:"#8b949e", marginBottom:8 }}>📊 未確定費用（目安）</div>
+
+          {/* 確定費用リスト */}
+          {COSTS.map((c, i) => {
+            const isPaid = c.cat.includes("支払済");
+            const jpyAmt = c.jpy ?? Math.round(c.usd * rate);
+            return (
+              <div key={i} style={{
+                background:"#161b22", borderRadius:10, padding:"11px 14px", marginBottom:8,
+                border:`1px solid ${isPaid ? "#30363d" : "#21262d"}`,
+                opacity: isPaid ? 0.55 : 1,
+              }}>
+                <div style={{ fontSize:10, color:"#8b949e", marginBottom:2 }}>{c.cat}</div>
+                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start" }}>
+                  <span style={{ fontSize:13, color:"#e6edf3", flex:1 }}>{c.item}</span>
+                  <div style={{ textAlign:"right", flexShrink:0, marginLeft:8 }}>
+                    {c.usd && <div style={{ fontSize:10, color:"#8b949e" }}>${c.usd.toFixed(2)}</div>}
+                    <div style={{ fontSize:14, fontWeight:"bold", color:"#34d399" }}>¥{fmt(jpyAmt)}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* 動的合計 */}
           {[
-            { item:"Uber合計（全日程）",  est:"$150〜200 ≒¥22,500〜30,000" },
-            { item:"食費（6日間・2名）",  est:"$300〜400 ≒¥45,000〜60,000" },
-            { item:"お土産・ショッピング", est:"お好みで" },
-          ].map((r, i) => (
-            <div key={i} style={{ display:"flex", justifyContent:"space-between", padding:"6px 0", borderBottom:"1px solid #21262d", fontSize:12 }}>
-              <span style={{ color:"#8b949e" }}>{r.item}</span>
-              <span style={{ color:"#fbbf24" }}>{r.est}</span>
+            { label:"フライト込み総額",             amount: totalJpy,      color:"#60a5fa" },
+            { label:"フライト除く（これから払う分）", amount: totalNoFlight, color:"#34d399" },
+          ].map((t, i) => (
+            <div key={i} style={{ background:"#1c2e4a", borderRadius:10, padding:"11px 14px", marginBottom:8, border:"1px solid #60a5fa66" }}>
+              <div style={{ fontSize:10, color:"#8b949e", marginBottom:2 }}>🗺 確定合計</div>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                <span style={{ fontSize:13, color:"#e6edf3" }}>{t.label}</span>
+                <span style={{ fontSize:14, fontWeight:"bold", color:t.color }}>¥{fmt(t.amount)}</span>
+              </div>
             </div>
           ))}
-          <div style={{ marginTop:10, paddingTop:8, borderTop:"1px solid #30363d", display:"flex", justifyContent:"space-between", fontSize:13 }}>
-            <span style={{ color:"#e6edf3", fontWeight:"bold" }}>🧮 総計目安（2名）</span>
-            <span style={{ color:"#60a5fa", fontWeight:"bold" }}>≒ ¥97〜100万</span>
+
+          {/* 未確定費用 */}
+          <div style={{ background:"#161b22", borderRadius:10, padding:"12px 14px", marginTop:4, border:"1px solid #21262d" }}>
+            <div style={{ fontSize:12, fontWeight:"bold", color:"#8b949e", marginBottom:8 }}>📊 未確定費用（目安）</div>
+            {[
+              { item:"Uber合計（全日程）",  lo:150, hi:200 },
+              { item:"食費（6日間・2名）",  lo:300, hi:400 },
+              { item:"お土産・ショッピング", lo:null, hi:null },
+            ].map((r, i) => (
+              <div key={i} style={{ display:"flex", justifyContent:"space-between", padding:"6px 0", borderBottom:"1px solid #21262d", fontSize:12 }}>
+                <span style={{ color:"#8b949e" }}>{r.item}</span>
+                <span style={{ color:"#fbbf24" }}>
+                  {r.lo ? `$${r.lo}〜${r.hi} ≒¥${fmt(r.lo*rate)}〜¥${fmt(r.hi*rate)}` : "お好みで"}
+                </span>
+              </div>
+            ))}
+            <div style={{ marginTop:10, paddingTop:8, borderTop:"1px solid #30363d", display:"flex", justifyContent:"space-between", fontSize:13 }}>
+              <span style={{ color:"#e6edf3", fontWeight:"bold" }}>🧮 総計目安（2名）</span>
+              <span style={{ color:"#60a5fa", fontWeight:"bold" }}>
+                ≒ ¥{fmt(totalJpy + 450*rate)}〜¥{fmt(totalJpy + 700*rate)}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    )}
+      );
+    })()}
     {tab === "safety" && (
       <div>
         <div style={{ background:"#161b22", borderRadius:10, padding:"12px 14px", marginBottom:10, border:"1px solid #ef444444" }}>
