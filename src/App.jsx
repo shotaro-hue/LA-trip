@@ -55,25 +55,25 @@ schedule:[
 ]
 },
 {
-id:"0821", label:"8/21 金", theme:"#34d399", icon:"🎨", title:"DTLA〜ハリウッド観光",
+id:"0821", label:"8/21 金", theme:"#34d399", icon:"🎨", title:"未定・候補比較日",
 schedule:[
-{ time:"9:00",  icon:"☕", title:"朝食",                         note:"ホテル近隣のカフェ or Grand Central Market" },
-{ time:"10:00", icon:"🎨", title:"The Broad",                    note:"⚠️ 事前予約必須（無料）。木曜は20:00まで開館。Jeff KoonsなどポップアートがSNS映え" },
-{ time:"12:15", icon:"🚡", title:"Angels Flight",                note:"The Broadから徒歩3分。世界最短ケーブルカー。乗らないと損！" },
-{ time:"12:30", icon:"🍴", title:"Grand Central Market ランチ",  note:"Angels Flightを降りて目の前。好きなものをチョイス" },
-{ time:"14:30", icon:"⭐", title:"Hollywood Walk of Fame",        note:"Uberで約20分。無料。スター探し・ストリートパフォーマー観覧。約75分" },
-{ time:"17:30", icon:"🔭", title:"Griffith Observatory",         note:"Uberで約10分。無料。夕景〜夜景が絶景🌆 ハリウッドサイン・LA夜景一望。22:00まで" },
-{ time:"22:00", icon:"🏨", title:"ホテルへ帰宅",                  note:"Uberでオムニへ" },
+{ time:"未定",   icon:"📝", title:"8/21 は未確定",                         note:"この日は確定旅程ではなく候補比較の日。前日までに1プランへ絞る前提で見る" },
+{ time:"Plan A", icon:"🎬", title:"Universal Studios Hollywood 終日", note:"朝から夜まで本命候補。移動は少なめで1日使い切る前提。行くなら他候補は入れず一本化" },
+{ time:"Plan B", icon:"⭐", title:"Hollywood Walk of Fame + Griffith Observatory", note:"定番観光の安全案。午後から夜景までつなげやすく、予約依存も比較的少ない" },
+{ time:"Plan C", icon:"🌊", title:"Santa Monica / Beverly Hills など軽め観光", note:"疲労調整を優先する軽めプラン。8/22 ドジャース観戦前に体力を残したい場合はこちら" },
+{ time:"判断",   icon:"✅", title:"前日までに確定",                       note:"予約要否・暑さ・体力・8/22の球場優先を見て最終決定する" },
 ]
 },
 {
-id:"0822", label:"8/22 土", theme:"#fbbf24", icon:"⚾", title:"サンタモニカ〜ドジャース観戦",
+id:"0822", label:"8/22 土", theme:"#fbbf24", icon:"⚾", title:"球場優先でサンタモニカ→ドジャース",
 schedule:[
-{ time:"9:00",  icon:"☕", title:"朝食",               note:"早めに出発準備。午後はスタジアムなので午前中がメイン観光" },
-{ time:"10:00", icon:"🌊", title:"Santa Monica Pier",  note:"Uberで約30分。ビーチ散歩・観覧車。Venice Beachは今日は時間的に見送り" },
-{ time:"12:30", icon:"🏨", title:"ホテルへ戻る",       note:"シャワー・着替え・観戦準備。早めに切り上げてOK" },
-{ time:"13:30", icon:"🚗", title:"スタジアムへ出発",   note:"Uberで約15分。14:30頃着を目標に余裕を持って出発" },
-{ time:"14:30", icon:"🏟", title:"Dodger Stadium着",   note:"プリゲームツアー集合。入場・グラウンド見学など" },
+{ time:"8:30",  icon:"☕", title:"朝食",               note:"今日は球場優先日。サンタモニカは短時間だけにして、午後の移動余白を厚めに取る" },
+{ time:"9:30",  icon:"🚗", title:"Santa Monicaへ出発", note:"Uberで約30〜40分想定。渋滞が重ければ現地滞在はさらに短縮してOK" },
+{ time:"10:15", icon:"🌊", title:"Santa Monica Pier",  note:"散歩と写真中心。Venice Beachまでは広げず、無理に詰め込まない" },
+{ time:"11:45", icon:"↩️", title:"Santa Monica撤収",   note:"球場優先で早めに戻る。暑さや疲労が強ければここで即撤収判断" },
+{ time:"12:30", icon:"🏨", title:"ホテルへ戻る",       note:"シャワー・着替え・休憩・観戦準備。昼食はホテル周辺か移動前に軽く" },
+{ time:"13:15", icon:"🚗", title:"スタジアムへ出発",   note:"Uberで約20〜30分想定。14:15頃着を目標にしてプリゲームツアーを最優先" },
+{ time:"14:15", icon:"🏟", title:"Dodger Stadium着",   note:"プリゲームツアー集合前に入場動線を消化。売店・トイレ位置もここで確認" },
 { time:"15:00", icon:"🎤", title:"プリゲームツアー開始", note:"試合3時間前スタート。グラウンド・ロッカールーム・プレス席など裏側を見学" },
 { time:"17:15", icon:"⚾", title:"観戦席へ着席",       note:"Section 127LG Row K Seats 3,4\nドジャードッグ・ビールを早めに確保！" },
 { time:"18:10", icon:"⚾", title:"Pirates vs Dodgers 試合開始", note:"土曜ナイターは最高の雰囲気！" },
@@ -81,11 +81,11 @@ schedule:[
 ]
 },
 {
-id:"0823", label:"8/23 日", theme:"#f87171", icon:"🏰", title:"アナハイム移動→ディズニー初日",
+id:"0823", label:"8/23 日", theme:"#f87171", icon:"🏰", title:"アナハイム移動→ディズニー初日（12:00入園）",
 schedule:[
 { time:"9:30",  icon:"🚪", title:"Omniチェックアウト",     note:"荷物まとめてUberでアナハイムへ（約1時間）" },
 { time:"11:00", icon:"🏩", title:"Hilton Garden Inn着",    note:"チェックインは15:00〜なので荷物だけ預けてそのままDisneyへ" },
-{ time:"12:00", icon:"🏰", title:"Disneyland Park 入園",   note:"📍 本日はDisneyland Park\nCalifornia Adventureは18時閉園のため本日は行かない\n⚠️ チケット＋Lightning Lane事前購入必須！開園23:00まで" },
+{ time:"12:00", icon:"🏰", title:"Disneyland Park 入園",   note:"📍 本日はDisneyland Park\n12時入園なので朝イチ攻略日ではない。完全制覇ではなく、雰囲気・パレード・グリーティング・主要アトラクションをLightning Laneで拾う日として動く\n⚠️ チケット＋Lightning Lane事前購入必須！開園23:00まで" },
 { time:"23:00", icon:"🏩", title:"ホテルへ",               note:"徒歩10分。疲れを取ってしっかり休もう" },
 ]
 },
@@ -99,12 +99,14 @@ schedule:[
 ]
 },
 {
-id:"0825", label:"8/25 火", theme:"#fb923c", icon:"🛍", title:"帰国日",
+id:"0825", label:"8/25 火", theme:"#fb923c", icon:"🛍", title:"帰国日（LAX前倒し）",
 schedule:[
-{ time:"9:00",  icon:"🚪", title:"ヒルトンGIチェックアウト",  note:"荷物を持ってDowntown Disneyへ徒歩5分" },
-{ time:"9:30",  icon:"🛍", title:"Downtown Disney お土産タイム", note:"入場無料・朝7:00から営業。ディズニーグッズのお土産はここで！重量に注意" },
-{ time:"11:30", icon:"🚗", title:"UberでLAXへ出発",           note:"アナハイムからLAXまで約1時間。余裕を持って" },
-{ time:"12:30", icon:"✈️", title:"LAX着・チェックイン・出国審査", note:"国際線は2時間前チェックインを推奨" },
+{ time:"8:00",  icon:"🧳", title:"起床・荷造り",                note:"朝のうちにパッキング完了。忘れ物と重量をここで最終確認" },
+{ time:"8:45",  icon:"🚪", title:"Hilton Garden Inn チェックアウト",  note:"フロントで手続き後、Downtown Disneyへ移動" },
+{ time:"9:00",  icon:"🛍", title:"Downtown Disneyを軽く散策", note:"買い足しではなく最終確認メイン。長居せず、10時台前半で切り上げる" },
+{ time:"10:15", icon:"🧳", title:"Hiltonへ戻る・荷物回収",      note:"そのまま配車に乗れる状態まで整える" },
+{ time:"10:30", icon:"🚗", title:"Uber / LyftでLAXへ出発",     note:"アナハイム→LAXは渋滞込みで見る。ここは前倒し固定で動く" },
+{ time:"11:30", icon:"✈️", title:"LAX到着目標",                note:"11:30〜12:00到着を狙う。チェックイン列・保安検査まで含めて安全側" },
 { time:"14:20", icon:"✈️", title:"LAX発（SQ11）",             note:"→ 翌8/26 17:50 成田着" },
 ]
 },
@@ -112,7 +114,7 @@ schedule:[
 
 const TODOS = [
 { done:false, urgent:true,  text:"ESTA申請（米国入国に必須・渡航72時間前までに）", url:"https://esta.cbp.dhs.gov/", assignee:"👤 Aki", due:"8/17", notify:"72時間前" },
-{ done:false, urgent:true,  text:"The Broad 入場予約（無料・要事前予約）",          url:"https://www.thebroad.org/", assignee:"👤 Ken", due:"8/10", notify:"1週間前" },
+{ done:false, urgent:true,  text:"8/21候補の予約要否確認（Universal / The Broad など）", url:"https://www.thebroad.org/", assignee:"👤 Ken", due:"8/10", notify:"1週間前" },
 { done:true,  urgent:false, text:"ディズニーチケット購入（公式アプリ）",            url:"https://disneyland.disney.go.com/", assignee:"👤 Ken", due:"8/05", notify:"購入後共有" },
 { done:true,  urgent:false, text:"Lightning Lane パス購入（公式ディズニーアプリ）", url:"https://disneyland.disney.go.com/", assignee:"👤 Ken", due:"8/16", notify:"前日" },
 { done:true,  urgent:false, text:"ドジャース プリゲームツアー購入（15:00〜）",      url:"https://www.mlb.com/dodgers/ballpark/tours", assignee:"👤 Ken", due:"8/08", notify:"購入後共有" },
@@ -167,21 +169,22 @@ const MAP_SPOTS = [
 { d:"0820", n:"LAX 国際空港",           lat:33.9425, lng:-118.4081, em:"✈️", desc:"12:50着 SQ12 成田→LAX" },
 { d:"0820", n:"Omni Los Angeles",        lat:34.0526, lng:-118.2506, em:"🏨", desc:"15:00〜 チェックイン\n8/20–23 3泊 ¥134,640" },
 { d:"0820", n:"Grand Central Market",    lat:34.0509, lng:-118.2491, em:"🍴", desc:"16:30〜 初日夕食" },
-{ d:"0821", n:"Omni（2泊目）",           lat:34.0526, lng:-118.2506, em:"🏨", desc:"本日の宿泊先 Omni LA" },
-{ d:"0821", n:"Olvera Street",           lat:34.0576, lng:-118.2379, em:"🌮", desc:"9:00〜 LAで最も古い歴史的通り" },
-{ d:"0821", n:"Angels Flight",           lat:34.0516, lng:-118.2506, em:"🚡", desc:"10:00〜 $1.50の世界最短ケーブルカー" },
-{ d:"0821", n:"Hollywood Walk of Fame",  lat:34.1016, lng:-118.3296, em:"⭐", desc:"13:00〜 無料 スター探し散策" },
-{ d:"0821", n:"Griffith Observatory",    lat:34.1184, lng:-118.3004, em:"🔭", desc:"15:00〜 無料 夕景〜夜景が絶景" },
+{ d:"0821", n:"Omni（2泊目）",           lat:34.0526, lng:-118.2506, em:"🏨", desc:"本日の宿泊先 Omni LA\nこの日は未定・候補比較" },
+{ d:"0821", n:"Universal Studios Hollywood", lat:34.1381, lng:-118.3534, em:"🎬", desc:"Plan A 終日候補\n朝から夜まで一本化する前提" },
+{ d:"0821", n:"Hollywood Walk of Fame",  lat:34.1016, lng:-118.3296, em:"⭐", desc:"Plan B 候補\nハリウッド定番散策" },
+{ d:"0821", n:"Griffith Observatory",    lat:34.1184, lng:-118.3004, em:"🔭", desc:"Plan B 候補\n夕景〜夜景の主役" },
+{ d:"0821", n:"Santa Monica Pier",       lat:34.0083, lng:-118.4988, em:"🌊", desc:"Plan C 候補\n軽め観光ならここ" },
+{ d:"0821", n:"Beverly Hills",           lat:34.0736, lng:-118.4004, em:"💎", desc:"Plan C 候補\nSanta Monicaと組み合わせ候補" },
 { d:"0822", n:"Omni（3泊目）",           lat:34.0526, lng:-118.2506, em:"🏨", desc:"本日の宿泊先 Omni LA" },
-{ d:"0822", n:"Santa Monica Pier",       lat:34.0083, lng:-118.4988, em:"🌊", desc:"10:00〜 ビーチ散歩・観覧車\n12:30撤収→ホテルへ" },
-{ d:"0822", n:"Dodger Stadium",          lat:34.0739, lng:-118.2400, em:"⚾", desc:"13:30出発・14:30着\n15:00〜 プリゲームツアー\n18:10 Pirates vs Dodgers\nSection 127LG Row K Seats 3–4" },
+{ d:"0822", n:"Santa Monica Pier",       lat:34.0083, lng:-118.4988, em:"🌊", desc:"10:15〜 短時間散策\n11:45撤収で球場優先" },
+{ d:"0822", n:"Dodger Stadium",          lat:34.0739, lng:-118.2400, em:"⚾", desc:"13:15出発・14:15着目標\n15:00〜 プリゲームツアー\n18:10 Pirates vs Dodgers\nSection 127LG Row K Seats 3–4" },
 { d:"0823", n:"Omni チェックアウト",      lat:34.0536, lng:-118.2516, em:"🚪", desc:"9:30 チェックアウト → アナハイムへ" },
 { d:"0823", n:"Hilton Garden Inn Anaheim",lat:33.8117,lng:-117.9123, em:"🏩", desc:"11:00〜 チェックイン\n8/23–25 2泊 ¥67,996" },
-{ d:"0823", n:"Disneyland Park",         lat:33.8121, lng:-117.9190, em:"🏰", desc:"12:00〜 ⚠️ Lightning Lane事前購入必須！" },
+{ d:"0823", n:"Disneyland Park",         lat:33.8121, lng:-117.9190, em:"🏰", desc:"12:00〜 入園\n完全制覇ではなく主要どころをLightning Laneで拾う日" },
 { d:"0824", n:"Hilton（2泊目）",          lat:33.8117, lng:-117.9123, em:"🏩", desc:"本日の宿泊先 Hilton Garden Inn" },
 { d:"0824", n:"California Adventure",    lat:33.8062, lng:-117.9199, em:"🎢", desc:"8:00〜 開園同時入場！\nRadiator Springs Racers最優先" },
-{ d:"0825", n:"Hilton チェックアウト",    lat:33.8117, lng:-117.9123, em:"🏩", desc:"チェックアウト後 Downtown Disney経由LAXへ" },
-{ d:"0825", n:"Downtown Disney",         lat:33.8098, lng:-117.9238, em:"🛍", desc:"9:30〜 入場無料 お土産タイム" },
+{ d:"0825", n:"Hilton チェックアウト",    lat:33.8117, lng:-117.9123, em:"🏩", desc:"8:45 チェックアウト\n10:15に荷物回収して空港へ" },
+{ d:"0825", n:"Downtown Disney",         lat:33.8098, lng:-117.9238, em:"🛍", desc:"9:00〜 軽く散策・最終確認\n10:30には空港へ出発" },
 { d:"0825", n:"LAX（帰）",               lat:33.9435, lng:-118.4071, em:"✈️", desc:"14:20発 SQ11 → 翌8/26 17:50 成田着" },
 { d:"cand",  n:"Rodeo Drive",            lat:34.0678, lng:-118.4016, em:"💎", desc:"追加候補 グリフィス帰りUber15分" },
 ];
@@ -192,17 +195,19 @@ const MAP_ROUTES = [
 { wp:[[34.0526,-118.2506],[34.0509,-118.2491]], mode:"🚶 徒歩",  time:"約3分",  label:"Omni → Grand Central Market" },
 ]},
 { d:"0821", segs:[
-{ wp:[[34.0526,-118.2506],[34.0576,-118.2379]], mode:"🚶 徒歩",  time:"約15分", label:"Omni → Olvera Street" },
-{ wp:[[34.0576,-118.2379],[34.0516,-118.2506]], mode:"🚶 徒歩",  time:"約12分", label:"Olvera Street → Angels Flight" },
-{ wp:[[34.0516,-118.2506],[34.0509,-118.2491]], mode:"🚡+🚶",   time:"約5分",  label:"Angels Flight → Grand Central" },
-{ wp:[[34.0509,-118.2491],[34.1016,-118.3296]], mode:"🚗 Uber",  time:"約20分", label:"Grand Central → Hollywood" },
-{ wp:[[34.1016,-118.3296],[34.1184,-118.3004]], mode:"🚗 Uber",  time:"約15分", label:"Hollywood → Griffith" },
-{ wp:[[34.1184,-118.3004],[34.0526,-118.2506]], mode:"🚗 Uber",  time:"約25分", label:"Griffith → Omni" },
+{ wp:[[34.0526,-118.2506],[34.1381,-118.3534]], mode:"🚗 Uber",  time:"約25〜35分", label:"Plan A: Omni → Universal Studios" },
+{ wp:[[34.1381,-118.3534],[34.0526,-118.2506]], mode:"🚗 Uber",  time:"約25〜35分", label:"Plan A: Universal → Omni" },
+{ wp:[[34.0526,-118.2506],[34.1016,-118.3296]], mode:"🚗 Uber",  time:"約20分", label:"Plan B: Omni → Hollywood" },
+{ wp:[[34.1016,-118.3296],[34.1184,-118.3004]], mode:"🚗 Uber",  time:"約15分", label:"Plan B: Hollywood → Griffith" },
+{ wp:[[34.1184,-118.3004],[34.0526,-118.2506]], mode:"🚗 Uber",  time:"約25分", label:"Plan B: Griffith → Omni" },
+{ wp:[[34.0526,-118.2506],[34.0083,-118.4988]], mode:"🚗 Uber",  time:"約30〜40分", label:"Plan C: Omni → Santa Monica" },
+{ wp:[[34.0083,-118.4988],[34.0736,-118.4004]], mode:"🚗 Uber",  time:"約20分", label:"Plan C: Santa Monica → Beverly Hills" },
+{ wp:[[34.0736,-118.4004],[34.0526,-118.2506]], mode:"🚗 Uber",  time:"約20〜30分", label:"Plan C: Beverly Hills → Omni" },
 ]},
 { d:"0822", segs:[
-{ wp:[[34.0526,-118.2506],[34.0083,-118.4988]], mode:"🚗 Uber",  time:"約30分", label:"Omni → Santa Monica Pier" },
-{ wp:[[34.0083,-118.4988],[34.0526,-118.2506]], mode:"🚗 Uber",  time:"約30分", label:"Santa Monica → Omni（12:30撤収）" },
-{ wp:[[34.0526,-118.2506],[34.0739,-118.2400]], mode:"🚗 Uber",  time:"約15分", label:"Omni → Dodger Stadium（13:30出発）" },
+{ wp:[[34.0526,-118.2506],[34.0083,-118.4988]], mode:"🚗 Uber",  time:"約30〜40分", label:"Omni → Santa Monica Pier" },
+{ wp:[[34.0083,-118.4988],[34.0526,-118.2506]], mode:"🚗 Uber",  time:"約30〜40分", label:"Santa Monica → Omni（11:45撤収）" },
+{ wp:[[34.0526,-118.2506],[34.0739,-118.2400]], mode:"🚗 Uber",  time:"約20〜30分", label:"Omni → Dodger Stadium（13:15出発）" },
 { wp:[[34.0739,-118.2400],[34.0526,-118.2506]], mode:"🚗 Uber",  time:"約15分", label:"Dodger Stadium → Omni" },
 ]},
 { d:"0823", segs:[
@@ -215,7 +220,7 @@ const MAP_ROUTES = [
 ]},
 { d:"0825", segs:[
 { wp:[[33.8117,-117.9123],[33.8098,-117.9238]], mode:"🚶 徒歩",  time:"約8分",  label:"Hilton → Downtown Disney" },
-{ wp:[[33.8098,-117.9238],[33.9425,-118.4081]], mode:"🚗 Uber",  time:"約40〜50分", label:"Downtown Disney → LAX" },
+{ wp:[[33.8098,-117.9238],[33.9425,-118.4081]], mode:"🚗 Uber",  time:"約60〜90分", label:"Downtown Disney → LAX（10:30出発）" },
 ]},
 ];
 
@@ -571,9 +576,9 @@ location:"LAX近く・市内複数店舗",
 price:"$5〜10",
 tag:"西海岸限定",
 tagColor:"#fbbf24",
-desc:"西海岸でしか食べられないカリフォルニア発の国民的バーガー。必ず「Animal Style（アニマルスタイル）」を注文。グリルドオニオン＋特製ソースが絶品。帰りにLAX近くの店舗で食べるのが定番。",
+desc:"西海岸でしか食べられないカリフォルニア発の国民的バーガー。必ず「Animal Style（アニマルスタイル）」を注文。グリルドオニオン＋特製ソースが絶品。今回は帰国日の空港優先なので、食べるなら別日か時間に余裕がある時に。",
 img:"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/In-N-Out_Burger_hamburger_and_fries.jpg/320px-In-N-Out_Burger_hamburger_and_fries.jpg",
-days:["8/25"],
+days:["8/20","8/21","8/22"],
 must:true,
 },
 ]
@@ -940,7 +945,7 @@ return (
         {/* ヘッダー */}
         <div style={{ background:"linear-gradient(135deg,#1c1030,#0d1117)", borderRadius:10, padding:"10px 14px", marginBottom:12, border:"1px solid #c084fc44" }}>
           <div style={{ fontSize:12, color:"#c084fc", fontWeight:"bold" }}>🏰 Disney パーク ガイド</div>
-          <div style={{ fontSize:11, color:"#8b949e", marginTop:3 }}>8/23 Disneyland Park｜8/24 California Adventure</div>
+          <div style={{ fontSize:11, color:"#8b949e", marginTop:3 }}>8/23 Disneyland Park は12:00入園｜完全制覇ではなく優先順位運用 / 8/24 California Adventure は開園同時入場</div>
         </div>
 
         {/* サブタブ */}
@@ -979,8 +984,8 @@ return (
             {[
               {
                 park:"🏰 8/23 Disneyland Park", parkColor:"#f87171",
-                note:"開園23:00まで。入園後すぐにLightning LaneをアプリでBookすること！",
-                tip:"最初のLL予約は Indiana Jones Adventure か Space Mountain がおすすめ",
+                note:"12:00入園なので朝イチ攻略は不可。開園23:00まで使って、雰囲気・パレード・グリーティング・主要アトラクションを優先して拾う",
+                tip:"最初のLL予約は Indiana Jones Adventure か Space Mountain。全部乗るより、人気どころを外さない運用がおすすめ",
                 attractions:[
                   { name:"Indiana Jones Adventure",          ll:"multi",  priority:"🔥 最優先", note:"序盤に予約。窓が早く埋まる",           rating:5 },
                   { name:"Space Mountain",                   ll:"multi",  priority:"🔥 最優先", note:"早めに予約。深夜が最高",               rating:5 },
@@ -1387,7 +1392,7 @@ return (
             "SQプレエコ: 預け入れ23kg × 2個（1人あたり）",
             "帰りは+5kg程度を想定して余裕を持って",
             "液体類（ホットソース等）は預け入れ荷物に",
-            "ディズニー土産はDowntown Disneyで最後にまとめ買い",
+            "ディズニー土産は前日まで中心。当日はDowntown Disneyで軽い確認だけにする",
           ].map((tip,i) => (
             <div key={i} style={{ fontSize:11, color:"#8b949e", marginBottom:4, paddingLeft:10, borderLeft:"2px solid #fbbf2466", lineHeight:1.6 }}>{tip}</div>
           ))}
