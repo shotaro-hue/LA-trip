@@ -964,9 +964,288 @@ function DisneyDetailMapImage({ map, theme, onZoom, alt }) {
   );
 }
 
+const OFFICIAL_DISNEY_DETAIL_MAPS = {
+"0823": {
+  theme:"#f87171",
+  parkTitle:"8/23 Disneyland Park",
+  overview:{
+    title:"蜈ｨ菴謎ｿｯ迸ｰ",
+    subtitle:"公式ガイドマップを土台に、入園後の進行方向と 15:00 パレード固定導線を重ねた全体像",
+    imageUrl:"/disneyland-official-map.png",
+    imageWidth:3243,
+    imageHeight:1531,
+    crop:{ x:14, y:10, w:70, h:80 },
+    highlights:[
+      { x:12, y:58, w:18, h:17, label:"Adventure / Indy", color:"#f59e0b" },
+      { x:35, y:41, w:16, h:20, label:"Parade hub", color:"#fb7185" },
+      { x:67, y:42, w:17, h:16, label:"Tomorrowland", color:"#60a5fa" },
+    ],
+    routes:[
+      { points:[[49,93],[49,79],[34,62],[43,53],[75,50]], color:"#f87171", dashed:false },
+    ],
+    markers:[
+      { x:49, y:93, label:"Entry", color:"#f87171" },
+      { x:31, y:60, label:"Indy", color:"#f59e0b" },
+      { x:43, y:51, label:"15:00 Parade", color:"#fb7185" },
+      { x:76, y:50, label:"Space", color:"#60a5fa" },
+    ],
+    badges:["公式ガイドマップ","乗り物優先","15:00 パレード固定"],
+  },
+  locals:[
+    {
+      title:"12:00-14:15 螻謇蝗ｳ",
+      subtitle:"Adventureland / New Orleans Square / Frontierland を左から順に消化",
+      imageUrl:"/disneyland-official-map.png",
+      imageWidth:3243,
+      imageHeight:1531,
+      crop:{ x:17, y:31, w:39, h:40 },
+      highlights:[
+        { x:10, y:44, w:25, h:30, label:"Adventureland", color:"#f59e0b" },
+        { x:47, y:34, w:24, h:31, label:"New Orleans", color:"#fb923c" },
+        { x:66, y:20, w:22, h:22, label:"Frontierland", color:"#fbbf24" },
+      ],
+      routes:[
+        { points:[[13,81],[27,63],[52,59],[76,42]], color:"#f59e0b", dashed:false },
+      ],
+      markers:[
+        { x:13, y:81, label:"From hub", color:"#f87171" },
+        { x:26, y:62, label:"Indy", color:"#f59e0b" },
+        { x:52, y:60, label:"Pirates", color:"#fb923c" },
+        { x:76, y:42, label:"Big Thunder", color:"#fbbf24" },
+      ],
+      badges:["LL: Indy","近ければ Pirates","左エリアで固める"],
+    },
+    {
+      title:"15:00 繝代Ξ繝ｼ繝牙捉霎ｺ",
+      subtitle:"Parade 観賞位置を固定しつつ、終了後は Tomorrowland 側へ抜ける",
+      imageUrl:"/disneyland-official-map.png",
+      imageWidth:3243,
+      imageHeight:1531,
+      crop:{ x:35, y:38, w:26, h:41 },
+      highlights:[
+        { x:15, y:18, w:38, h:20, label:"Parade route", color:"#fb7185" },
+        { x:56, y:43, w:18, h:18, label:"East exit", color:"#60a5fa" },
+      ],
+      routes:[
+        { points:[[19,69],[35,60],[50,52],[70,55]], color:"#fb7185", dashed:false },
+        { points:[[70,55],[83,55],[92,60]], color:"#60a5fa", dashed:true },
+      ],
+      markers:[
+        { x:18, y:70, label:"View", color:"#fb7185" },
+        { x:50, y:51, label:"15:00 Parade", color:"#fb7185" },
+        { x:92, y:61, label:"To Tomorrow", color:"#60a5fa" },
+      ],
+      badges:["15:00 固定","早すぎる移動はしない","終演後に東へ"],
+    },
+    {
+      title:"15:40莉･髯・螻謇蝗ｳ",
+      subtitle:"Space Mountain を軸に、状況次第で Matterhorn まで回収",
+      imageUrl:"/disneyland-official-map.png",
+      imageWidth:3243,
+      imageHeight:1531,
+      crop:{ x:58, y:35, w:29, h:34 },
+      highlights:[
+        { x:43, y:36, w:20, h:18, label:"Space", color:"#60a5fa" },
+        { x:64, y:24, w:20, h:19, label:"Matterhorn", color:"#c084fc" },
+      ],
+      routes:[
+        { points:[[17,73],[40,51],[54,45]], color:"#60a5fa", dashed:false },
+        { points:[[54,45],[67,35]], color:"#c084fc", dashed:true },
+      ],
+      markers:[
+        { x:17, y:73, label:"From parade", color:"#f87171" },
+        { x:54, y:45, label:"Space", color:"#60a5fa" },
+        { x:69, y:34, label:"Matterhorn", color:"#c084fc" },
+      ],
+      badges:["LL: Space","状況次第で Matterhorn","夜は逆走しない"],
+    },
+  ],
+},
+"0824": {
+  theme:"#c084fc",
+  parkTitle:"8/24 California Adventure",
+  overview:{
+    title:"蜈ｨ菴謎ｿｯ迸ｰ",
+    subtitle:"公式ガイドマップ上で、朝の Cars / Avengers 起点から夜の World of Color までを一本化",
+    imageUrl:"/dca-official-map.png",
+    imageWidth:3138,
+    imageHeight:1425,
+    crop:{ x:17, y:14, w:72, h:80 },
+    highlights:[
+      { x:36, y:23, w:16, h:18, label:"Cars Land", color:"#f87171" },
+      { x:31, y:58, w:18, h:16, label:"Avengers", color:"#a78bfa" },
+      { x:66, y:31, w:22, h:21, label:"Pixar Pier", color:"#22c55e" },
+      { x:56, y:52, w:20, h:14, label:"World of Color", color:"#38bdf8" },
+    ],
+    routes:[
+      { points:[[46,92],[44,72],[39,37],[32,62],[72,44],[63,57]], color:"#c084fc", dashed:false },
+    ],
+    markers:[
+      { x:46, y:92, label:"Entry", color:"#c084fc" },
+      { x:40, y:35, label:"Cars SP", color:"#f87171" },
+      { x:32, y:63, label:"WEB / Guardians", color:"#a78bfa" },
+      { x:72, y:44, label:"Pixar Pier", color:"#22c55e" },
+      { x:63, y:58, label:"WOC", color:"#38bdf8" },
+    ],
+    badges:["公式ガイドマップ","Cars Single Pass","World of Color 固定"],
+  },
+  locals:[
+    {
+      title:"髢句恍逶ｴ蠕・螻謇蝗ｳ",
+      subtitle:"Single Pass を取って Cars Land へ、戻りは Avengers Campus 側へ寄せる",
+      imageUrl:"/dca-official-map.png",
+      imageWidth:3138,
+      imageHeight:1425,
+      crop:{ x:26, y:16, w:33, h:53 },
+      highlights:[
+        { x:36, y:8, w:23, h:26, label:"Cars", color:"#f87171" },
+        { x:12, y:65, w:26, h:20, label:"Avengers", color:"#a78bfa" },
+      ],
+      routes:[
+        { points:[[61,92],[57,55],[39,24],[23,75]], color:"#c084fc", dashed:false },
+      ],
+      markers:[
+        { x:61, y:92, label:"From entry", color:"#c084fc" },
+        { x:38, y:24, label:"Cars SP", color:"#f87171" },
+        { x:22, y:76, label:"WEB / Guardians", color:"#a78bfa" },
+      ],
+      badges:["朝の最優先","Cars SP 先取り","戻りは Avengers"],
+    },
+    {
+      title:"蜊亥ｾ・螻謇蝗ｳ",
+      subtitle:"Toy Story / Incredicoaster を回収しながら、最終的に Paradise Bay へ寄せる",
+      imageUrl:"/dca-official-map.png",
+      imageWidth:3138,
+      imageHeight:1425,
+      crop:{ x:56, y:18, w:30, h:49 },
+      highlights:[
+        { x:18, y:15, w:48, h:32, label:"Pixar Pier", color:"#22c55e" },
+        { x:42, y:48, w:34, h:16, label:"World of Color", color:"#38bdf8" },
+      ],
+      routes:[
+        { points:[[28,28],[50,26],[63,45]], color:"#22c55e", dashed:false },
+        { points:[[63,45],[73,58]], color:"#38bdf8", dashed:true },
+      ],
+      markers:[
+        { x:28, y:28, label:"Toy Story", color:"#22c55e" },
+        { x:50, y:26, label:"Incredi", color:"#22c55e" },
+        { x:74, y:59, label:"WOC area", color:"#38bdf8" },
+      ],
+      badges:["午後の回収","夜は Paradise Bay","WOC へそのまま残る"],
+    },
+  ],
+},
+};
+
+function OfficialDisneyDetailMapImage({ map, theme, alt, onZoom, expanded = false }) {
+  const crop = map.crop || { x:0, y:0, w:100, h:100 };
+  const cropAspectRatio = ((map.imageWidth || 1) * crop.w) / ((map.imageHeight || 1) * crop.h);
+  const imageWidthPct = 100 / crop.w * 100;
+  const imageHeightPct = 100 / crop.h * 100;
+  const imageLeftPct = -(crop.x / crop.w) * 100;
+  const imageTopPct = -(crop.y / crop.h) * 100;
+  const content = (
+    <div style={{ display:"grid", gap:8 }}>
+      <div
+        style={{
+          position:"relative",
+          width:"100%",
+          aspectRatio:String(cropAspectRatio || 1.65),
+          borderRadius:expanded ? 14 : 12,
+          overflow:"hidden",
+          border:`1px solid ${theme}55`,
+          background:"#0f172a",
+          boxShadow: expanded ? "0 16px 42px rgba(0,0,0,0.36)" : "0 8px 22px rgba(0,0,0,0.18)",
+        }}
+      >
+        <img
+          src={map.imageUrl}
+          alt={alt}
+          style={{
+            position:"absolute",
+            left:`${imageLeftPct}%`,
+            top:`${imageTopPct}%`,
+            width:`${imageWidthPct}%`,
+            height:`${imageHeightPct}%`,
+            maxWidth:"none",
+            display:"block",
+          }}
+        />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(180deg, rgba(15,23,42,0.03), rgba(15,23,42,0.18))" }} />
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position:"absolute", inset:0, width:"100%", height:"100%" }}>
+          {(map.highlights || []).map((highlight, idx) => (
+            <g key={`highlight-${idx}`}>
+              <rect x={highlight.x} y={highlight.y} width={highlight.w} height={highlight.h} rx="3" fill={`${highlight.color}26`} stroke={highlight.color} strokeWidth="1.1" strokeDasharray="4 3" />
+              <text x={highlight.x + highlight.w / 2} y={Math.max(5, highlight.y - 1.8)} textAnchor="middle" fontSize="3.4" fontWeight="700" fill={highlight.color}>
+                {highlight.label}
+              </text>
+            </g>
+          ))}
+          {(map.routes || []).map((route, idx) => (
+            <g key={`route-${idx}`}>
+              <polyline
+                points={route.points.map(([x, y]) => `${x},${y}`).join(" ")}
+                fill="none"
+                stroke={route.color}
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeDasharray={route.dashed ? "3 2" : ""}
+                opacity="0.98"
+              />
+              {route.points.map(([x, y], pointIdx) => (
+                <circle key={`route-point-${idx}-${pointIdx}`} cx={x} cy={y} r={pointIdx === route.points.length - 1 ? "1.35" : "0.85"} fill={route.color} />
+              ))}
+            </g>
+          ))}
+          {(map.markers || []).map((marker, idx) => (
+            <g key={`marker-${idx}`}>
+              <circle cx={marker.x} cy={marker.y} r="2.5" fill="#f8fafc" stroke={marker.color || theme} strokeWidth="1.2" />
+              <rect x={marker.x + 2.8} y={marker.y - 3.4} width={Math.max(11, marker.label.length * 2.55)} height="6.2" rx="2.2" fill="rgba(15,23,42,0.88)" stroke={marker.color || theme} strokeWidth="0.7" />
+              <text x={marker.x + 4.7} y={marker.y + 0.8} fontSize="3.1" fontWeight="700" fill="#f8fafc">
+                {marker.label}
+              </text>
+            </g>
+          ))}
+        </svg>
+        <div style={{ position:"absolute", left:10, top:10, display:"flex", gap:6, flexWrap:"wrap", maxWidth:"calc(100% - 20px)" }}>
+          {(map.badges || []).map((badge, idx) => (
+            <span key={`badge-${idx}`} style={{ fontSize:10, lineHeight:1, padding:"5px 8px", borderRadius:999, background:"rgba(15,23,42,0.82)", color:"#e6edf3", border:`1px solid ${theme}55`, fontWeight:700 }}>
+              {badge}
+            </span>
+          ))}
+        </div>
+        {!expanded && (
+          <div style={{ position:"absolute", right:10, bottom:10, fontSize:10, color:"#e6edf3", background:"rgba(15,23,42,0.82)", border:`1px solid ${theme}55`, borderRadius:999, padding:"5px 8px", fontWeight:700 }}>
+            タップで拡大
+          </div>
+        )}
+      </div>
+      <div style={{ display:"flex", justifyContent:"space-between", gap:8, alignItems:"center", flexWrap:"wrap" }}>
+        <div style={{ fontSize:10, color:"#8b949e" }}>Source: Official Disneyland Resort guide map</div>
+        <div style={{ fontSize:10, color:theme, fontWeight:700 }}>ルートと注記のみ上書き</div>
+      </div>
+    </div>
+  );
+
+  if (expanded) {
+    return content;
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => onZoom?.(map, alt, theme)}
+      style={{ display:"block", width:"100%", padding:0, border:"none", background:"transparent", cursor:"zoom-in", textAlign:"left" }}
+      aria-label={`${alt} 繧呈僑螟ｧ`}
+    >
+      {content}
+    </button>
+  );
+}
+
 function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
   const currentPlan = DISNEY_DETAIL_PLANS[section];
-  const currentMaps = DISNEY_DETAIL_MAPS[section];
   const renderActionBadge = (label, color) => (
     <span style={{ fontSize:10, padding:"2px 7px", borderRadius:999, background:`${color}22`, color, fontWeight:700 }}>{label}</span>
   );
@@ -1043,7 +1322,7 @@ function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
       {section === "maps" && (
         <div>
           {["0823","0824"].map((dayId) => {
-            const pack = DISNEY_DETAIL_MAPS[dayId];
+            const pack = OFFICIAL_DISNEY_DETAIL_MAPS[dayId];
             return (
               <div key={dayId} style={{ marginBottom:16 }}>
                 <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:`1px solid ${pack.theme}55` }}>
@@ -1054,14 +1333,14 @@ function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
                 <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:"1px solid #21262d" }}>
                   <div style={{ fontSize:12, color:"#e6edf3", fontWeight:"bold", marginBottom:4 }}>{pack.overview.title}</div>
                   <div style={{ fontSize:10, color:"#8b949e", marginBottom:8 }}>{pack.overview.subtitle}</div>
-                  <DisneyDetailMapImage map={pack.overview} theme={pack.theme} onZoom={onZoom} alt={`${pack.parkTitle} 全体俯瞰`} />
+                  <OfficialDisneyDetailMapImage map={pack.overview} theme={pack.theme} onZoom={onZoom} alt={`${pack.parkTitle} 全体俯瞰`} />
                 </div>
 
                 {pack.locals.map((localMap, idx) => (
                   <div key={idx} style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:"1px solid #21262d" }}>
                     <div style={{ fontSize:12, color:"#e6edf3", fontWeight:"bold", marginBottom:4 }}>{localMap.title}</div>
                     <div style={{ fontSize:10, color:"#8b949e", marginBottom:8 }}>{localMap.subtitle}</div>
-                    <DisneyDetailMapImage map={localMap} theme={pack.theme} onZoom={onZoom} alt={`${pack.parkTitle} ${localMap.title}`} />
+                    <OfficialDisneyDetailMapImage map={localMap} theme={pack.theme} onZoom={onZoom} alt={`${pack.parkTitle} ${localMap.title}`} />
                   </div>
                 ))}
               </div>
@@ -1138,6 +1417,7 @@ const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
 const [assigneeFilter, setAssigneeFilter] = useState("all");
 const [usdJpy, setUsdJpy] = useState(null);
 const [selectedImage, setSelectedImage] = useState({ url:"", alt:"" });
+const [selectedDisneyMap, setSelectedDisneyMap] = useState(null);
 
 useEffect(() => {
   fetch('https://open.er-api.com/v6/latest/USD')
@@ -1777,7 +2057,7 @@ return (
       <DisneyDetailGuide
         section={disneyDetailSection}
         onSectionChange={setDisneyDetailSection}
-        onZoom={(url, alt) => setSelectedImage({ url, alt })}
+        onZoom={(map, alt, theme) => setSelectedDisneyMap({ map, alt, theme })}
       />
     )}
 
@@ -2125,6 +2405,38 @@ return (
     )}
 
   </div>
+
+  {selectedDisneyMap && (
+    <div
+      onClick={() => setSelectedDisneyMap(null)}
+      style={{
+        position:"fixed", inset:0, zIndex:9998, background:"rgba(0,0,0,0.86)",
+        display:"flex", alignItems:"center", justifyContent:"center", padding:16,
+      }}
+      role="button"
+      aria-label="地図プレビューを閉じる"
+    >
+      <div
+        style={{ maxWidth:1080, width:"100%", maxHeight:"90vh", overflow:"auto", background:"#0d1117", border:"1px solid #30363d", borderRadius:14, padding:14 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:12, marginBottom:12 }}>
+          <div>
+            <div style={{ fontSize:12, color:selectedDisneyMap.theme || "#c084fc", fontWeight:"bold" }}>Official Disney Map</div>
+            <div style={{ fontSize:13, color:"#e6edf3", fontWeight:800, marginTop:2 }}>{selectedDisneyMap.alt || "Disney詳細地図"}</div>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSelectedDisneyMap(null)}
+            style={{ background:"transparent", border:"1px solid #30363d", color:"#8b949e", borderRadius:6, padding:"4px 10px", cursor:"pointer", fontFamily:"inherit" }}
+          >
+            閉じる
+          </button>
+        </div>
+        <OfficialDisneyDetailMapImage map={selectedDisneyMap.map} theme={selectedDisneyMap.theme || "#c084fc"} alt={selectedDisneyMap.alt || "Disney詳細地図"} expanded />
+      </div>
+    </div>
+  )}
 
   {selectedImage.url && (
     <div
