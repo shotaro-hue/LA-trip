@@ -75,7 +75,7 @@ schedule:[
 { time:"13:15", icon:"🚗", title:"スタジアムへ出発",   note:"Uberで約20〜30分想定。14:15頃着を目標にしてプリゲームツアーを最優先" },
 { time:"14:15", icon:"🏟", title:"Dodger Stadium着",   note:"プリゲームツアー集合前に入場動線を消化。売店・トイレ位置もここで確認" },
 { time:"15:00", icon:"🎤", title:"プリゲームツアー開始", note:"試合3時間前スタート。グラウンド・ロッカールーム・プレス席など裏側を見学" },
-{ time:"17:15", icon:"⚾", title:"観戦席へ着席",       note:"Section 127LG Row K Seats 3,4\nドジャードッグ・ビールを早めに確保！" },
+{ time:"17:15", icon:"⚾", title:"観戦席へ着席",       note:"購入済み座席へ移動\nドジャードッグ・ビールを早めに確保！" },
 { time:"18:10", icon:"⚾", title:"Pirates vs Dodgers 試合開始", note:"土曜ナイターは最高の雰囲気！" },
 { time:"21:30", icon:"🚗", title:"試合後・帰宅",       note:"試合後Uberは激混み。少し待ってから配車するのがコツ" },
 ]
@@ -113,24 +113,24 @@ schedule:[
 ];
 
 const TODOS = [
-{ done:false, urgent:true,  text:"ESTA申請（米国入国に必須・渡航72時間前までに）", url:"https://esta.cbp.dhs.gov/", assignee:"👤 Aki", due:"8/17", notify:"72時間前" },
-{ done:false, urgent:true,  text:"8/21候補の予約要否確認（Universal / The Broad など）", url:"https://www.thebroad.org/", assignee:"👤 Ken", due:"8/10", notify:"1週間前" },
-{ done:true,  urgent:false, text:"ディズニーチケット購入（公式アプリ）",            url:"https://disneyland.disney.go.com/", assignee:"👤 Ken", due:"8/05", notify:"購入後共有" },
-{ done:true,  urgent:false, text:"Lightning Lane パス購入（公式ディズニーアプリ）", url:"https://disneyland.disney.go.com/", assignee:"👤 Ken", due:"8/16", notify:"前日" },
-{ done:true,  urgent:false, text:"ドジャース プリゲームツアー購入（15:00〜）",      url:"https://www.mlb.com/dodgers/ballpark/tours", assignee:"👤 Ken", due:"8/08", notify:"購入後共有" },
-{ done:false, urgent:false, text:"旅行保険（クレカ付帯保険の補償内容確認）",        url:"", assignee:"👤 Aki", due:"8/14", notify:"3日前" },
-{ done:true,  urgent:false, text:"SQ フライト予約（往復プレエコ）",                url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
-{ done:true,  urgent:false, text:"Omni LA 予約（8/20-23 ¥134,640）",             url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
-{ done:true,  urgent:false, text:"Hilton GI Anaheim 予約（8/23-25 ¥67,996）",   url:"", assignee:"👤 Aki", due:"完了", notify:"完了" },
-{ done:true,  urgent:false, text:"ドジャース観戦チケット購入（Section 127LG Row K）", url:"", assignee:"👤 Ken", due:"完了", notify:"完了" },
+{ done:false, urgent:true,  text:"ESTA申請（米国入国に必須・渡航72時間前までに）", url:"https://esta.cbp.dhs.gov/", assignee:"旅行者A", due:"8/17", notify:"72時間前" },
+{ done:false, urgent:true,  text:"8/21候補の予約要否確認（Universal / The Broad など）", url:"https://www.thebroad.org/", assignee:"旅行者B", due:"8/10", notify:"1週間前" },
+{ done:true,  urgent:false, text:"ディズニーチケット購入（公式アプリ）",            url:"https://disneyland.disney.go.com/", assignee:"旅行者B", due:"8/05", notify:"購入後共有" },
+{ done:true,  urgent:false, text:"Lightning Lane パス購入（公式ディズニーアプリ）", url:"https://disneyland.disney.go.com/", assignee:"旅行者B", due:"8/16", notify:"前日" },
+{ done:true,  urgent:false, text:"ドジャース プリゲームツアー購入（15:00〜）",      url:"https://www.mlb.com/dodgers/ballpark/tours", assignee:"旅行者B", due:"8/08", notify:"購入後共有" },
+{ done:false, urgent:false, text:"旅行保険（クレカ付帯保険の補償内容確認）",        url:"", assignee:"旅行者A", due:"8/14", notify:"3日前" },
+{ done:true,  urgent:false, text:"SQ フライト予約（往復プレエコ）",                url:"", assignee:"旅行者A", due:"完了", notify:"完了" },
+{ done:true,  urgent:false, text:"Omni LA 予約（8/20-23 ¥134,640）",             url:"", assignee:"旅行者A", due:"完了", notify:"完了" },
+{ done:true,  urgent:false, text:"Hilton GI Anaheim 予約（8/23-25 ¥67,996）",   url:"", assignee:"旅行者A", due:"完了", notify:"完了" },
+{ done:true,  urgent:false, text:"ドジャース観戦チケット購入", url:"", assignee:"旅行者B", due:"完了", notify:"完了" },
 ];
 
 const RESERVATIONS = [
 { label:"SQ 往路", value:"SQ12 / 8-20 12:50 LAX着" },
 { label:"SQ 復路", value:"SQ11 / 8-25 14:20 LAX発" },
-{ label:"Omni LA", value:"8/20-8/23・予約確認番号: OMLA-8242" },
-{ label:"Hilton GI", value:"8/23-8/25・予約確認番号: HGI-2391" },
-{ label:"Dodgers", value:"Sec127LG RowK Seat3-4" },
+{ label:"Omni LA", value:"8/20-8/23・予約済み" },
+{ label:"Hilton GI", value:"8/23-8/25・予約済み" },
+{ label:"Dodgers", value:"観戦チケット購入済み" },
 ];
 
 const COSTS = [
@@ -177,7 +177,7 @@ const MAP_SPOTS = [
 { d:"0821", n:"Beverly Hills",           lat:34.0736, lng:-118.4004, em:"💎", desc:"Plan C 候補\nSanta Monicaと組み合わせ候補" },
 { d:"0822", n:"Omni（3泊目）",           lat:34.0526, lng:-118.2506, em:"🏨", desc:"本日の宿泊先 Omni LA" },
 { d:"0822", n:"Santa Monica Pier",       lat:34.0083, lng:-118.4988, em:"🌊", desc:"10:15〜 短時間散策\n11:45撤収で球場優先" },
-{ d:"0822", n:"Dodger Stadium",          lat:34.0739, lng:-118.2400, em:"⚾", desc:"13:15出発・14:15着目標\n15:00〜 プリゲームツアー\n18:10 Pirates vs Dodgers\nSection 127LG Row K Seats 3–4" },
+{ d:"0822", n:"Dodger Stadium",          lat:34.0739, lng:-118.2400, em:"⚾", desc:"13:15出発・14:15着目標\n15:00〜 プリゲームツアー\n18:10 Pirates vs Dodgers\n観戦チケット購入済み" },
 { d:"0823", n:"Omni チェックアウト",      lat:34.0536, lng:-118.2516, em:"🚪", desc:"9:30 チェックアウト → アナハイムへ" },
 { d:"0823", n:"Hilton Garden Inn Anaheim",lat:33.8117,lng:-117.9123, em:"🏩", desc:"11:00〜 チェックイン\n8/23–25 2泊 ¥67,996" },
 { d:"0823", n:"Disneyland Park",         lat:33.8121, lng:-117.9190, em:"🏰", desc:"12:00〜 入園\n完全制覇ではなく主要どころをLightning Laneで拾う日" },
