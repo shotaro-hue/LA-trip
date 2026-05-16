@@ -1137,6 +1137,303 @@ const OFFICIAL_DISNEY_DETAIL_MAPS = {
 },
 };
 
+const CLEAN_DISNEY_DETAIL_NAV = [
+{ id:"0823", label:"🏰 8/23" },
+{ id:"0824", label:"🎡 8/24" },
+{ id:"maps", label:"🗺 地図" },
+{ id:"rules", label:"📌 ルール" },
+];
+
+const CLEAN_DISNEY_DETAIL_PLANS = {
+"0823": {
+  theme:"#f87171",
+  park:"Disneyland Park",
+  headline:"12:00入園 / 15:00パレード固定 / 乗り物優先で回る日",
+  summary:"Adventureland と Frontierland 側から入り、15:00 のパレードを軸にしつつ、その後は Tomorrowland 側へ寄せる。大移動は最小限にして、雰囲気回収より主要ライド回収を優先する。",
+  checkpoints:[
+    "入園後の最優先LL: Indiana Jones Adventure か Space Mountain",
+    "固定イベント: 15:00 Magic Happens Parade",
+    "Rise of the Resistance は Single Pass 不使用なので、待ち時間次第で見送る",
+  ],
+  phases:[
+    {
+      time:"12:00-14:15",
+      title:"入園直後は西側エリアをまとめて処理",
+      zone:"Main Street → Adventureland → New Orleans Square",
+      ll:"入園後すぐに Multi Pass を Indiana Jones に入れ、取れなければ Space Mountain を先に押さえる。",
+      route:"まずは西側へ移動し、Indiana Jones を軸に近い順で Pirates や Haunted Mansion 周辺を消化する。",
+      must:"Indiana Jones Adventure / Pirates of the Caribbean",
+      maybe:"Haunted Mansion / Big Thunder Mountain Railroad",
+      skip:"Rise が90分超ならこの時間帯では見送る",
+    },
+    {
+      time:"14:15-15:40",
+      title:"パレード観賞位置を固定してから東へ抜ける",
+      zone:"Hub / Main Street 中央動線",
+      ll:"次のLLは 15:30 以降の Space Mountain か Matterhorn を狙う。",
+      route:"14:15 頃から観賞位置へ寄り、終演後はそのまま Tomorrowland 側へ抜ける。パレード直前の無理なライド追加はしない。",
+      must:"15:00 Magic Happens Parade",
+      maybe:"近くのワゴン軽食 / 写真",
+      skip:"パレード前に長い待機列へ入らない",
+    },
+    {
+      time:"15:40-18:30",
+      title:"Tomorrowland を軸に夜の主力を回収",
+      zone:"Tomorrowland / Fantasyland edge",
+      ll:"Space Mountain、Matterhorn、Runaway Railway の空き枠を見て近い順に入れる。",
+      route:"パレード後は Tomorrowland へ移り、Space Mountain を主軸に Star Tours や Buzz を追加。Fantasyland 深追いは避ける。",
+      must:"Space Mountain",
+      maybe:"Matterhorn Bobsleds / Star Tours / Buzz Lightyear Astro Blasters",
+      skip:"Peter Pan の長時間待ちは優先度を落とす",
+    },
+    {
+      time:"18:30-23:00",
+      title:"残り枠で仕上げ、ホテル帰還を優先",
+      zone:"Tomorrowland / 中央帰還動線",
+      ll:"残っている夜LLを消化し、取れない場合は近場の待機列を1本だけ追加する。",
+      route:"疲れていなければ Space Mountain 再挑戦も可。無理に園内を往復せず、満足度が高い人気ライドを1〜2本足して終える。",
+      must:"残っているLLの消化",
+      maybe:"It's a Small World / Runaway Railway / 物販確認",
+      skip:"夜ショーを固定しない",
+    },
+  ],
+},
+"0824": {
+  theme:"#c084fc",
+  park:"Disney California Adventure",
+  headline:"開園同時入場 / Cars は Single Pass / World of Color 固定",
+  summary:"朝は Cars Land と Avengers Campus を優先し、午後は現在地ベースで回収。夜は World of Color を固定して、ショー前後の移動を減らす。",
+  checkpoints:[
+    "Single Pass を使うのは Radiator Springs Racers のみ",
+    "開園直後の Multi Pass は WEB SLINGERS か Guardians の早い方",
+    "固定イベント: 夜の World of Color",
+  ],
+  phases:[
+    {
+      time:"8:00-10:30",
+      title:"朝の優位で最優先を押さえる",
+      zone:"Cars Land / Avengers Campus",
+      ll:"入園直後に Radiator Springs Racers の Single Pass を確保し、その直後に WEB SLINGERS か Guardians の Multi Pass を取る。",
+      route:"まず Cars Land に寄せ、その後 Avengers Campus 側へ戻る。朝のうちに高混雑アトラクションを処理する。",
+      must:"Radiator Springs Racers / WEB SLINGERS or Guardians",
+      maybe:"Mater's Junkyard Jamboree",
+      skip:"朝一で Pixar Pier までは行かない",
+    },
+    {
+      time:"10:30-14:30",
+      title:"中盤は現在地優先で待ち時間を削る",
+      zone:"Avengers Campus / Hollywood Land / Grizzly Peak",
+      ll:"Guardians、Soarin'、Toy Story のうち戻りやすい時間帯のものを順に取る。",
+      route:"現在地の近いアトラクションから2〜3本ずつ固めて処理する。エリアをまたぐ往復は増やさない。",
+      must:"Guardians of the Galaxy - Mission: BREAKOUT!",
+      maybe:"Soarin' Around the World / Monsters, Inc.",
+      skip:"遠いエリアの単発移動はしない",
+    },
+    {
+      time:"14:30-18:30",
+      title:"Pixar Pier 側へ寄せて夜に備える",
+      zone:"Pixar Pier / Paradise Gardens",
+      ll:"Toy Story Midway Mania! と Incredicoaster を、現在地と戻り時間で判断して拾う。",
+      route:"午後は Pixar Pier 側へ移り、夜の World of Color にそのままつなげる。Cars Land への戻りは原則しない。",
+      must:"Toy Story Midway Mania! または Incredicoaster",
+      maybe:"The Little Mermaid / Goofy's Sky School",
+      skip:"この時間帯の Cars Land 再訪",
+    },
+    {
+      time:"18:30-閉園",
+      title:"World of Color を固定して締める",
+      zone:"Paradise Bay 周辺",
+      ll:"夜に残ったLLがあれば消化するが、ショー位置確保を崩してまでは追わない。",
+      route:"夜は Paradise Bay 周辺に寄せて、ショー後は近場を1本足す程度に留める。閉園間際の長距離移動は避ける。",
+      must:"World of Color",
+      maybe:"Incredicoaster 夜景再挑戦 / 物販確認",
+      skip:"ショー直前の遠距離移動",
+    },
+  ],
+},
+};
+
+const CLEAN_DISNEY_DETAIL_RULES = [
+"各時間帯で同じエリアのアトラクションを2〜3個ずつ固めて消化し、パーク横断を増やさない。",
+"LLの戻り時間が遠すぎるときは、近場の短い待機列か休憩に切り替える。",
+"休止や故障が出たら、そのエリア内の代替候補を優先して処理する。",
+"8/23 は 15:00 パレードを固定し、夜ショーは固定しない。",
+"8/24 は World of Color を固定し、Cars Land 再訪よりショー前の位置取りを優先する。",
+"疲れたら、写真や物販よりも『残っているLLの消化』と『ホテルへ戻りやすい導線』を優先する。",
+];
+
+const CLEAN_DISNEY_DETAIL_LINKS = [
+{ label:"🎟 Lightning Lane 公式案内", url:"https://disneyland.disney.go.com/lightning-lane-passes/", color:"#fbbf24" },
+{ label:"🏰 Disneyland Park 公式マップ", url:"https://disneyland.disney.go.com/maps/", color:"#f87171" },
+{ label:"🎡 DCA 公式マップ", url:"https://disneyland.disney.go.com/maps/#/disney-california-adventure,disneyland-resort/", color:"#c084fc" },
+{ label:"📱 Disneyland アプリ", url:"https://apps.apple.com/jp/app/disneyland/id1022164656", color:"#60a5fa" },
+];
+
+const CLEAN_OFFICIAL_DISNEY_DETAIL_MAPS = {
+"0823": {
+  theme:"#f87171",
+  parkTitle:"8/23 Disneyland Park",
+  overview:{
+    title:"全体俯瞰",
+    subtitle:"公式ガイドマップを土台に、入園後の進行方向と 15:00 パレード固定導線を重ねた全体像",
+    imageUrl:"/disneyland-official-map.png",
+    imageWidth:3243,
+    imageHeight:1531,
+    crop:{ x:14, y:10, w:70, h:80 },
+    highlights:[
+      { x:12, y:58, w:18, h:17, label:"Adventure / Indy", color:"#f59e0b" },
+      { x:35, y:41, w:16, h:20, label:"Parade hub", color:"#fb7185" },
+      { x:67, y:42, w:17, h:16, label:"Tomorrowland", color:"#60a5fa" },
+    ],
+    routes:[{ points:[[49,93],[49,79],[34,62],[43,53],[75,50]], color:"#f87171", dashed:false }],
+    markers:[
+      { x:49, y:93, label:"Entry", color:"#f87171" },
+      { x:31, y:60, label:"Indy", color:"#f59e0b" },
+      { x:43, y:51, label:"15:00 Parade", color:"#fb7185" },
+      { x:76, y:50, label:"Space", color:"#60a5fa" },
+    ],
+    badges:["公式ガイドマップ","乗り物優先","15:00 パレード固定"],
+  },
+  locals:[
+    {
+      title:"12:00-14:15 局所図",
+      subtitle:"Adventureland / New Orleans Square / Frontierland を左から順に消化",
+      imageUrl:"/disneyland-official-map.png",
+      imageWidth:3243,
+      imageHeight:1531,
+      crop:{ x:17, y:31, w:39, h:40 },
+      highlights:[
+        { x:10, y:44, w:25, h:30, label:"Adventureland", color:"#f59e0b" },
+        { x:47, y:34, w:24, h:31, label:"New Orleans", color:"#fb923c" },
+        { x:66, y:20, w:22, h:22, label:"Frontierland", color:"#fbbf24" },
+      ],
+      routes:[{ points:[[13,81],[27,63],[52,59],[76,42]], color:"#f59e0b", dashed:false }],
+      markers:[
+        { x:13, y:81, label:"From hub", color:"#f87171" },
+        { x:26, y:62, label:"Indy", color:"#f59e0b" },
+        { x:52, y:60, label:"Pirates", color:"#fb923c" },
+        { x:76, y:42, label:"Big Thunder", color:"#fbbf24" },
+      ],
+      badges:["LL: Indy","近ければ Pirates","左エリアで固める"],
+    },
+    {
+      title:"15:00 パレード周辺",
+      subtitle:"Parade 観賞位置を固定しつつ、終了後は Tomorrowland 側へ抜ける",
+      imageUrl:"/disneyland-official-map.png",
+      imageWidth:3243,
+      imageHeight:1531,
+      crop:{ x:35, y:38, w:26, h:41 },
+      highlights:[
+        { x:15, y:18, w:38, h:20, label:"Parade route", color:"#fb7185" },
+        { x:56, y:43, w:18, h:18, label:"East exit", color:"#60a5fa" },
+      ],
+      routes:[
+        { points:[[19,69],[35,60],[50,52],[70,55]], color:"#fb7185", dashed:false },
+        { points:[[70,55],[83,55],[92,60]], color:"#60a5fa", dashed:true },
+      ],
+      markers:[
+        { x:18, y:70, label:"View", color:"#fb7185" },
+        { x:50, y:51, label:"15:00 Parade", color:"#fb7185" },
+        { x:92, y:61, label:"To Tomorrow", color:"#60a5fa" },
+      ],
+      badges:["15:00 固定","早すぎる移動はしない","終演後に東へ"],
+    },
+    {
+      title:"15:40以降 局所図",
+      subtitle:"Space Mountain を軸に、状況次第で Matterhorn まで回収",
+      imageUrl:"/disneyland-official-map.png",
+      imageWidth:3243,
+      imageHeight:1531,
+      crop:{ x:58, y:35, w:29, h:34 },
+      highlights:[
+        { x:43, y:36, w:20, h:18, label:"Space", color:"#60a5fa" },
+        { x:64, y:24, w:20, h:19, label:"Matterhorn", color:"#c084fc" },
+      ],
+      routes:[
+        { points:[[17,73],[40,51],[54,45]], color:"#60a5fa", dashed:false },
+        { points:[[54,45],[67,35]], color:"#c084fc", dashed:true },
+      ],
+      markers:[
+        { x:17, y:73, label:"From parade", color:"#f87171" },
+        { x:54, y:45, label:"Space", color:"#60a5fa" },
+        { x:69, y:34, label:"Matterhorn", color:"#c084fc" },
+      ],
+      badges:["LL: Space","状況次第で Matterhorn","夜は逆走しない"],
+    },
+  ],
+},
+"0824": {
+  theme:"#c084fc",
+  parkTitle:"8/24 California Adventure",
+  overview:{
+    title:"全体俯瞰",
+    subtitle:"公式ガイドマップ上で、朝の Cars / Avengers 起点から夜の World of Color までを一本化",
+    imageUrl:"/dca-official-map.png",
+    imageWidth:3138,
+    imageHeight:1425,
+    crop:{ x:17, y:14, w:72, h:80 },
+    highlights:[
+      { x:36, y:23, w:16, h:18, label:"Cars Land", color:"#f87171" },
+      { x:31, y:58, w:18, h:16, label:"Avengers", color:"#a78bfa" },
+      { x:66, y:31, w:22, h:21, label:"Pixar Pier", color:"#22c55e" },
+      { x:56, y:52, w:20, h:14, label:"World of Color", color:"#38bdf8" },
+    ],
+    routes:[{ points:[[46,92],[44,72],[39,37],[32,62],[72,44],[63,57]], color:"#c084fc", dashed:false }],
+    markers:[
+      { x:46, y:92, label:"Entry", color:"#c084fc" },
+      { x:40, y:35, label:"Cars SP", color:"#f87171" },
+      { x:32, y:63, label:"WEB / Guardians", color:"#a78bfa" },
+      { x:72, y:44, label:"Pixar Pier", color:"#22c55e" },
+      { x:63, y:58, label:"WOC", color:"#38bdf8" },
+    ],
+    badges:["公式ガイドマップ","Cars Single Pass","World of Color 固定"],
+  },
+  locals:[
+    {
+      title:"開園直後の局所図",
+      subtitle:"Single Pass を取って Cars Land へ、戻りは Avengers Campus 側へ寄せる",
+      imageUrl:"/dca-official-map.png",
+      imageWidth:3138,
+      imageHeight:1425,
+      crop:{ x:26, y:16, w:33, h:53 },
+      highlights:[
+        { x:36, y:8, w:23, h:26, label:"Cars", color:"#f87171" },
+        { x:12, y:65, w:26, h:20, label:"Avengers", color:"#a78bfa" },
+      ],
+      routes:[{ points:[[61,92],[57,55],[39,24],[23,75]], color:"#c084fc", dashed:false }],
+      markers:[
+        { x:61, y:92, label:"From entry", color:"#c084fc" },
+        { x:38, y:24, label:"Cars SP", color:"#f87171" },
+        { x:22, y:76, label:"WEB / Guardians", color:"#a78bfa" },
+      ],
+      badges:["朝の最優先","Cars SP 先取り","戻りは Avengers"],
+    },
+    {
+      title:"午後の局所図",
+      subtitle:"Toy Story / Incredicoaster を回収しながら、最終的に Paradise Bay へ寄せる",
+      imageUrl:"/dca-official-map.png",
+      imageWidth:3138,
+      imageHeight:1425,
+      crop:{ x:56, y:18, w:30, h:49 },
+      highlights:[
+        { x:18, y:15, w:48, h:32, label:"Pixar Pier", color:"#22c55e" },
+        { x:42, y:48, w:34, h:16, label:"World of Color", color:"#38bdf8" },
+      ],
+      routes:[
+        { points:[[28,28],[50,26],[63,45]], color:"#22c55e", dashed:false },
+        { points:[[63,45],[73,58]], color:"#38bdf8", dashed:true },
+      ],
+      markers:[
+        { x:28, y:28, label:"Toy Story", color:"#22c55e" },
+        { x:50, y:26, label:"Incredi", color:"#22c55e" },
+        { x:74, y:59, label:"WOC area", color:"#38bdf8" },
+      ],
+      badges:["午後の回収","夜は Paradise Bay","WOC へそのまま残る"],
+    },
+  ],
+},
+};
+
 function OfficialDisneyDetailMapImage({ map, theme, alt, onZoom, expanded = false }) {
   const crop = map.crop || { x:0, y:0, w:100, h:100 };
   const cropAspectRatio = ((map.imageWidth || 1) * crop.w) / ((map.imageHeight || 1) * crop.h);
@@ -1245,7 +1542,7 @@ function OfficialDisneyDetailMapImage({ map, theme, alt, onZoom, expanded = fals
 }
 
 function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
-  const currentPlan = DISNEY_DETAIL_PLANS[section];
+  const currentPlan = CLEAN_DISNEY_DETAIL_PLANS[section];
   const renderActionBadge = (label, color) => (
     <span style={{ fontSize:10, padding:"2px 7px", borderRadius:999, background:`${color}22`, color, fontWeight:700 }}>{label}</span>
   );
@@ -1260,7 +1557,7 @@ function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
       </div>
 
       <div style={{ display:"flex", gap:6, marginBottom:14, flexWrap:"wrap" }}>
-        {DISNEY_DETAIL_NAV.map(item => (
+        {CLEAN_DISNEY_DETAIL_NAV.map(item => (
           <button
             key={item.id}
             onClick={() => onSectionChange(item.id)}
@@ -1322,7 +1619,7 @@ function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
       {section === "maps" && (
         <div>
           {["0823","0824"].map((dayId) => {
-            const pack = OFFICIAL_DISNEY_DETAIL_MAPS[dayId];
+            const pack = CLEAN_OFFICIAL_DISNEY_DETAIL_MAPS[dayId];
             return (
               <div key={dayId} style={{ marginBottom:16 }}>
                 <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:`1px solid ${pack.theme}55` }}>
@@ -1353,7 +1650,7 @@ function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
         <div>
           <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", border:"1px solid #34d39944", marginBottom:12 }}>
             <div style={{ fontSize:13, color:"#34d399", fontWeight:"bold", marginBottom:6 }}>✅ 当日判断ルール</div>
-            {DISNEY_DETAIL_RULES.map((rule, idx) => (
+            {CLEAN_DISNEY_DETAIL_RULES.map((rule, idx) => (
               <div key={idx} style={{ fontSize:11, color:"#cbd5e1", lineHeight:1.7, paddingLeft:10, borderLeft:"2px solid #34d39988", marginBottom:6 }}>
                 {rule}
               </div>
@@ -1362,7 +1659,7 @@ function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
 
           <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", border:"1px solid #21262d" }}>
             <div style={{ fontSize:12, fontWeight:"bold", color:"#8b949e", marginBottom:10 }}>🔗 最新情報の確認</div>
-            {DISNEY_DETAIL_LINKS.map((link, idx) => (
+            {CLEAN_DISNEY_DETAIL_LINKS.map((link, idx) => (
               <a
                 key={idx}
                 href={link.url}
@@ -2422,7 +2719,7 @@ return (
       >
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:12, marginBottom:12 }}>
           <div>
-            <div style={{ fontSize:12, color:selectedDisneyMap.theme || "#c084fc", fontWeight:"bold" }}>Official Disney Map</div>
+            <div style={{ fontSize:12, color:selectedDisneyMap.theme || "#c084fc", fontWeight:"bold" }}>公式Disney地図</div>
             <div style={{ fontSize:13, color:"#e6edf3", fontWeight:800, marginTop:2 }}>{selectedDisneyMap.alt || "Disney詳細地図"}</div>
           </div>
           <button
