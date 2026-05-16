@@ -655,6 +655,463 @@ items:[
 },
 ];
 
+const DISNEY_DETAIL_NAV = [
+{ id:"0823", label:"🏰 8/23" },
+{ id:"0824", label:"🎢 8/24" },
+{ id:"maps", label:"🗺 地図" },
+{ id:"rules", label:"✅ ルール" },
+];
+
+const DISNEY_DETAIL_PLANS = {
+"0823": {
+  theme:"#f87171",
+  park:"Disneyland Park",
+  headline:"12:00入園 / 15:00パレード固定 / 乗り物優先で歩数削減",
+  summary:"Adventureland〜Frontierland側から入り、15:00パレードを軸にして夕方以降にTomorrowland側へ寄せる。大移動は昼と夕方の2回までに抑える。",
+  checkpoints:[
+    "入園直後の最優先LL: Indiana Jones Adventure → Space Mountain",
+    "固定イベント: 15:00 Magic Happens Parade",
+    "Single Pass不使用: Rise of the Resistance は待ち時間次第で捨て候補",
+  ],
+  phases:[
+    {
+      time:"12:00-14:15",
+      title:"入園直後は西側に寄せる",
+      zone:"Main Street → Adventureland → New Orleans Square",
+      ll:"入園後すぐに Multi Pass を Indiana Jones。取れなければ Space Mountain を先に確保。",
+      route:"まず西側へ直進。Indiana Jones を軸に、近い順で Pirates / Haunted Mansion をまとめて処理。",
+      must:"Indiana Jones Adventure / Pirates of the Caribbean",
+      maybe:"Haunted Mansion / Big Thunder Mountain Railroad",
+      skip:"Rise が70分超ならこの時間帯は捨てる",
+    },
+    {
+      time:"14:15-15:40",
+      title:"パレード固定で位置取り",
+      zone:"hub 〜 Main Street / central corridor",
+      ll:"次のLLは 15:30以降の Space Mountain か Matterhorn を取りに行く。",
+      route:"14:15頃からパレード圏内へ移動。通路際の見やすい場所を取り、終演後にTomorrowlandへ抜けやすい側を優先。",
+      must:"15:00 Magic Happens Parade",
+      maybe:"近くのワゴン補給 / 休憩",
+      skip:"パレード前の長い待機列ライドは入れない",
+    },
+    {
+      time:"15:40-18:30",
+      title:"東側へ一度だけ大移動",
+      zone:"Tomorrowland / Fantasyland edge",
+      ll:"Space Mountain → Matterhorn → Mickey & Minnie's Runaway Railway の順で窓を拾う。",
+      route:"パレード後はTomorrowlandへ直行。Space Mountain を主軸に、同じ塊で Star Tours / Buzz を処理。Fantasyland深部へは踏み込みすぎない。",
+      must:"Space Mountain",
+      maybe:"Matterhorn Bobsleds / Star Tours / Buzz Lightyear Astro Blasters",
+      skip:"Peter Pan は待機が重ければ捨てる",
+    },
+    {
+      time:"18:30-23:00",
+      title:"夜は近場回収で締める",
+      zone:"Tomorrowland / central return",
+      ll:"取れている夜窓を消化。新規LLは近場優先で十分。",
+      route:"体力が残っていれば夜景が映える Space Mountain 再訪も可。無理に園内を横断せず、近い人気ライドを1-2本追加して終了。",
+      must:"取れているLL消化",
+      maybe:"It's a Small World / Runaway Railway / お土産確認",
+      skip:"夜ショーは固定しない",
+    },
+  ],
+},
+"0824": {
+  theme:"#c084fc",
+  park:"Disney California Adventure",
+  headline:"開園同時入場 / CarsだけSingle Pass / World of Color固定",
+  summary:"朝に Cars Land と Avengers Campus を押さえ、午後は現在地ベースで回収。夜は World of Color の確保を崩さない。",
+  checkpoints:[
+    "Single Pass使用: Radiator Springs Racers のみ",
+    "開園直後のMulti Pass: WEB SLINGERS か Guardians の早い方",
+    "固定イベント: 夜の World of Color",
+  ],
+  phases:[
+    {
+      time:"8:00-10:30",
+      title:"朝の初動で勝負を決める",
+      zone:"Cars Land → Avengers Campus",
+      ll:"入園直後に Radiator Springs Racers の Single Pass を購入。直後に WEB SLINGERS か Guardians の Multi Pass を確保。",
+      route:"まず Cars Land に寄せ、Single Pass 時間帯までの間に Avengers Campus 側へ流す。徒歩の往復を一回で終える。",
+      must:"Radiator Springs Racers / WEB SLINGERS or Guardians",
+      maybe:"Mater's Junkyard Jamboree",
+      skip:"朝から Pixar Pier 側へはまだ行かない",
+    },
+    {
+      time:"10:30-14:30",
+      title:"中央〜東側を現在地基準で回収",
+      zone:"Avengers Campus → Hollywood Land → Grizzly Peak",
+      ll:"次のMulti Passは Guardians / Soarin' / Toy Story のうち戻りが少ないものを優先。",
+      route:"窓時間と現在地が合うものを順に消化。エリアを飛び越えるより、同じ塊で2-3件まとめる。",
+      must:"Guardians of the Galaxy – Mission: BREAKOUT!",
+      maybe:"Soarin' Around the World / Monsters, Inc.",
+      skip:"遠い窓のためだけの逆走はしない",
+    },
+    {
+      time:"14:30-18:30",
+      title:"Pixar Pier側へ寄せて午後を締める",
+      zone:"Pixar Pier / Paradise Gardens",
+      ll:"Toy Story Midway Mania! と Incredicoaster の取りやすい方を優先。",
+      route:"午後は Pixar Pier 方面へ移り、戻らない前提で回す。ここで夜ショー待機エリアにも近づける。",
+      must:"Toy Story Midway Mania! または Incredicoaster",
+      maybe:"The Little Mermaid / Goofy's Sky School",
+      skip:"この時間以降の Cars Land 戻りは原則しない",
+    },
+    {
+      time:"18:30-閉園",
+      title:"World of Color固定で夜を組む",
+      zone:"Paradise Bay 周辺",
+      ll:"残っている近場LLだけ消化。夜は移動量を抑える。",
+      route:"夜は Paradise Bay 周辺に寄せて待機。ショー後に体力があれば近場を1本追加、無理ならそのまま退園。",
+      must:"World of Color",
+      maybe:"Incredicoaster 夜景再訪 / お土産",
+      skip:"ショー直前の長距離移動",
+    },
+  ],
+},
+};
+
+const DISNEY_DETAIL_RULES = [
+"同じエリアで2〜3件まとめて処理し、反対側への横断は必要時だけにする。",
+"LLの時間が2時間以上先なら、近場の待機列ライドか休憩に切り替える。",
+"休止が出たら、同じエリア内の代替候補を優先し、別エリアへの移動理由にしない。",
+"8/23はパレード固定を崩さず、夜ショーは疲労次第で切る。",
+"8/24はWorld of Color固定を崩さず、Cars再訪より夜の位置取りを優先する。",
+"疲れたら削る順は『対象外ライド → 低優先LL → エリア横断を伴う候補』。",
+];
+
+const DISNEY_DETAIL_LINKS = [
+{ label:"⚡ Lightning Lane 公式", url:"https://disneyland.disney.go.com/lightning-lane-passes/", color:"#fbbf24" },
+{ label:"🏰 Disneyland Park 公式マップ", url:"https://disneyland.disney.go.com/maps/", color:"#f87171" },
+{ label:"🎢 DCA 公式マップ", url:"https://disneyland.disney.go.com/maps/#/disney-california-adventure,disneyland-resort/", color:"#c084fc" },
+{ label:"📱 Disneylandアプリ", url:"https://apps.apple.com/jp/app/disneyland/id1022164656", color:"#60a5fa" },
+];
+
+const DISNEY_DETAIL_MAPS = {
+"0823": {
+  theme:"#f87171",
+  parkTitle:"8/23 Disneyland Park",
+  overview:{
+    title:"全体俯瞰",
+    subtitle:"西側スタート → 15:00パレード → 東側で夜ライド回収",
+    viewBox:"0 0 360 220",
+    zones:[
+      { x:16, y:70, w:92, h:86, fill:"#7c2d12", label:"Adventure / New Orleans" },
+      { x:118, y:64, w:118, h:92, fill:"#7f1d1d", label:"Hub / Parade" },
+      { x:246, y:54, w:96, h:102, fill:"#312e81", label:"Tomorrowland" },
+      { x:130, y:164, w:110, h:40, fill:"#4b5563", label:"Fantasyland edge" },
+    ],
+    route:[
+      { x1:40, y1:110, x2:116, y2:112, color:"#fde68a" },
+      { x1:210, y1:112, x2:286, y2:102, color:"#93c5fd" },
+    ],
+    pins:[
+      { x:54, y:104, label:"IN" },
+      { x:92, y:120, label:"Indy" },
+      { x:176, y:108, label:"15:00 Parade" },
+      { x:290, y:88, label:"Space" },
+    ],
+  },
+  locals:[
+    {
+      title:"12:00-14:15 局所図",
+      subtitle:"Adventureland / New Orleans Squareで固める",
+      viewBox:"0 0 320 180",
+      zones:[
+        { x:20, y:26, w:126, h:122, fill:"#7c2d12", label:"Adventureland" },
+        { x:164, y:38, w:132, h:104, fill:"#92400e", label:"New Orleans / Frontierland" },
+      ],
+      route:[
+        { x1:36, y1:94, x2:110, y2:86, color:"#fde68a" },
+        { x1:110, y1:86, x2:188, y2:94, color:"#fde68a" },
+      ],
+      pins:[
+        { x:36, y:94, label:"IN" },
+        { x:100, y:82, label:"Indy" },
+        { x:208, y:98, label:"Pirates" },
+      ],
+    },
+    {
+      title:"15:00 パレード周辺",
+      subtitle:"終演後にTomorrowlandへ抜けやすい位置取り",
+      viewBox:"0 0 320 180",
+      zones:[
+        { x:36, y:32, w:250, h:108, fill:"#7f1d1d", label:"Hub / Main Route" },
+      ],
+      route:[
+        { x1:52, y1:84, x2:156, y2:84, color:"#fca5a5" },
+        { x1:156, y1:84, x2:268, y2:84, color:"#93c5fd" },
+      ],
+      pins:[
+        { x:72, y:86, label:"View" },
+        { x:160, y:68, label:"Parade" },
+        { x:260, y:86, label:"Exit→East" },
+      ],
+    },
+    {
+      title:"15:40以降 局所図",
+      subtitle:"Tomorrowland側で夜ライド回収",
+      viewBox:"0 0 320 180",
+      zones:[
+        { x:24, y:30, w:136, h:118, fill:"#312e81", label:"Tomorrowland" },
+        { x:176, y:42, w:118, h:96, fill:"#4b5563", label:"Fantasyland edge" },
+      ],
+      route:[
+        { x1:46, y1:96, x2:108, y2:72, color:"#93c5fd" },
+        { x1:108, y1:72, x2:196, y2:98, color:"#c4b5fd" },
+      ],
+      pins:[
+        { x:46, y:96, label:"IN" },
+        { x:108, y:68, label:"Space" },
+        { x:206, y:98, label:"Matterhorn" },
+      ],
+    },
+  ],
+},
+"0824": {
+  theme:"#c084fc",
+  parkTitle:"8/24 California Adventure",
+  overview:{
+    title:"全体俯瞰",
+    subtitle:"Cars / Avengersで朝を取り、午後はPixar Pier、夜はWorld of Color",
+    viewBox:"0 0 360 220",
+    zones:[
+      { x:20, y:48, w:112, h:92, fill:"#7c3aed", label:"Cars Land" },
+      { x:142, y:56, w:98, h:86, fill:"#4c1d95", label:"Avengers" },
+      { x:248, y:42, w:92, h:94, fill:"#4338ca", label:"Hollywood / Grizzly" },
+      { x:106, y:154, w:188, h:44, fill:"#0f766e", label:"Pixar Pier / Paradise Bay" },
+    ],
+    route:[
+      { x1:42, y1:92, x2:158, y2:98, color:"#fca5a5" },
+      { x1:196, y1:130, x2:196, y2:170, color:"#67e8f9" },
+    ],
+    pins:[
+      { x:44, y:92, label:"Cars SP" },
+      { x:176, y:92, label:"WEB/Guardians" },
+      { x:212, y:174, label:"WOC" },
+    ],
+  },
+  locals:[
+    {
+      title:"開園直後 局所図",
+      subtitle:"Cars Land → Avengers Campus",
+      viewBox:"0 0 320 180",
+      zones:[
+        { x:16, y:26, w:122, h:120, fill:"#7c3aed", label:"Cars Land" },
+        { x:170, y:38, w:126, h:102, fill:"#4c1d95", label:"Avengers Campus" },
+      ],
+      route:[
+        { x1:48, y1:92, x2:108, y2:74, color:"#fca5a5" },
+        { x1:126, y1:86, x2:188, y2:88, color:"#c4b5fd" },
+      ],
+      pins:[
+        { x:48, y:92, label:"IN" },
+        { x:108, y:72, label:"Cars SP" },
+        { x:214, y:88, label:"WEB" },
+      ],
+    },
+    {
+      title:"午後 局所図",
+      subtitle:"Pixar Pierへ寄せて戻らない",
+      viewBox:"0 0 320 180",
+      zones:[
+        { x:26, y:34, w:130, h:100, fill:"#0f766e", label:"Pixar Pier" },
+        { x:170, y:48, w:120, h:86, fill:"#155e75", label:"Paradise Bay" },
+      ],
+      route:[
+        { x1:56, y1:88, x2:124, y2:78, color:"#67e8f9" },
+        { x1:124, y1:78, x2:200, y2:92, color:"#67e8f9" },
+      ],
+      pins:[
+        { x:58, y:90, label:"Toy Story" },
+        { x:116, y:72, label:"Incredi" },
+        { x:212, y:92, label:"WOC area" },
+      ],
+    },
+  ],
+},
+};
+
+function DisneyDetailMapImage({ map, theme, onZoom, alt }) {
+  const [, , viewWidth = 320, viewHeight = 180] = map.viewBox.split(" ").map(Number);
+  const svg = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="${map.viewBox}">
+    <rect width="100%" height="100%" rx="18" fill="#0f172a"/>
+    <rect x="8" y="8" width="${viewWidth - 16}" height="${viewHeight - 16}" rx="14" fill="#111827" stroke="${theme}" stroke-opacity="0.45" />
+    ${map.zones.map(zone => `
+      <rect x="${zone.x}" y="${zone.y}" width="${zone.w}" height="${zone.h}" rx="14" fill="${zone.fill}" fill-opacity="0.8" stroke="${zone.fill}" stroke-opacity="0.95"/>
+      <text x="${zone.x + zone.w / 2}" y="${zone.y + zone.h / 2}" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#f8fafc">${zone.label}</text>
+    `).join("")}
+    ${map.route.map(line => `
+      <line x1="${line.x1}" y1="${line.y1}" x2="${line.x2}" y2="${line.y2}" stroke="${line.color}" stroke-width="5" stroke-linecap="round" opacity="0.95"/>
+      <circle cx="${line.x2}" cy="${line.y2}" r="5" fill="${line.color}" />
+    `).join("")}
+    ${map.pins.map(pin => `
+      <circle cx="${pin.x}" cy="${pin.y}" r="15" fill="#f8fafc" fill-opacity="0.95" stroke="${theme}" stroke-width="3"/>
+      <text x="${pin.x}" y="${pin.y + 4}" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="700" fill="#0f172a">${pin.label}</text>
+    `).join("")}
+  </svg>`;
+  const imageUrl = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+  return (
+    <button
+      type="button"
+      onClick={() => onZoom?.(imageUrl, alt)}
+      style={{ display:"block", width:"100%", padding:0, border:"none", background:"transparent", cursor:"zoom-in" }}
+      aria-label={`${alt} を拡大`}
+    >
+      <img src={imageUrl} alt={alt} style={{ width:"100%", display:"block", borderRadius:10, border:`1px solid ${theme}33`, background:"#0f172a" }} />
+    </button>
+  );
+}
+
+function DisneyDetailGuide({ section, onSectionChange, onZoom }) {
+  const currentPlan = DISNEY_DETAIL_PLANS[section];
+  const currentMaps = DISNEY_DETAIL_MAPS[section];
+  const renderActionBadge = (label, color) => (
+    <span style={{ fontSize:10, padding:"2px 7px", borderRadius:999, background:`${color}22`, color, fontWeight:700 }}>{label}</span>
+  );
+
+  return (
+    <div>
+      <div style={{ background:"linear-gradient(135deg,#231942,#0f172a)", borderRadius:12, padding:"12px 14px", marginBottom:12, border:"1px solid #7c3aed44" }}>
+        <div style={{ fontSize:12, color:"#c084fc", fontWeight:"bold" }}>🏰 Disney詳細ガイド</div>
+        <div style={{ fontSize:11, color:"#8b949e", marginTop:4, lineHeight:1.6 }}>
+          既存のDisneyタブは概要のまま残し、このタブでは当日の実運用だけをまとめる。地図は行動判断用の模式図です。
+        </div>
+      </div>
+
+      <div style={{ display:"flex", gap:6, marginBottom:14, flexWrap:"wrap" }}>
+        {DISNEY_DETAIL_NAV.map(item => (
+          <button
+            key={item.id}
+            onClick={() => onSectionChange(item.id)}
+            style={{
+              flex:item.id === "rules" ? "1 1 100%" : 1,
+              padding:"8px 8px",
+              borderRadius:8,
+              border:"none",
+              cursor:"pointer",
+              fontSize:12,
+              fontWeight:"bold",
+              background: section === item.id ? "#c084fc" : "#161b22",
+              color: section === item.id ? "#0d1117" : "#8b949e",
+              outline: section === item.id ? "none" : "1px solid #30363d",
+              fontFamily:"inherit",
+            }}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {(section === "0823" || section === "0824") && currentPlan && (
+        <div>
+          <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:12, border:`1px solid ${currentPlan.theme}55` }}>
+            <div style={{ fontSize:13, color:currentPlan.theme, fontWeight:"bold" }}>{currentPlan.park}</div>
+            <div style={{ fontSize:15, color:"#e6edf3", fontWeight:800, marginTop:4 }}>{currentPlan.headline}</div>
+            <div style={{ fontSize:11, color:"#8b949e", marginTop:6, lineHeight:1.7 }}>{currentPlan.summary}</div>
+            <div style={{ display:"grid", gap:6, marginTop:10 }}>
+              {currentPlan.checkpoints.map((checkpoint, idx) => (
+                <div key={idx} style={{ fontSize:11, color:"#cbd5e1", paddingLeft:10, borderLeft:`2px solid ${currentPlan.theme}88`, lineHeight:1.6 }}>
+                  {checkpoint}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {currentPlan.phases.map((phase, idx) => (
+            <div key={idx} style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:"1px solid #21262d" }}>
+              <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", gap:10, marginBottom:6 }}>
+                <div>
+                  <div style={{ fontSize:10, color:currentPlan.theme, fontWeight:800 }}>{phase.time}</div>
+                  <div style={{ fontSize:13, color:"#e6edf3", fontWeight:800, marginTop:3 }}>{phase.title}</div>
+                </div>
+                {renderActionBadge(phase.zone, currentPlan.theme)}
+              </div>
+              <div style={{ fontSize:11, color:"#fbbf24", lineHeight:1.6, marginBottom:6 }}>⚡ {phase.ll}</div>
+              <div style={{ fontSize:11, color:"#8b949e", lineHeight:1.7, marginBottom:8 }}>{phase.route}</div>
+              <div style={{ display:"grid", gap:6 }}>
+                <div style={{ fontSize:11, color:"#e6edf3" }}><span style={{ color:"#34d399", fontWeight:700 }}>最優先:</span> {phase.must}</div>
+                <div style={{ fontSize:11, color:"#e6edf3" }}><span style={{ color:"#60a5fa", fontWeight:700 }}>近ければ拾う:</span> {phase.maybe}</div>
+                <div style={{ fontSize:11, color:"#e6edf3" }}><span style={{ color:"#f87171", fontWeight:700 }}>混んでいたら捨てる:</span> {phase.skip}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {section === "maps" && (
+        <div>
+          {["0823","0824"].map((dayId) => {
+            const pack = DISNEY_DETAIL_MAPS[dayId];
+            return (
+              <div key={dayId} style={{ marginBottom:16 }}>
+                <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:`1px solid ${pack.theme}55` }}>
+                  <div style={{ fontSize:13, color:pack.theme, fontWeight:"bold" }}>{pack.parkTitle}</div>
+                  <div style={{ fontSize:11, color:"#8b949e", marginTop:4 }}>全体俯瞰と時間帯別の局所図。本文の回り方と同じ順路で色分けしています。</div>
+                </div>
+
+                <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:"1px solid #21262d" }}>
+                  <div style={{ fontSize:12, color:"#e6edf3", fontWeight:"bold", marginBottom:4 }}>{pack.overview.title}</div>
+                  <div style={{ fontSize:10, color:"#8b949e", marginBottom:8 }}>{pack.overview.subtitle}</div>
+                  <DisneyDetailMapImage map={pack.overview} theme={pack.theme} onZoom={onZoom} alt={`${pack.parkTitle} 全体俯瞰`} />
+                </div>
+
+                {pack.locals.map((localMap, idx) => (
+                  <div key={idx} style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", marginBottom:10, border:"1px solid #21262d" }}>
+                    <div style={{ fontSize:12, color:"#e6edf3", fontWeight:"bold", marginBottom:4 }}>{localMap.title}</div>
+                    <div style={{ fontSize:10, color:"#8b949e", marginBottom:8 }}>{localMap.subtitle}</div>
+                    <DisneyDetailMapImage map={localMap} theme={pack.theme} onZoom={onZoom} alt={`${pack.parkTitle} ${localMap.title}`} />
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {section === "rules" && (
+        <div>
+          <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", border:"1px solid #34d39944", marginBottom:12 }}>
+            <div style={{ fontSize:13, color:"#34d399", fontWeight:"bold", marginBottom:6 }}>✅ 当日判断ルール</div>
+            {DISNEY_DETAIL_RULES.map((rule, idx) => (
+              <div key={idx} style={{ fontSize:11, color:"#cbd5e1", lineHeight:1.7, paddingLeft:10, borderLeft:"2px solid #34d39988", marginBottom:6 }}>
+                {rule}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ background:"#161b22", borderRadius:12, padding:"12px 14px", border:"1px solid #21262d" }}>
+            <div style={{ fontSize:12, fontWeight:"bold", color:"#8b949e", marginBottom:10 }}>🔗 最新情報の確認</div>
+            {DISNEY_DETAIL_LINKS.map((link, idx) => (
+              <a
+                key={idx}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display:"flex",
+                  alignItems:"center",
+                  justifyContent:"space-between",
+                  padding:"9px 12px",
+                  marginBottom: idx < DISNEY_DETAIL_LINKS.length - 1 ? 6 : 0,
+                  borderRadius:8,
+                  background:`${link.color}12`,
+                  border:`1px solid ${link.color}44`,
+                  textDecoration:"none",
+                }}
+              >
+                <span style={{ fontSize:12, color:link.color, fontWeight:"bold" }}>{link.label}</span>
+                <span style={{ fontSize:12, color:link.color }}>→</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ─────────────────────────────────────────────────────────
 // MAIN APP
 // ─────────────────────────────────────────────────────────
@@ -662,6 +1119,7 @@ const TABS = [
 { label:"📅 日程",  id:"schedule" },
 { label:"🗺 地図",  id:"map" },
 { label:"🏰 Disney", id:"disney" },
+{ label:"🎯 Disney詳細", id:"disneyDetail" },
 { label:"🍴 グルメ", id:"gourmet" },
 { label:"🛍 グッズ", id:"goods" },
 { label:"💴 費用",  id:"cost" },
@@ -674,6 +1132,7 @@ const [tab, setTab]       = useState("schedule");
 const [openDay, setOpenDay] = useState(null);
 const [todos, setTodos]   = useState(TODOS);
 const [disneySubTab, setDisneySubTab] = useState("ll");
+const [disneyDetailSection, setDisneyDetailSection] = useState("0823");
 const [tripMode, setTripMode] = useState("before");
 const [showIncompleteOnly, setShowIncompleteOnly] = useState(false);
 const [assigneeFilter, setAssigneeFilter] = useState("all");
@@ -1312,6 +1771,14 @@ return (
           </>
         )}
       </div>
+    )}
+
+    {tab === "disneyDetail" && (
+      <DisneyDetailGuide
+        section={disneyDetailSection}
+        onSectionChange={setDisneyDetailSection}
+        onZoom={(url, alt) => setSelectedImage({ url, alt })}
+      />
     )}
 
     {/* ── グルメタブ ── */}
